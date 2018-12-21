@@ -1,0 +1,99 @@
+# import * from './generated/prisma.graphql'
+
+type Query {
+  me: User
+  users: [User]
+  courses: [Course]
+  chat: Chat
+  messages(id: ID!): [Message]
+}
+
+type Mutation {
+  signup(name: String!, email: String!, password: String!): User
+  signin(email: String!, password: String!): User
+  signout: Payload
+  createCustomer(source: String!): Payload
+  createChat: Chat
+  createMessage(id: ID!, text: String!, style: Style): Message
+}
+
+type Subscription {
+  chat(id: ID!): Chat
+}
+
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  password: String
+  image: String
+  stripeId: String
+  githubId: String
+  isSubscribed: Boolean!
+  messages: [Message]
+  chat: Chat
+  role: Role!
+  createdAt: DateTime!
+}
+
+type Course {
+  id: ID!
+  title: String!
+  description: String!
+  image: String
+  tags: [String]!
+  difficulty: Difficulty!
+  videos: [Video!]!
+  createdAt: DateTime!
+}
+
+type Video {
+  id: ID!
+  title: String!
+  description: String!
+  url: String!
+  number: Int!
+  time: Int!
+  course: Course!
+  createdAt: DateTime!
+}
+
+type Chat {
+  id: ID!
+  slackId: String
+  messages: [Message]
+  user: User!
+  createdAt: DateTime!
+}
+
+type Message {
+  id: ID!
+  style: Style!
+  text: String!
+  chat: Chat!
+  user: User!
+  createdAt: DateTime!
+}
+
+type Payload {
+  success: Boolean
+  message: String
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum Difficulty {
+  EASY
+  MID
+  HARD
+  EXPERT
+}
+
+enum Style {
+  TEXT
+  CODE
+  IMAGE
+}

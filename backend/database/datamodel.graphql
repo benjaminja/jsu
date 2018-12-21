@@ -1,0 +1,71 @@
+type User {
+  id: ID! @unique
+  name: String!
+  email: String! @unique
+  password: String
+  image: String
+  stripeId: String @unique
+  githubId: String @unique
+  isSubscribed: Boolean! @default(value: "false")
+  messages: [Message] @relation(name: "MessageOwner")
+  chat: Chat @relation(name: "ChatOwner")
+  role: Role! @default(value: "USER")
+  createdAt: DateTime!
+}
+
+type Course {
+  id: ID! @unique
+  title: String!
+  description: String!
+  image: String
+  tags: [String]!
+  difficulty: Difficulty!
+  videos: [Video!]!
+  createdAt: DateTime!
+}
+
+type Video {
+  id: ID! @unique
+  title: String!
+  description: String!
+  url: String!
+  number: Int!
+  time: Int!
+  course: Course!
+  createdAt: DateTime!
+}
+
+type Chat {
+  id: ID! @unique
+  slackId: String @unique
+  messages: [Message] @relation(name: "ChatHistory")
+  user: User! @relation(name: "ChatOwner")
+  createdAt: DateTime!
+}
+
+type Message {
+  id: ID! @unique
+  style: Style! @default(value: "TEXT")
+  text: String!
+  chat: Chat! @relation(name: "ChatHistory")
+  user: User! @relation(name: "MessageOwner")
+  createdAt: DateTime!
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum Difficulty {
+  EASY
+  MID
+  HARD
+  EXPERT
+}
+
+enum Style {
+  TEXT
+  CODE
+  IMAGE
+}
