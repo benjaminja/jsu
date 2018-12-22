@@ -3,7 +3,7 @@ import { Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
 import { adopt } from 'react-adopt'
 import StripeCheckout from 'react-stripe-checkout'
-import User, { ME_QUERY } from './User'
+import User, { ME_QUERY } from './User/User'
 
 const CREATE_CUSTOMER_MUTATION = gql`
   mutation CREATE_CUSTOMER_MUTATION($source: String!) {

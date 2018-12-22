@@ -2,30 +2,33 @@ import styled from 'styled-components'
 
 const Form = styled.form`
   max-width: ${props => props.theme.maxWidth};
+  height: 80vh;
   display: grid;
   justify-items: center;
+  align-items: center;
 
   fieldset {
     width: 400px;
     display: grid;
-    grid-template-rows: 0.5fr auto 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 0.5fr auto 1fr 1fr 1fr 1fr 1fr 1fr;
     border: 1px solid ${props => props.theme.grey[2]};
     background: ${props => props.theme.grey[0]};
   }
   p {
-    font-size: 2rem;
+    font-size: 3rem;
     text-align: center;
     margin: 0;
   }
   .small {
     display: block;
-    font-size: 1.25rem;
+    font-size: 1.35rem;
     margin-bottom: 1rem;
     text-align: center;
     text-decoration: underline;
     cursor: pointer;
+    outline: 0;
     &:hover {
-      color: ${props => props.theme.primary.main};
+      color: ${props => props.theme.primary.dark};
     }
   }
   label {
@@ -55,6 +58,18 @@ const Form = styled.form`
       outline: none;
       box-shadow: ${props => props.theme.shadows[2]};
     }
+  }
+  .github {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    font-family: 'Regular';
+    font-size: 3rem;
+    line-height: 1.75;
+    margin-top: 1rem;
+    border: 1px solid ${props => props.theme.grey[2]};
+    background: ${props => props.theme.grey[1]};
+    color: ${props => props.theme.black};
   }
 `
 

@@ -4,10 +4,11 @@ import gql from 'graphql-tag'
 import Link from 'next/link'
 import debounce from 'lodash.debounce'
 import Router from 'next/router'
+import { MarkGithub } from 'styled-icons/octicons'
 import analyzePwd from '../lib/analyzePwd'
 import PwdQuality from './PwdQuality'
 import DisplayError from './App/Error'
-import { ME_QUERY } from './User'
+import { ME_QUERY } from './User/User'
 import Form from './styles/Form'
 
 const SIGNUP_MUTATION = gql`
@@ -94,7 +95,17 @@ export default class Signup extends React.Component {
               />
               <DisplayError error={error} />
               <button type="submit">Submit Form</button>
-              <a href="http://localhost:5001/github">GitHub</a>
+              <a className="github" href="http://localhost:5001/github/auth">
+                <span>signupWith(</span>
+                <span>
+                  <MarkGithub
+                    style={{ display: 'inline', margin: '0 .5rem' }}
+                    size={30}
+                    color="inherit"
+                  />
+                </span>
+                <span>)</span>
+              </a>
             </fieldset>
           </Form>
         )}

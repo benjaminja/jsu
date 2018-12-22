@@ -4,7 +4,7 @@ import gql from 'graphql-tag'
 import Link from 'next/link'
 import Router from 'next/router'
 import DisplayError from './App/Error'
-import { ME_QUERY } from './User'
+import { ME_QUERY } from './User/User'
 import { CHAT_QUERY } from './Chat/ChatContainer'
 import Form from './styles/Form'
 
@@ -32,6 +32,7 @@ export default class Signin extends React.Component {
     const { email, password } = this.state
     await signin({ variables: { email, password } })
     this.setState({ email: '', password: '' })
+    Router.push('/')
   }
 
   render() {

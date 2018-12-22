@@ -3,7 +3,7 @@ import Router from 'next/router'
 import styled from 'styled-components'
 import { Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
-import { ME_QUERY } from './User'
+import { ME_QUERY } from './User/User'
 import { CHAT_QUERY } from './Chat/ChatContainer'
 
 const SIGNOUT_MUTATION = gql`
@@ -19,9 +19,10 @@ const SignoutButton = styled.button`
   font-size: 2rem;
   font-family: 'Regular', Arial, Helvetica, sans-serif;
   background: ${props => props.theme.secondary.main};
-  border: 2px solid ${props => props.theme.black};
+  border: 0;
   padding: 1rem;
   box-shadow: 3px 3px 0 ${props => props.theme.black};
+  cursor: pointer;
 `
 
 export default class Signout extends React.Component {

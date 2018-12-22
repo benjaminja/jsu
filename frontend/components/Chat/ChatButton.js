@@ -7,8 +7,8 @@ const ChatButton = styled.div`
   bottom: 2rem;
   right: 2rem;
   z-index: 2;
-  width: 65px;
-  height: 65px;
+  width: 6.5rem;
+  height: 6.5rem;
   display: grid;
   justify-items: center;
   align-items: center;
@@ -20,7 +20,7 @@ const ChatButton = styled.div`
   transition: all 0.25s, transform 0.5s;
   transform: rotate(${props => (props.open ? '45deg' : '0')});
   &:hover {
-    background: ${props => darken(0.025, props.theme.secondary.dark)};
+    background: ${props => darken(0.05, props.theme.secondary.dark)};
   }
 `
 
