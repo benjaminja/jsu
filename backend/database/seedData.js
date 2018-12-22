@@ -2,91 +2,77 @@ require('dotenv').config()
 const axios = require('axios')
 const bcrypt = require('bcryptjs')
 const uuid = require('uuid/v4')
+const logger = require('../src/utils/logger')
 
-const date = new Date().toISOString()
-// create admin
-const adminId = createRandomId()
-const admin = {
-  _typeName: 'User',
-  id: adminId,
-  name: 'Benjaminadk',
-  email: 'benjaminadk@gmail.com',
-  password: '',
-  image:
-    'https://lh4.googleusercontent.com/-9Q_OGPy0Reg/AAAAAAAAAAI/AAAAAAAAADw/_7zKKUkqOlQ/photo.jpg?sz=50',
-  stripeId: '',
-  githubId: '',
-  isSubscribed: false,
-  role: 'ADMIN',
-  createdAt: date
-}
-
-// create user
-const userId = createRandomId()
-const user = {
-  _typeName: 'User',
-  id: userId,
-  name: 'John',
-  email: 'john@gmail.com',
-  password: '',
-  image: 'http://sharethingz.com/wp-content/uploads/2014/08/avatar.png',
-  stripeId: '',
-  githubId: '',
-  isSubscribed: false,
-  role: 'USER',
-  createdAt: date
-}
-
-const chatId = createRandomId()
-const chat = {
-  id: chatId,
-  createdAt: date
-}
-
-const course = {
-  title: 'React Fullstack',
-  description: `Build a person blog using React, Apollo & Markdown.  Your backend will be built with Node.js, Express and a Prisma database.  This course features the cutting edge of the JavaScript ecosystem. So don't fall behind the times, subscribe today and get access to this course plus much, much more.`,
-  image: 'https://s3-us-west-1.amazonaws.com/js-universe/courses/react-fullstack.svg',
-  difficulty: 'HARD'
-}
-
-const tags = ['react', 'apollo', 'graphql', 'markdown', 'node', 'express', 'prisma']
-
-const adminList = {
-  _typeName: 'User',
-  id: adminId,
-  messages: []
-}
-
-const userList = {
-  _typeName: 'User',
-  id: userId,
-  messages: []
-}
-
-const chatList = {
-  _typeName: 'Chat',
-  id: chatId,
-  messages: []
-}
-
-const lists = []
-lists.push(adminList, userList, chatList)
-
-module.exports = async () => {
-  const password = await bcrypt.hash('password', 10)
-  admin.password = password
-  user.password = password
-
-  const nodes = []
-  nodes.push(admin, user, chat)
-
+module.exports = async (videos, courses) => {
+  const lists = []
   const relations = []
-  const r1 = { _typeName: 'User', id: userId, fieldName: 'chat' }
-  const r2 = { _typeName: 'Chat', id: chatId, fieldName: 'user' }
-  const a1 = [r1, r2]
-  relations.push(a1)
+  const date = new Date().toISOString()
 
+  const adminId = createRandomId()
+  const admin = {
+    _typeName: 'User',
+    id: adminId,
+    name: 'Benjaminadk',
+    password: await bcrypt.hash('password', 10),
+    email: 'benjaminadk@gmail.com',
+    image:
+      'https://lh4.googleusercontent.com/-9Q_OGPy0Reg/AAAAAAAAAAI/AAAAAAAAADw/_7zKKUkqOlQ/photo.jpg?sz=50',
+    stripeId: '',
+    githubId: '',
+    isSubscribed: false,
+    role: 'ADMIN',
+    createdAt: date
+  }
+
+  const videoNodes = videos.map((r, i) => {
+    const videoId = createRandomId()
+    const node = {
+      _typeName: 'Video',
+      id: videoId,
+      title: r[0],
+      description: r[1],
+      url: r[2],
+      number: Number(r[3]),
+      time: Number(r[4]),
+      createdAt: date
+    }
+    return node
+  })
+
+  const courseNodes = courses.map((c, i) => {
+    const courseId = createRandomId()
+    const node = {
+      _typeName: 'Course',
+      id: courseId,
+      title: c[0],
+      description: c[1],
+      summary: c[2],
+      image: c[3],
+      difficulty: c[5],
+      createdAt: date
+    }
+    return node
+  })
+
+  courseNodes.forEach((c, i) => {
+    const list = {
+      _typeName: 'Course',
+      id: c.id,
+      tags: courses[i][4].split(',')
+    }
+    lists.push(list)
+  })
+
+  videoNodes.forEach((v, i) => {
+    const courseId = courseNodes[Number(videos[i][5])].id
+    const r1 = { _typeName: 'Course', id: courseId, fieldName: 'videos' }
+    const r2 = { _typeName: 'Video', id: v.id, fieldName: 'course' }
+    const rel = [r1, r2]
+    relations.push(rel)
+  })
+
+  const nodes = [admin, ...courseNodes, ...videoNodes]
   const NODES = { valueType: 'nodes', values: nodes }
   const LISTS = { valueType: 'lists', values: lists }
   const RELATIONS = { valueType: 'relations', values: relations }
@@ -96,9 +82,9 @@ module.exports = async () => {
     await sendData(LISTS)
     await sendData(RELATIONS)
   } catch (error) {
-    console.error('Error importing data to prisma: ', error)
+    logger.error(`🌋 ${error[0]}`)
   } finally {
-    console.log('Prisma database seeded')
+    logger.info('🗃 Database seeded')
   }
 }
 

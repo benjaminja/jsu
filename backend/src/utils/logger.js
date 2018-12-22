@@ -4,7 +4,6 @@ const path = require('path')
 const env = process.env.NODE_ENV || 'development'
 
 const filename = path.join(__dirname, '../../logs', 'app.log')
-console.log(filename)
 const logger = createLogger({
   level: env === 'development' ? 'debug' : 'info',
   format: format.combine(

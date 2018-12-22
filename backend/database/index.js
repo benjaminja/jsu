@@ -1,3 +1,3 @@
-const seedData = require('./seedData')
+const withSheets = require('./withSheets')
 
-seedData()
+withSheets()

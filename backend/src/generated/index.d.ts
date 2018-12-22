@@ -295,7 +295,7 @@ export type ChatOrderByInput =
   | "updatedAt_ASC"
   | "updatedAt_DESC";
 
-export type Difficulty = "EASY" | "MID" | "HARD" | "EXPERT";
+export type Difficulty = "BEGINNER" | "INTERMEDIATE" | "ADVANCED";
 
 export type VideoOrderByInput =
   | "id_ASC"
@@ -322,6 +322,8 @@ export type CourseOrderByInput =
   | "id_DESC"
   | "title_ASC"
   | "title_DESC"
+  | "summary_ASC"
+  | "summary_DESC"
   | "description_ASC"
   | "description_DESC"
   | "image_ASC"
@@ -641,6 +643,20 @@ export interface CourseWhereInput {
   title_not_starts_with?: String;
   title_ends_with?: String;
   title_not_ends_with?: String;
+  summary?: String;
+  summary_not?: String;
+  summary_in?: String[] | String;
+  summary_not_in?: String[] | String;
+  summary_lt?: String;
+  summary_lte?: String;
+  summary_gt?: String;
+  summary_gte?: String;
+  summary_contains?: String;
+  summary_not_contains?: String;
+  summary_starts_with?: String;
+  summary_not_starts_with?: String;
+  summary_ends_with?: String;
+  summary_not_ends_with?: String;
   description?: String;
   description_not?: String;
   description_in?: String[] | String;
@@ -1033,6 +1049,7 @@ export interface MessageUpdateManyWithoutUserInput {
 
 export interface CourseUpdateWithoutVideosDataInput {
   title?: String;
+  summary?: String;
   description?: String;
   image?: String;
   tags?: CourseUpdatetagsInput;
@@ -1098,6 +1115,7 @@ export interface MessageUpdateWithoutUserDataInput {
 
 export interface CourseCreateWithoutVideosInput {
   title: String;
+  summary: String;
   description: String;
   image?: String;
   tags?: CourseCreatetagsInput;
@@ -1139,6 +1157,7 @@ export interface ChatUpsertWithoutMessagesInput {
 
 export interface CourseUpdateManyMutationInput {
   title?: String;
+  summary?: String;
   description?: String;
   image?: String;
   tags?: CourseUpdatetagsInput;
@@ -1295,6 +1314,7 @@ export type MessageWhereUniqueInput = AtLeastOne<{
 
 export interface CourseCreateInput {
   title: String;
+  summary: String;
   description: String;
   image?: String;
   tags?: CourseCreatetagsInput;
@@ -1325,6 +1345,7 @@ export interface CourseUpdatetagsInput {
 
 export interface CourseUpdateInput {
   title?: String;
+  summary?: String;
   description?: String;
   image?: String;
   tags?: CourseUpdatetagsInput;
@@ -1573,6 +1594,7 @@ export interface VideoSubscription
 export interface Course {
   id: ID_Output;
   title: String;
+  summary: String;
   description: String;
   image?: String;
   tags: String[];
@@ -1583,6 +1605,7 @@ export interface Course {
 export interface CoursePromise extends Promise<Course>, Fragmentable {
   id: () => Promise<ID_Output>;
   title: () => Promise<String>;
+  summary: () => Promise<String>;
   description: () => Promise<String>;
   image: () => Promise<String>;
   tags: () => Promise<String[]>;
@@ -1606,6 +1629,7 @@ export interface CourseSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   title: () => Promise<AsyncIterator<String>>;
+  summary: () => Promise<AsyncIterator<String>>;
   description: () => Promise<AsyncIterator<String>>;
   image: () => Promise<AsyncIterator<String>>;
   tags: () => Promise<AsyncIterator<String[]>>;
@@ -2073,6 +2097,7 @@ export interface UserSubscriptionPayloadSubscription
 export interface CoursePreviousValues {
   id: ID_Output;
   title: String;
+  summary: String;
   description: String;
   image?: String;
   tags: String[];
@@ -2085,6 +2110,7 @@ export interface CoursePreviousValuesPromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   title: () => Promise<String>;
+  summary: () => Promise<String>;
   description: () => Promise<String>;
   image: () => Promise<String>;
   tags: () => Promise<String[]>;
@@ -2097,6 +2123,7 @@ export interface CoursePreviousValuesSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   title: () => Promise<AsyncIterator<String>>;
+  summary: () => Promise<AsyncIterator<String>>;
   description: () => Promise<AsyncIterator<String>>;
   image: () => Promise<AsyncIterator<String>>;
   tags: () => Promise<AsyncIterator<String[]>>;

@@ -1,6 +1,7 @@
 import React from 'react'
 import styled, { ThemeProvider, createGlobalStyle } from 'styled-components'
 import Meta from './Meta'
+import Header from './Header'
 import ChatContainer from '../Chat/ChatContainer'
 import UserButton from '../User/UserButton'
 import shadows from '../styles/shadows'
@@ -20,7 +21,7 @@ const theme = {
   black: '#333333',
   white: '#FFFFFF',
   offWhite: '#FAFAFA',
-  maxWidth: '1200px',
+  maxWidth: '1000px',
   shadows,
   background: 'white'
 }
@@ -101,6 +102,7 @@ export default class Page extends React.Component {
         <StyledPage>
           <Meta />
           <GlobalStyle />
+          <Header />
           <Inner>{this.props.children}</Inner>
           <UserButton />
           <ChatContainer />

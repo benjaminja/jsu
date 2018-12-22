@@ -203,6 +203,7 @@ input ChatWhereUniqueInput {
 type Course {
   id: ID!
   title: String!
+  summary: String!
   description: String!
   image: String
   tags: [String!]!
@@ -219,6 +220,7 @@ type CourseConnection {
 
 input CourseCreateInput {
   title: String!
+  summary: String!
   description: String!
   image: String
   tags: CourseCreatetagsInput
@@ -237,6 +239,7 @@ input CourseCreatetagsInput {
 
 input CourseCreateWithoutVideosInput {
   title: String!
+  summary: String!
   description: String!
   image: String
   tags: CourseCreatetagsInput
@@ -253,6 +256,8 @@ enum CourseOrderByInput {
   id_DESC
   title_ASC
   title_DESC
+  summary_ASC
+  summary_DESC
   description_ASC
   description_DESC
   image_ASC
@@ -268,6 +273,7 @@ enum CourseOrderByInput {
 type CoursePreviousValues {
   id: ID!
   title: String!
+  summary: String!
   description: String!
   image: String
   tags: [String!]!
@@ -295,6 +301,7 @@ input CourseSubscriptionWhereInput {
 
 input CourseUpdateInput {
   title: String
+  summary: String
   description: String
   image: String
   tags: CourseUpdatetagsInput
@@ -304,6 +311,7 @@ input CourseUpdateInput {
 
 input CourseUpdateManyMutationInput {
   title: String
+  summary: String
   description: String
   image: String
   tags: CourseUpdatetagsInput
@@ -323,6 +331,7 @@ input CourseUpdatetagsInput {
 
 input CourseUpdateWithoutVideosDataInput {
   title: String
+  summary: String
   description: String
   image: String
   tags: CourseUpdatetagsInput
@@ -363,6 +372,20 @@ input CourseWhereInput {
   title_not_starts_with: String
   title_ends_with: String
   title_not_ends_with: String
+  summary: String
+  summary_not: String
+  summary_in: [String!]
+  summary_not_in: [String!]
+  summary_lt: String
+  summary_lte: String
+  summary_gt: String
+  summary_gte: String
+  summary_contains: String
+  summary_not_contains: String
+  summary_starts_with: String
+  summary_not_starts_with: String
+  summary_ends_with: String
+  summary_not_ends_with: String
   description: String
   description_not: String
   description_in: [String!]
@@ -418,10 +441,9 @@ input CourseWhereUniqueInput {
 scalar DateTime
 
 enum Difficulty {
-  EASY
-  MID
-  HARD
-  EXPERT
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
 }
 
 scalar Long

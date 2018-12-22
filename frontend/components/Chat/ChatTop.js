@@ -9,6 +9,7 @@ const ChatTop = styled.div`
   color: ${props => props.theme.black};
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
+  border: 1px solid ${props => props.theme.secondary.dark};
   font-family: 'Display';
   .greeting {
     font-size: 2rem;

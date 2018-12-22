@@ -17,12 +17,12 @@ const ChatWindow = styled.div`
   z-index: 2;
   width: 400px;
   height: 525px;
-  display: grid;
+  display: ${props => (props.open ? 'grid' : 'none')};
   grid-template-rows: 2fr 7fr 1fr;
   border-radius: 5px;
   opacity: ${props => (props.open ? 1 : 0)};
   box-shadow: ${props => props.theme.shadows[15]};
-  transition: all 1s;
+  transition: opacity 1s;
 `
 
 export default class Chat extends React.Component {

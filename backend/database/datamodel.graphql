@@ -16,6 +16,7 @@ type User {
 type Course {
   id: ID! @unique
   title: String!
+  summary: String!
   description: String!
   image: String
   tags: [String]!
@@ -58,10 +59,9 @@ enum Role {
 }
 
 enum Difficulty {
-  EASY
-  MID
-  HARD
-  EXPERT
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
 }
 
 enum Style {

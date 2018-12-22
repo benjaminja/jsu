@@ -6,6 +6,7 @@ const bcrypt = require('bcryptjs')
 const createCookie = require('../utils/createCookie')
 const signToken = require('../utils/signToken')
 const { createChannel } = require('./slack')
+const logger = require('../utils/logger')
 
 let token
 const frontend =
@@ -39,9 +40,11 @@ const githubOAuth = new GitHubStrategy(
           chat: { create: { slackId } }
         })
         token = signToken(newUser.id)
+        logger.info(`👶 New user created from Github - ${newUser.id}`)
         return cb(null, {})
       } else {
         token = signToken(user.id)
+        logger.info(`👤 User sign in with Github - ${user.id}`)
         return cb(null, {})
       }
     } catch (error) {}

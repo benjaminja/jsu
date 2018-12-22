@@ -25,7 +25,7 @@ const cors = {
 const app = express()
 app.use(passport.initialize())
 passport.use(githubOAuth)
-app.get('/github', githubScope)
+app.get('/github/auth', githubScope)
 app.get('/github/callback', githubCallback, githubRedirect)
 
 app.post('/stripe', express.urlencoded({ extended: true, type: 'json' }), stripeRouter)
