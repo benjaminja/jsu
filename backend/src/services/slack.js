@@ -6,16 +6,19 @@ const headers = {
   Authorization: `Bearer ${process.env.SLACK_TOKEN}`
 }
 
+const formatName = name =>
+  name
+    .toLowerCase()
+    .replace(/\s/g, '-')
+    .slice(0, 21)
+
 const createChannel = async name => {
   const res = await axios({
     method: 'POST',
     url: `${rootURL}conversations.create`,
     headers,
     data: {
-      name: name
-        .toLowerCase()
-        .replace(/\s/g, '-')
-        .slice(0, 21)
+      name: formatName(name)
     }
   })
   if (!res.data.ok) {

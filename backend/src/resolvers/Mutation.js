@@ -8,6 +8,8 @@ const stripe = require('../services/stripe')
 const { isAuthenticated, isAdmin, isSubscribed } = require('../middleware/permissions')
 const { createChannel, postMessage } = require('../services/slack')
 const ChatWithUsers = require('./fragments/ChatWithUsers')
+const { getSignedUrl } = require('../services/aws')
+const logger = require('../utils/logger')
 
 module.exports = {
   signup: async (_, args, ctx, info) => {
@@ -91,5 +93,22 @@ module.exports = {
     const chat = await ctx.prisma.chat({ id: args.id }).$fragment(ChatWithUsers)
     await postMessage(chat.slackId, args.text, args.style, ctx.user)
     return message
+  },
+
+  signS3: async (_, args, ctx, info) => {
+    const params = {
+      Bucket: process.env.AWS_BUCKET,
+      Key: args.filename,
+      Expires: 60,
+      ContentType: args.filetype,
+      ACL: 'public-read'
+    }
+    try {
+      const requestUrl = await getSignedUrl('putObject', params)
+      const fileUrl = `https://js-universe.s3.amazonaws.com/${args.filename}`
+      return { requestUrl, fileUrl }
+    } catch (error) {
+      logger.error(error)
+    }
   }
 }

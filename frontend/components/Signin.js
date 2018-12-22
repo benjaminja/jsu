@@ -5,6 +5,7 @@ import Link from 'next/link'
 import Router from 'next/router'
 import DisplayError from './App/Error'
 import { ME_QUERY } from './User'
+import { CHAT_QUERY } from './Chat/ChatContainer'
 import Form from './styles/Form'
 
 const SIGNIN_MUTATION = gql`
@@ -35,7 +36,10 @@ export default class Signin extends React.Component {
 
   render() {
     return (
-      <Mutation mutation={SIGNIN_MUTATION} refetchQueries={[{ query: ME_QUERY }]}>
+      <Mutation
+        mutation={SIGNIN_MUTATION}
+        refetchQueries={[{ query: ME_QUERY }, { query: CHAT_QUERY }]}
+      >
         {(signin, { loading, error }) => (
           <Form method="POST" onSubmit={e => this.handleSubmit(e, signin)}>
             <fieldset disabled={loading} aria-busy={loading}>

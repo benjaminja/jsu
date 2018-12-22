@@ -13,9 +13,11 @@ const Avatar = styled.div`
   overflow: hidden;
   cursor: pointer;
   span {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    height: 100%;
+    width: 100%;
+    display: grid;
+    justify-items: center;
+    text-align: center;
   }
 `
 

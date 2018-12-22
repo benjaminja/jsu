@@ -54,14 +54,25 @@ const CodeModalStyle = styled.div`
       padding: 1rem;
     }
     .actions {
-      justify-self: flex-end;
-      button {
-        ${props => iconButton(props)};
-        &:nth-child(2) {
-          color: ${props => (props.value ? props.theme.secondary.dark : props.theme.grey[4])};
-        }
-        &:hover {
-          color: ${props => props.theme.secondary.dark};
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      .left {
+        justify-self: flex-start;
+        display: grid;
+        grid-template-columns: repeat(3, auto);
+        grid-gap: 1rem;
+      }
+      .right {
+        justify-self: flex-end;
+        button {
+          ${props => iconButton(props)};
+          &:nth-child(2) {
+            color: ${props => (props.value ? props.theme.secondary.dark : props.theme.grey[4])};
+          }
+          &:hover {
+            color: ${props => props.theme.secondary.dark};
+          }
         }
       }
     }
@@ -85,12 +96,29 @@ export default props => (
             spellCheck={false}
           />
           <div className="actions">
-            <button onClick={props.onClose}>
-              <CancelIcon />
-            </button>
-            <button onClick={() => props.handleCreateCodeMessage(createMessage)}>
-              <SendIcon />
-            </button>
+            <div className="left">
+              {['javascript', 'jsx', 'html'].map(el => (
+                <div key={el}>
+                  <input
+                    type="radio"
+                    id={el}
+                    name="language"
+                    value={el}
+                    defaultChecked={props.language === el}
+                    onClick={() => props.handleLanguage(el)}
+                  />
+                  <label htmlFor={el}>{el}</label>
+                </div>
+              ))}
+            </div>
+            <div className="right">
+              <button onClick={props.onClose}>
+                <CancelIcon />
+              </button>
+              <button onClick={() => props.handleCreateCodeMessage(createMessage)}>
+                <SendIcon />
+              </button>
+            </div>
           </div>
         </div>
       )}

@@ -15,6 +15,7 @@ type Mutation {
   createCustomer(source: String!): Payload
   createChat: Chat
   createMessage(id: ID!, text: String!, style: Style): Message
+  signS3(filename: String!, filetype: String!): S3Payload
 }
 
 type Subscription {
@@ -78,6 +79,11 @@ type Message {
 type Payload {
   success: Boolean
   message: String
+}
+
+type S3Payload {
+  requestUrl: String
+  fileUrl: String
 }
 
 enum Role {

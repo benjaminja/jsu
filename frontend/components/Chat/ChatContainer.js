@@ -3,7 +3,7 @@ import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
 import Chat from './Chat'
 
-const CHAT_QUERY = gql`
+export const CHAT_QUERY = gql`
   query CHAT_QUERY {
     chat {
       __typename
@@ -67,7 +67,7 @@ export default class ChatContainer extends React.Component {
       <Query query={CHAT_QUERY}>
         {({ subscribeToMore, data, loading, ...rest }) => {
           if (loading) return null
-          if (!data) return null
+          if (!data.chat) return null
           return (
             <Chat
               data={data}

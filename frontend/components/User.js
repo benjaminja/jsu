@@ -12,17 +12,6 @@ export const ME_QUERY = gql`
       stripeId
       isSubscribed
       createdAt
-      chat {
-        id
-        messages {
-          id
-          text
-          createdAt
-          user {
-            id
-          }
-        }
-      }
     }
   }
 `

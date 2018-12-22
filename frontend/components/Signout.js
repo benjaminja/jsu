@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
 import { ME_QUERY } from './User'
+import { CHAT_QUERY } from './Chat/ChatContainer'
 
 const SIGNOUT_MUTATION = gql`
   mutation SIGNOUT_MUTATION {
@@ -14,8 +15,13 @@ const SIGNOUT_MUTATION = gql`
 `
 
 const SignoutButton = styled.button`
+  width: 100px;
+  font-size: 2rem;
+  font-family: 'Regular', Arial, Helvetica, sans-serif;
   background: ${props => props.theme.secondary.main};
-  border: none;
+  border: 2px solid ${props => props.theme.black};
+  padding: 1rem;
+  box-shadow: 3px 3px 0 ${props => props.theme.black};
 `
 
 export default class Signout extends React.Component {
@@ -26,7 +32,10 @@ export default class Signout extends React.Component {
 
   render() {
     return (
-      <Mutation mutation={SIGNOUT_MUTATION} refetchQueries={[{ query: ME_QUERY }]}>
+      <Mutation
+        mutation={SIGNOUT_MUTATION}
+        refetchQueries={[{ query: ME_QUERY }, { query: CHAT_QUERY }]}
+      >
         {(signout, { loading, error }) => (
           <div>
             <SignoutButton onClick={() => this.handleSignout(signout)}>Sign Out</SignoutButton>
