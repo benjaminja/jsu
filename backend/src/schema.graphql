@@ -39,6 +39,7 @@ type User {
 type Course {
   id: ID!
   title: String!
+  summary: String!
   description: String!
   image: String
   tags: [String]!

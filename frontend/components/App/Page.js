@@ -27,7 +27,7 @@ const theme = {
 }
 
 const StyledPage = styled.div`
-  background: ${props => props.theme.background};
+  background: ${props => props.theme.white};
   color: ${props => props.theme.color};
 `
 
@@ -36,6 +36,7 @@ const Inner = styled.div`
   margin: 0 auto;
   height: 100vh;
   overflow: auto;
+  background: ${props => props.theme.white};
 `
 
 const GlobalStyle = createGlobalStyle`

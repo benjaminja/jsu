@@ -9,6 +9,6 @@ export default () => (
       type="text/css"
       href="https://unpkg.com/emoji-mart@2.9.2/css/emoji-mart.css"
     />
-    <title>JSU</title>
+    <title>🌌 JS Universe</title>
   </Head>
 )
