@@ -9,6 +9,7 @@ import analyzePwd from '../lib/analyzePwd'
 import PwdQuality from './PwdQuality'
 import DisplayError from './App/Error'
 import { ME_QUERY } from './User/User'
+import { CHAT_QUERY } from './Chat/ChatContainer'
 import Form from './styles/Form'
 
 const SIGNUP_MUTATION = gql`
@@ -46,11 +47,15 @@ export default class Signup extends React.Component {
     const { email, name, password } = this.state
     await signup({ variables: { email, name, password } })
     this.setState({ email: '', name: '', password: '', hide: true, pwd: 0 })
+    Router.push('/')
   }
 
   render() {
     return (
-      <Mutation mutation={SIGNUP_MUTATION} refetchQueries={[{ query: ME_QUERY }]}>
+      <Mutation
+        mutation={SIGNUP_MUTATION}
+        refetchQueries={[{ query: ME_QUERY }, { query: CHAT_QUERY }]}
+      >
         {(signup, { loading, error }) => (
           <Form method="POST" onSubmit={e => this.handleSubmit(e, signup)}>
             <fieldset disabled={loading} aria-busy={loading}>

@@ -70,6 +70,10 @@ const Form = styled.form`
     border: 1px solid ${props => props.theme.grey[2]};
     background: ${props => props.theme.grey[1]};
     color: ${props => props.theme.black};
+    &:focus {
+      outline: none;
+      box-shadow: ${props => props.theme.shadows[2]};
+    }
   }
 `
 

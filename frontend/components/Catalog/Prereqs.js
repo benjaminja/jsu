@@ -23,7 +23,7 @@ const Tab = styled.button`
 
 const Content = styled.div`
   display: ${props => (props.index === props.tabIndex ? 'grid' : 'none')};
-  align-items: center;
+  grid-template-rows: repeat(auto-fit, minmax(3rem, 1fr));
   font-size: 1.25rem;
   padding: 0 0.5rem 0 1rem;
   margin: 0;
@@ -54,14 +54,15 @@ export default class Prereqs extends React.Component {
     const index = this.props.index
     return (
       <React.Fragment>
+        <p className="title">🕵️‍♀️Prerequisites</p>
         <Tabs>
-          {PREREQUISITES[index].map((p, i) => (
+          {PREREQUISITES[index].tabs.map((p, i) => (
             <Tab key={p.tab} index={i} tabIndex={tabIndex} onClick={() => this.setTabIndex(i)}>
               {p.tab}
             </Tab>
           ))}
         </Tabs>
-        {PREREQUISITES[index].map((p, i) => (
+        {PREREQUISITES[index].tabs.map((p, i) => (
           <Content key={i} index={i} tabIndex={tabIndex}>
             <p>{p.text}</p>
             {p.links && (

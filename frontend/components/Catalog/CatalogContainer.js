@@ -15,6 +15,7 @@ const COURSES_QUERY = gql`
       image
       tags
       difficulty
+      price
       createdAt
       videos {
         id
@@ -45,6 +46,7 @@ const Container = styled.div`
     border: 0;
     color: ${props => props.theme.black};
     outline: 0;
+    cursor: pointer;
   }
   .arrow-right {
     position: absolute;
@@ -54,24 +56,20 @@ const Container = styled.div`
     border: 0;
     color: ${props => props.theme.black};
     outline: 0;
-  }
-`
-
-const PurchaseButton = styled.div`
-  background: ${props => props.theme.tertiary.main};
-  cursor: pointer;
-  &:hover {
-    background: ${props => props.theme.tertiary.dark};
+    cursor: pointer;
   }
 `
 
 export default class CourseContainer extends React.Component {
   state = {
     index: 0,
-    showDetail: true
+    showDetail: true,
+    showVideos: true
   }
 
   toggleDetail = () => this.setState({ showDetail: !this.state.showDetail })
+
+  toggleVideos = () => this.setState({ showVideos: !this.state.showVideos })
 
   handleIndex = next => {
     let total = 2
@@ -103,15 +101,16 @@ export default class CourseContainer extends React.Component {
                 courses={courses}
                 index={this.state.index}
                 showDetail={this.state.showDetail}
+                showVideos={this.state.showVideos}
                 toggleDetail={this.toggleDetail}
+                toggleVideos={this.toggleVideos}
               />
               <button className="arrow-left" onClick={() => this.handleIndex(false)}>
-                <ChevronLeft size={40} color="inherit" />
+                <ChevronLeft size={50} color="inherit" />
               </button>
               <button className="arrow-right" onClick={() => this.handleIndex(true)}>
-                <ChevronRight size={40} color="inherit" />
+                <ChevronRight size={50} color="inherit" />
               </button>
-              {/* <PurchaseButton>hello</PurchaseButton> */}
             </Container>
           )
         }}

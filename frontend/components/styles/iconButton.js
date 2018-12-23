@@ -4,4 +4,5 @@ export default props => `
   outline: 0;
   color: ${props.theme.grey[4]};
   cursor: pointer;
+  transition: all .25s;
 `
