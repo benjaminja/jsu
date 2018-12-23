@@ -18,9 +18,7 @@ module.exports = async (videos, courses) => {
     email: 'benjaminadk@gmail.com',
     image:
       'https://lh4.googleusercontent.com/-9Q_OGPy0Reg/AAAAAAAAAAI/AAAAAAAAADw/_7zKKUkqOlQ/photo.jpg?sz=50',
-    stripeId: '',
     githubId: '',
-    isSubscribed: false,
     role: 'ADMIN',
     createdAt: date
   }
@@ -50,6 +48,7 @@ module.exports = async (videos, courses) => {
       summary: c[2],
       image: c[3],
       difficulty: c[5],
+      price: Number(c[6]),
       createdAt: date
     }
     return node

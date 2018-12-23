@@ -5,9 +5,10 @@ import { adopt } from 'react-adopt'
 import StripeCheckout from 'react-stripe-checkout'
 import User, { ME_QUERY } from './User/User'
 
-const CREATE_CUSTOMER_MUTATION = gql`
-  mutation CREATE_CUSTOMER_MUTATION($source: String!) {
-    createCustomer(source: $source) {
+const CREATE_PURCHASE = gql`
+  mutation CREATE_PURCHASE($id: ID!, $token: String!) {
+    createPurchase(id: $id, token: $token) {
+      success
       message
     }
   }
@@ -15,36 +16,38 @@ const CREATE_CUSTOMER_MUTATION = gql`
 
 const Composed = adopt({
   user: ({ render }) => <User>{render}</User>,
-  createCustomer: ({ render }) => (
-    <Mutation mutation={CREATE_CUSTOMER_MUTATION} refetchQueries={[{ query: ME_QUERY }]}>
+  createPurchase: ({ render }) => (
+    <Mutation mutation={CREATE_PURCHASE} refetchQueries={ME_QUERY}>
       {render}
     </Mutation>
   )
 })
 
-export default class Subscribe extends React.Component {
-  handleToken = async (res, createCustomer) => {
-    const response = await createCustomer({ variables: { source: res.id } })
-    if (response.data.createCustomer.success) {
-      alert('User signed up!')
+export default class Checkout extends React.Component {
+  handleToken = async (res, createPurchase) => {
+    const response = await createPurchase({
+      variables: { token: res.id }
+    })
+    if (response.data.createPurchase.success) {
+      alert(response.data.createPurchase.message)
     }
   }
 
   render() {
     return (
       <Composed>
-        {({ user, createCustomer }) => {
+        {({ user, createPurchase }) => {
           const me = user.data.me
           if (!me) return null
           return (
             <StripeCheckout
-              amount={999}
+              amount={1000}
               currency="USD"
               name="JavaScript Universe"
-              description="Monthly Subscription"
+              description="Course Title"
               stripeKey="pk_test_P7PboXILJ38t21Eq4S9rw0Uq"
               email={me.email}
-              token={res => this.handleToken(res, createCustomer)}
+              token={res => this.handleToken(res, createPurchase)}
             >
               {this.props.children}
             </StripeCheckout>

@@ -7,6 +7,7 @@ module.exports = `
     image
     tags
     difficulty
+    price
     createdAt
     videos {
       id

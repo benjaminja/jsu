@@ -6,7 +6,7 @@ import Signout from './Signout'
 import User from './User/User'
 
 const ProfileStyles = styled.div`
-  height: 100vh;
+  height: 90vh;
   display: grid;
   justify-items: center;
   align-items: center;

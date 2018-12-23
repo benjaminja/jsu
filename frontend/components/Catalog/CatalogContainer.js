@@ -57,6 +57,14 @@ const Container = styled.div`
   }
 `
 
+const PurchaseButton = styled.div`
+  background: ${props => props.theme.tertiary.main};
+  cursor: pointer;
+  &:hover {
+    background: ${props => props.theme.tertiary.dark};
+  }
+`
+
 export default class CourseContainer extends React.Component {
   state = {
     index: 0,
@@ -103,6 +111,7 @@ export default class CourseContainer extends React.Component {
               <button className="arrow-right" onClick={() => this.handleIndex(true)}>
                 <ChevronRight size={40} color="inherit" />
               </button>
+              {/* <PurchaseButton>hello</PurchaseButton> */}
             </Container>
           )
         }}

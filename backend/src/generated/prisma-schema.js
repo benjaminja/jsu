@@ -11,6 +11,10 @@ type AggregateMessage {
   count: Int!
 }
 
+type AggregatePurchase {
+  count: Int!
+}
+
 type AggregateUser {
   count: Int!
 }
@@ -208,6 +212,7 @@ type Course {
   image: String
   tags: [String!]!
   difficulty: Difficulty!
+  price: Int!
   videos(where: VideoWhereInput, orderBy: VideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Video!]
   createdAt: DateTime!
 }
@@ -225,7 +230,18 @@ input CourseCreateInput {
   image: String
   tags: CourseCreatetagsInput
   difficulty: Difficulty!
+  price: Int!
   videos: VideoCreateManyWithoutCourseInput
+}
+
+input CourseCreateManyInput {
+  create: [CourseCreateInput!]
+  connect: [CourseWhereUniqueInput!]
+}
+
+input CourseCreateOneInput {
+  create: CourseCreateInput
+  connect: CourseWhereUniqueInput
 }
 
 input CourseCreateOneWithoutVideosInput {
@@ -244,6 +260,7 @@ input CourseCreateWithoutVideosInput {
   image: String
   tags: CourseCreatetagsInput
   difficulty: Difficulty!
+  price: Int!
 }
 
 type CourseEdge {
@@ -264,6 +281,8 @@ enum CourseOrderByInput {
   image_DESC
   difficulty_ASC
   difficulty_DESC
+  price_ASC
+  price_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -278,7 +297,104 @@ type CoursePreviousValues {
   image: String
   tags: [String!]!
   difficulty: Difficulty!
+  price: Int!
   createdAt: DateTime!
+}
+
+input CourseScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  title: String
+  title_not: String
+  title_in: [String!]
+  title_not_in: [String!]
+  title_lt: String
+  title_lte: String
+  title_gt: String
+  title_gte: String
+  title_contains: String
+  title_not_contains: String
+  title_starts_with: String
+  title_not_starts_with: String
+  title_ends_with: String
+  title_not_ends_with: String
+  summary: String
+  summary_not: String
+  summary_in: [String!]
+  summary_not_in: [String!]
+  summary_lt: String
+  summary_lte: String
+  summary_gt: String
+  summary_gte: String
+  summary_contains: String
+  summary_not_contains: String
+  summary_starts_with: String
+  summary_not_starts_with: String
+  summary_ends_with: String
+  summary_not_ends_with: String
+  description: String
+  description_not: String
+  description_in: [String!]
+  description_not_in: [String!]
+  description_lt: String
+  description_lte: String
+  description_gt: String
+  description_gte: String
+  description_contains: String
+  description_not_contains: String
+  description_starts_with: String
+  description_not_starts_with: String
+  description_ends_with: String
+  description_not_ends_with: String
+  image: String
+  image_not: String
+  image_in: [String!]
+  image_not_in: [String!]
+  image_lt: String
+  image_lte: String
+  image_gt: String
+  image_gte: String
+  image_contains: String
+  image_not_contains: String
+  image_starts_with: String
+  image_not_starts_with: String
+  image_ends_with: String
+  image_not_ends_with: String
+  difficulty: Difficulty
+  difficulty_not: Difficulty
+  difficulty_in: [Difficulty!]
+  difficulty_not_in: [Difficulty!]
+  price: Int
+  price_not: Int
+  price_in: [Int!]
+  price_not_in: [Int!]
+  price_lt: Int
+  price_lte: Int
+  price_gt: Int
+  price_gte: Int
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  AND: [CourseScalarWhereInput!]
+  OR: [CourseScalarWhereInput!]
+  NOT: [CourseScalarWhereInput!]
 }
 
 type CourseSubscriptionPayload {
@@ -299,6 +415,17 @@ input CourseSubscriptionWhereInput {
   NOT: [CourseSubscriptionWhereInput!]
 }
 
+input CourseUpdateDataInput {
+  title: String
+  summary: String
+  description: String
+  image: String
+  tags: CourseUpdatetagsInput
+  difficulty: Difficulty
+  price: Int
+  videos: VideoUpdateManyWithoutCourseInput
+}
+
 input CourseUpdateInput {
   title: String
   summary: String
@@ -306,7 +433,29 @@ input CourseUpdateInput {
   image: String
   tags: CourseUpdatetagsInput
   difficulty: Difficulty
+  price: Int
   videos: VideoUpdateManyWithoutCourseInput
+}
+
+input CourseUpdateManyDataInput {
+  title: String
+  summary: String
+  description: String
+  image: String
+  tags: CourseUpdatetagsInput
+  difficulty: Difficulty
+  price: Int
+}
+
+input CourseUpdateManyInput {
+  create: [CourseCreateInput!]
+  update: [CourseUpdateWithWhereUniqueNestedInput!]
+  upsert: [CourseUpsertWithWhereUniqueNestedInput!]
+  delete: [CourseWhereUniqueInput!]
+  connect: [CourseWhereUniqueInput!]
+  disconnect: [CourseWhereUniqueInput!]
+  deleteMany: [CourseScalarWhereInput!]
+  updateMany: [CourseUpdateManyWithWhereNestedInput!]
 }
 
 input CourseUpdateManyMutationInput {
@@ -316,6 +465,19 @@ input CourseUpdateManyMutationInput {
   image: String
   tags: CourseUpdatetagsInput
   difficulty: Difficulty
+  price: Int
+}
+
+input CourseUpdateManyWithWhereNestedInput {
+  where: CourseScalarWhereInput!
+  data: CourseUpdateManyDataInput!
+}
+
+input CourseUpdateOneRequiredInput {
+  create: CourseCreateInput
+  update: CourseUpdateDataInput
+  upsert: CourseUpsertNestedInput
+  connect: CourseWhereUniqueInput
 }
 
 input CourseUpdateOneRequiredWithoutVideosInput {
@@ -336,11 +498,28 @@ input CourseUpdateWithoutVideosDataInput {
   image: String
   tags: CourseUpdatetagsInput
   difficulty: Difficulty
+  price: Int
+}
+
+input CourseUpdateWithWhereUniqueNestedInput {
+  where: CourseWhereUniqueInput!
+  data: CourseUpdateDataInput!
+}
+
+input CourseUpsertNestedInput {
+  update: CourseUpdateDataInput!
+  create: CourseCreateInput!
 }
 
 input CourseUpsertWithoutVideosInput {
   update: CourseUpdateWithoutVideosDataInput!
   create: CourseCreateWithoutVideosInput!
+}
+
+input CourseUpsertWithWhereUniqueNestedInput {
+  where: CourseWhereUniqueInput!
+  update: CourseUpdateDataInput!
+  create: CourseCreateInput!
 }
 
 input CourseWhereInput {
@@ -418,6 +597,14 @@ input CourseWhereInput {
   difficulty_not: Difficulty
   difficulty_in: [Difficulty!]
   difficulty_not_in: [Difficulty!]
+  price: Int
+  price_not: Int
+  price_in: [Int!]
+  price_not_in: [Int!]
+  price_lt: Int
+  price_lte: Int
+  price_gt: Int
+  price_gte: Int
   videos_every: VideoWhereInput
   videos_some: VideoWhereInput
   videos_none: VideoWhereInput
@@ -730,6 +917,12 @@ type Mutation {
   upsertMessage(where: MessageWhereUniqueInput!, create: MessageCreateInput!, update: MessageUpdateInput!): Message!
   deleteMessage(where: MessageWhereUniqueInput!): Message
   deleteManyMessages(where: MessageWhereInput): BatchPayload!
+  createPurchase(data: PurchaseCreateInput!): Purchase!
+  updatePurchase(data: PurchaseUpdateInput!, where: PurchaseWhereUniqueInput!): Purchase
+  updateManyPurchases(data: PurchaseUpdateManyMutationInput!, where: PurchaseWhereInput): BatchPayload!
+  upsertPurchase(where: PurchaseWhereUniqueInput!, create: PurchaseCreateInput!, update: PurchaseUpdateInput!): Purchase!
+  deletePurchase(where: PurchaseWhereUniqueInput!): Purchase
+  deleteManyPurchases(where: PurchaseWhereInput): BatchPayload!
   createUser(data: UserCreateInput!): User!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
@@ -761,6 +954,238 @@ type PageInfo {
   endCursor: String
 }
 
+type Purchase {
+  id: ID!
+  charge: String!
+  total: Int!
+  course: Course!
+  user: User!
+  createdAt: DateTime!
+}
+
+type PurchaseConnection {
+  pageInfo: PageInfo!
+  edges: [PurchaseEdge]!
+  aggregate: AggregatePurchase!
+}
+
+input PurchaseCreateInput {
+  charge: String!
+  total: Int!
+  course: CourseCreateOneInput!
+  user: UserCreateOneWithoutPurchasesInput!
+}
+
+input PurchaseCreateManyWithoutUserInput {
+  create: [PurchaseCreateWithoutUserInput!]
+  connect: [PurchaseWhereUniqueInput!]
+}
+
+input PurchaseCreateWithoutUserInput {
+  charge: String!
+  total: Int!
+  course: CourseCreateOneInput!
+}
+
+type PurchaseEdge {
+  node: Purchase!
+  cursor: String!
+}
+
+enum PurchaseOrderByInput {
+  id_ASC
+  id_DESC
+  charge_ASC
+  charge_DESC
+  total_ASC
+  total_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type PurchasePreviousValues {
+  id: ID!
+  charge: String!
+  total: Int!
+  createdAt: DateTime!
+}
+
+input PurchaseScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  charge: String
+  charge_not: String
+  charge_in: [String!]
+  charge_not_in: [String!]
+  charge_lt: String
+  charge_lte: String
+  charge_gt: String
+  charge_gte: String
+  charge_contains: String
+  charge_not_contains: String
+  charge_starts_with: String
+  charge_not_starts_with: String
+  charge_ends_with: String
+  charge_not_ends_with: String
+  total: Int
+  total_not: Int
+  total_in: [Int!]
+  total_not_in: [Int!]
+  total_lt: Int
+  total_lte: Int
+  total_gt: Int
+  total_gte: Int
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  AND: [PurchaseScalarWhereInput!]
+  OR: [PurchaseScalarWhereInput!]
+  NOT: [PurchaseScalarWhereInput!]
+}
+
+type PurchaseSubscriptionPayload {
+  mutation: MutationType!
+  node: Purchase
+  updatedFields: [String!]
+  previousValues: PurchasePreviousValues
+}
+
+input PurchaseSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: PurchaseWhereInput
+  AND: [PurchaseSubscriptionWhereInput!]
+  OR: [PurchaseSubscriptionWhereInput!]
+  NOT: [PurchaseSubscriptionWhereInput!]
+}
+
+input PurchaseUpdateInput {
+  charge: String
+  total: Int
+  course: CourseUpdateOneRequiredInput
+  user: UserUpdateOneRequiredWithoutPurchasesInput
+}
+
+input PurchaseUpdateManyDataInput {
+  charge: String
+  total: Int
+}
+
+input PurchaseUpdateManyMutationInput {
+  charge: String
+  total: Int
+}
+
+input PurchaseUpdateManyWithoutUserInput {
+  create: [PurchaseCreateWithoutUserInput!]
+  delete: [PurchaseWhereUniqueInput!]
+  connect: [PurchaseWhereUniqueInput!]
+  disconnect: [PurchaseWhereUniqueInput!]
+  update: [PurchaseUpdateWithWhereUniqueWithoutUserInput!]
+  upsert: [PurchaseUpsertWithWhereUniqueWithoutUserInput!]
+  deleteMany: [PurchaseScalarWhereInput!]
+  updateMany: [PurchaseUpdateManyWithWhereNestedInput!]
+}
+
+input PurchaseUpdateManyWithWhereNestedInput {
+  where: PurchaseScalarWhereInput!
+  data: PurchaseUpdateManyDataInput!
+}
+
+input PurchaseUpdateWithoutUserDataInput {
+  charge: String
+  total: Int
+  course: CourseUpdateOneRequiredInput
+}
+
+input PurchaseUpdateWithWhereUniqueWithoutUserInput {
+  where: PurchaseWhereUniqueInput!
+  data: PurchaseUpdateWithoutUserDataInput!
+}
+
+input PurchaseUpsertWithWhereUniqueWithoutUserInput {
+  where: PurchaseWhereUniqueInput!
+  update: PurchaseUpdateWithoutUserDataInput!
+  create: PurchaseCreateWithoutUserInput!
+}
+
+input PurchaseWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  charge: String
+  charge_not: String
+  charge_in: [String!]
+  charge_not_in: [String!]
+  charge_lt: String
+  charge_lte: String
+  charge_gt: String
+  charge_gte: String
+  charge_contains: String
+  charge_not_contains: String
+  charge_starts_with: String
+  charge_not_starts_with: String
+  charge_ends_with: String
+  charge_not_ends_with: String
+  total: Int
+  total_not: Int
+  total_in: [Int!]
+  total_not_in: [Int!]
+  total_lt: Int
+  total_lte: Int
+  total_gt: Int
+  total_gte: Int
+  course: CourseWhereInput
+  user: UserWhereInput
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  AND: [PurchaseWhereInput!]
+  OR: [PurchaseWhereInput!]
+  NOT: [PurchaseWhereInput!]
+}
+
+input PurchaseWhereUniqueInput {
+  id: ID
+}
+
 type Query {
   chat(where: ChatWhereUniqueInput!): Chat
   chats(where: ChatWhereInput, orderBy: ChatOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Chat]!
@@ -771,6 +1196,9 @@ type Query {
   message(where: MessageWhereUniqueInput!): Message
   messages(where: MessageWhereInput, orderBy: MessageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Message]!
   messagesConnection(where: MessageWhereInput, orderBy: MessageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): MessageConnection!
+  purchase(where: PurchaseWhereUniqueInput!): Purchase
+  purchases(where: PurchaseWhereInput, orderBy: PurchaseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Purchase]!
+  purchasesConnection(where: PurchaseWhereInput, orderBy: PurchaseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PurchaseConnection!
   user(where: UserWhereUniqueInput!): User
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
@@ -795,6 +1223,7 @@ type Subscription {
   chat(where: ChatSubscriptionWhereInput): ChatSubscriptionPayload
   course(where: CourseSubscriptionWhereInput): CourseSubscriptionPayload
   message(where: MessageSubscriptionWhereInput): MessageSubscriptionPayload
+  purchase(where: PurchaseSubscriptionWhereInput): PurchaseSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
   video(where: VideoSubscriptionWhereInput): VideoSubscriptionPayload
 }
@@ -805,10 +1234,10 @@ type User {
   email: String!
   password: String
   image: String
-  stripeId: String
   githubId: String
-  isSubscribed: Boolean!
   messages(where: MessageWhereInput, orderBy: MessageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Message!]
+  courses(where: CourseWhereInput, orderBy: CourseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Course!]
+  purchases(where: PurchaseWhereInput, orderBy: PurchaseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Purchase!]
   chat: Chat
   role: Role!
   createdAt: DateTime!
@@ -825,10 +1254,10 @@ input UserCreateInput {
   email: String!
   password: String
   image: String
-  stripeId: String
   githubId: String
-  isSubscribed: Boolean
   messages: MessageCreateManyWithoutUserInput
+  courses: CourseCreateManyInput
+  purchases: PurchaseCreateManyWithoutUserInput
   chat: ChatCreateOneWithoutUserInput
   role: Role
 }
@@ -843,15 +1272,20 @@ input UserCreateOneWithoutMessagesInput {
   connect: UserWhereUniqueInput
 }
 
+input UserCreateOneWithoutPurchasesInput {
+  create: UserCreateWithoutPurchasesInput
+  connect: UserWhereUniqueInput
+}
+
 input UserCreateWithoutChatInput {
   name: String!
   email: String!
   password: String
   image: String
-  stripeId: String
   githubId: String
-  isSubscribed: Boolean
   messages: MessageCreateManyWithoutUserInput
+  courses: CourseCreateManyInput
+  purchases: PurchaseCreateManyWithoutUserInput
   role: Role
 }
 
@@ -860,9 +1294,21 @@ input UserCreateWithoutMessagesInput {
   email: String!
   password: String
   image: String
-  stripeId: String
   githubId: String
-  isSubscribed: Boolean
+  courses: CourseCreateManyInput
+  purchases: PurchaseCreateManyWithoutUserInput
+  chat: ChatCreateOneWithoutUserInput
+  role: Role
+}
+
+input UserCreateWithoutPurchasesInput {
+  name: String!
+  email: String!
+  password: String
+  image: String
+  githubId: String
+  messages: MessageCreateManyWithoutUserInput
+  courses: CourseCreateManyInput
   chat: ChatCreateOneWithoutUserInput
   role: Role
 }
@@ -883,12 +1329,8 @@ enum UserOrderByInput {
   password_DESC
   image_ASC
   image_DESC
-  stripeId_ASC
-  stripeId_DESC
   githubId_ASC
   githubId_DESC
-  isSubscribed_ASC
-  isSubscribed_DESC
   role_ASC
   role_DESC
   createdAt_ASC
@@ -903,9 +1345,7 @@ type UserPreviousValues {
   email: String!
   password: String
   image: String
-  stripeId: String
   githubId: String
-  isSubscribed: Boolean!
   role: Role!
   createdAt: DateTime!
 }
@@ -933,10 +1373,10 @@ input UserUpdateInput {
   email: String
   password: String
   image: String
-  stripeId: String
   githubId: String
-  isSubscribed: Boolean
   messages: MessageUpdateManyWithoutUserInput
+  courses: CourseUpdateManyInput
+  purchases: PurchaseUpdateManyWithoutUserInput
   chat: ChatUpdateOneWithoutUserInput
   role: Role
 }
@@ -946,9 +1386,7 @@ input UserUpdateManyMutationInput {
   email: String
   password: String
   image: String
-  stripeId: String
   githubId: String
-  isSubscribed: Boolean
   role: Role
 }
 
@@ -966,15 +1404,22 @@ input UserUpdateOneRequiredWithoutMessagesInput {
   connect: UserWhereUniqueInput
 }
 
+input UserUpdateOneRequiredWithoutPurchasesInput {
+  create: UserCreateWithoutPurchasesInput
+  update: UserUpdateWithoutPurchasesDataInput
+  upsert: UserUpsertWithoutPurchasesInput
+  connect: UserWhereUniqueInput
+}
+
 input UserUpdateWithoutChatDataInput {
   name: String
   email: String
   password: String
   image: String
-  stripeId: String
   githubId: String
-  isSubscribed: Boolean
   messages: MessageUpdateManyWithoutUserInput
+  courses: CourseUpdateManyInput
+  purchases: PurchaseUpdateManyWithoutUserInput
   role: Role
 }
 
@@ -983,9 +1428,21 @@ input UserUpdateWithoutMessagesDataInput {
   email: String
   password: String
   image: String
-  stripeId: String
   githubId: String
-  isSubscribed: Boolean
+  courses: CourseUpdateManyInput
+  purchases: PurchaseUpdateManyWithoutUserInput
+  chat: ChatUpdateOneWithoutUserInput
+  role: Role
+}
+
+input UserUpdateWithoutPurchasesDataInput {
+  name: String
+  email: String
+  password: String
+  image: String
+  githubId: String
+  messages: MessageUpdateManyWithoutUserInput
+  courses: CourseUpdateManyInput
   chat: ChatUpdateOneWithoutUserInput
   role: Role
 }
@@ -998,6 +1455,11 @@ input UserUpsertWithoutChatInput {
 input UserUpsertWithoutMessagesInput {
   update: UserUpdateWithoutMessagesDataInput!
   create: UserCreateWithoutMessagesInput!
+}
+
+input UserUpsertWithoutPurchasesInput {
+  update: UserUpdateWithoutPurchasesDataInput!
+  create: UserCreateWithoutPurchasesInput!
 }
 
 input UserWhereInput {
@@ -1071,20 +1533,6 @@ input UserWhereInput {
   image_not_starts_with: String
   image_ends_with: String
   image_not_ends_with: String
-  stripeId: String
-  stripeId_not: String
-  stripeId_in: [String!]
-  stripeId_not_in: [String!]
-  stripeId_lt: String
-  stripeId_lte: String
-  stripeId_gt: String
-  stripeId_gte: String
-  stripeId_contains: String
-  stripeId_not_contains: String
-  stripeId_starts_with: String
-  stripeId_not_starts_with: String
-  stripeId_ends_with: String
-  stripeId_not_ends_with: String
   githubId: String
   githubId_not: String
   githubId_in: [String!]
@@ -1099,11 +1547,15 @@ input UserWhereInput {
   githubId_not_starts_with: String
   githubId_ends_with: String
   githubId_not_ends_with: String
-  isSubscribed: Boolean
-  isSubscribed_not: Boolean
   messages_every: MessageWhereInput
   messages_some: MessageWhereInput
   messages_none: MessageWhereInput
+  courses_every: CourseWhereInput
+  courses_some: CourseWhereInput
+  courses_none: CourseWhereInput
+  purchases_every: PurchaseWhereInput
+  purchases_some: PurchaseWhereInput
+  purchases_none: PurchaseWhereInput
   chat: ChatWhereInput
   role: Role
   role_not: Role
@@ -1125,7 +1577,6 @@ input UserWhereInput {
 input UserWhereUniqueInput {
   id: ID
   email: String
-  stripeId: String
   githubId: String
 }
 

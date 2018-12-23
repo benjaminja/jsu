@@ -11,9 +11,9 @@ type Mutation {
   signup(name: String!, email: String!, password: String!): User
   signin(email: String!, password: String!): User
   signout: Payload
-  createCustomer(source: String!): Payload
   createChat: Chat
   createMessage(id: ID!, text: String!, style: Style): Message
+  createPurchase(id: ID!, token: String!): Payload
   signS3(filename: String!, filetype: String!): S3Payload
 }
 
@@ -27,10 +27,10 @@ type User {
   email: String!
   password: String
   image: String
-  stripeId: String
   githubId: String
-  isSubscribed: Boolean!
   messages: [Message]
+  courses: [Course]
+  purchases: [Purchase]
   chat: Chat
   role: Role!
   createdAt: DateTime!
@@ -44,7 +44,17 @@ type Course {
   image: String
   tags: [String]!
   difficulty: Difficulty!
+  price: Int!
   videos: [Video!]!
+  createdAt: DateTime!
+}
+
+type Purchase {
+  id: ID!
+  charge: String!
+  total: Int!
+  course: Course!
+  user: User!
   createdAt: DateTime!
 }
 

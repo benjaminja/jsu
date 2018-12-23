@@ -24,6 +24,7 @@ module.exports = {
       name: args.name,
       email: args.email.toLowerCase(),
       password: hashedPassword,
+      image: `https://api.adorable.io/avatars/64/${args.name}@adorable.png'`,
       chat: { create: { slackId } }
     })
     // 5. Create jwt token
@@ -49,33 +50,6 @@ module.exports = {
     return { success: true, message: 'User signed out.' }
   },
 
-  createCustomer: async (_, args, ctx, info) => {
-    try {
-      // 1. Create stripe customer
-      const customer = await stripe.customers.create({
-        email: ctx.user.email,
-        source: args.source
-      })
-      // 2. Create monthly subscription, renews 1st of every month, prorated for this month
-      const subscription = await stripe.subscriptions.create({
-        customer: customer.id,
-        items: [{ plan: process.env.STRIPE_PLAN }],
-        billing_cycle_anchor: lastDayOfMonth(),
-        prorate: true
-      })
-      // 3. Update user, save stripe id and turn their subscription on
-      await ctx.prisma.updateUser({
-        where: { id: ctx.userId },
-        data: { stripeId: customer.id, isSubscribed: true }
-      })
-      // 4. Return success message
-      return { success: true, message: 'User signed up for JSU!' }
-    } catch (error) {
-      // 5. If error throw
-      throw new Error(error)
-    }
-  },
-
   createChat: async (_, args, ctx, info) => {
     const chat = await ctx.prisma.createChat({
       user: { connect: { id: ctx.userId } }
@@ -93,6 +67,32 @@ module.exports = {
     const chat = await ctx.prisma.chat({ id: args.id }).$fragment(ChatWithUsers)
     await postMessage(chat.slackId, args.text, args.style, ctx.user)
     return message
+  },
+
+  createPurchase: async (_, args, ctx, info) => {
+    try {
+      const course = await ctx.prisma.course({ id: args.id })
+      const charge = await stripe.charges.create({
+        amount: course.price,
+        currency: 'usd',
+        source: args.token,
+        description: course.title,
+        metadata: { user: ctx.userId, course: args.id }
+      })
+      await ctx.prisma.createPurchase({
+        charge: charge.id,
+        total: charge.amount,
+        course: { connect: { id: args.id } },
+        user: { connect: { id: ctx.userId } }
+      })
+      return {
+        success: true,
+        message: `${course.title} purchased successfully 👍`
+      }
+    } catch (error) {
+      logger.error(`😈 Error: Mutation.createPurchase`, error)
+      throw new Error('Error: Could not purchase Course')
+    }
   },
 
   signS3: async (_, args, ctx, info) => {

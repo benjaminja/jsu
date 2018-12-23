@@ -14,7 +14,7 @@ export default [
     {
       tab: 'Markdown',
       text:
-        'You may have Markdown expereince if you use Github. Markdown is a light-weight markup language used to format simple text into HTML. We will use Markdown to enchance our blog app. Its easy to pick up and well documented.',
+        'You may have Markdown experience if you use Github. Markdown is a light-weight markup language used to format simple text into HTML. We will use Markdown to enchance our blog app. Its easy to pick up and well documented.',
       links: [
         {
           text: 'Markdown Wikipedia Page',

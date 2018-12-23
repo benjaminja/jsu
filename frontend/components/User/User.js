@@ -9,9 +9,10 @@ export const ME_QUERY = gql`
       email
       image
       role
-      stripeId
-      isSubscribed
       createdAt
+      courses {
+        id
+      }
     }
   }
 `

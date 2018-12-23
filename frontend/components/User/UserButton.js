@@ -7,23 +7,15 @@ import User from './User'
 const Avatar = styled.div`
   width: 6.5rem;
   height: 6.5rem;
+  display: grid;
+  justify-items: center;
+  align-items: center;
   border-radius: 50%;
-  font-size: 2.5rem;
-  background: ${props => props.theme.black};
-  color: ${props => props.theme.grey[0]};
   overflow: hidden;
   cursor: pointer;
   img {
     width: 6.5rem;
     height: 6.5rem;
-    border-radius: 50%;
-  }
-  span {
-    height: 100%;
-    width: 100%;
-    display: grid;
-    justify-items: center;
-    text-align: center;
   }
 `
 
@@ -57,7 +49,7 @@ export default () => (
         <UserButton>
           {user ? (
             <Avatar onClick={() => Router.push('/profile')}>
-              {user.image ? <img src={user.image} /> : <span>{user.name[0].toUpperCase()}</span>}
+              <img src={user.image} />
             </Avatar>
           ) : (
             <Link href="/signup" prefetch>

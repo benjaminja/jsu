@@ -17,13 +17,17 @@ const theme = {
     main: '#FFDA1F',
     dark: '#FAC400'
   },
+  tertiary: {
+    light: '#5EED8E',
+    main: '#19E65E',
+    dark: '#12A141'
+  },
   grey: ['#F0F0F0', '#D9D9D9', '#BFBFBF', '#A6A6A6', '#8C8C8C'],
   black: '#333333',
   white: '#FFFFFF',
   offWhite: '#FAFAFA',
   maxWidth: '1000px',
-  shadows,
-  background: 'white'
+  shadows
 }
 
 const StyledPage = styled.div`
@@ -34,7 +38,7 @@ const StyledPage = styled.div`
 const Inner = styled.div`
   max-width: ${props => props.theme.maxWidth};
   margin: 0 auto;
-  height: 100vh;
+  height: 90vh;
   overflow: auto;
   background: ${props => props.theme.white};
 `

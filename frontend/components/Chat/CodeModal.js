@@ -23,6 +23,7 @@ const SendIcon = styled(Send)(iconStyles)
 const CancelIcon = styled(Close)(iconStyles)
 
 const CodeModalStyle = styled.div`
+  z-index: 100;
   .title-bar {
     background: ${props => props.theme.secondary.dark};
     color: ${props => props.theme.black};

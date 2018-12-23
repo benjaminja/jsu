@@ -134,8 +134,10 @@ const Detail = styled.div`
     position: absolute;
     bottom: 0;
     right: 0;
+    z-index: 1;
     background: transparent;
     border: 0;
+    outline: 0;
     cursor: pointer;
   }
 `
@@ -239,7 +241,7 @@ export default class Catalog extends React.Component {
                       this course is for you.
                     </p>
                     <Prereqs index={index} />
-                    <button className="close">
+                    <button className="close" onClick={this.props.toggleDetail}>
                       <Close size={20} color="#333333" />
                     </button>
                   </Detail>

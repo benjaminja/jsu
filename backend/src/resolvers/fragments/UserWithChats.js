@@ -5,9 +5,13 @@ module.exports = `
       email
       image
       role
-      stripeId
-      isSubscribed
       createdAt
+      courses {
+        id
+      }
+      purchases {
+        id
+      }
       chat {
         id
         messages {

@@ -13,6 +13,7 @@ export interface Exists {
   chat: (where?: ChatWhereInput) => Promise<boolean>;
   course: (where?: CourseWhereInput) => Promise<boolean>;
   message: (where?: MessageWhereInput) => Promise<boolean>;
+  purchase: (where?: PurchaseWhereInput) => Promise<boolean>;
   user: (where?: UserWhereInput) => Promise<boolean>;
   video: (where?: VideoWhereInput) => Promise<boolean>;
 }
@@ -105,6 +106,29 @@ export interface Prisma {
       last?: Int;
     }
   ) => MessageConnectionPromise;
+  purchase: (where: PurchaseWhereUniqueInput) => PurchasePromise;
+  purchases: (
+    args?: {
+      where?: PurchaseWhereInput;
+      orderBy?: PurchaseOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => FragmentableArray<Purchase>;
+  purchasesConnection: (
+    args?: {
+      where?: PurchaseWhereInput;
+      orderBy?: PurchaseOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => PurchaseConnectionPromise;
   user: (where: UserWhereUniqueInput) => UserPromise;
   users: (
     args?: {
@@ -205,6 +229,22 @@ export interface Prisma {
   ) => MessagePromise;
   deleteMessage: (where: MessageWhereUniqueInput) => MessagePromise;
   deleteManyMessages: (where?: MessageWhereInput) => BatchPayloadPromise;
+  createPurchase: (data: PurchaseCreateInput) => PurchasePromise;
+  updatePurchase: (
+    args: { data: PurchaseUpdateInput; where: PurchaseWhereUniqueInput }
+  ) => PurchasePromise;
+  updateManyPurchases: (
+    args: { data: PurchaseUpdateManyMutationInput; where?: PurchaseWhereInput }
+  ) => BatchPayloadPromise;
+  upsertPurchase: (
+    args: {
+      where: PurchaseWhereUniqueInput;
+      create: PurchaseCreateInput;
+      update: PurchaseUpdateInput;
+    }
+  ) => PurchasePromise;
+  deletePurchase: (where: PurchaseWhereUniqueInput) => PurchasePromise;
+  deleteManyPurchases: (where?: PurchaseWhereInput) => BatchPayloadPromise;
   createUser: (data: UserCreateInput) => UserPromise;
   updateUser: (
     args: { data: UserUpdateInput; where: UserWhereUniqueInput }
@@ -255,6 +295,9 @@ export interface Subscription {
   message: (
     where?: MessageSubscriptionWhereInput
   ) => MessageSubscriptionPayloadSubscription;
+  purchase: (
+    where?: PurchaseSubscriptionWhereInput
+  ) => PurchaseSubscriptionPayloadSubscription;
   user: (
     where?: UserSubscriptionWhereInput
   ) => UserSubscriptionPayloadSubscription;
@@ -271,6 +314,20 @@ export interface ClientConstructor<T> {
  * Types
  */
 
+export type PurchaseOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "charge_ASC"
+  | "charge_DESC"
+  | "total_ASC"
+  | "total_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
+
+export type Role = "USER" | "ADMIN";
+
 export type MessageOrderByInput =
   | "id_ASC"
   | "id_DESC"
@@ -283,19 +340,27 @@ export type MessageOrderByInput =
   | "updatedAt_ASC"
   | "updatedAt_DESC";
 
-export type Role = "USER" | "ADMIN";
+export type Difficulty = "BEGINNER" | "INTERMEDIATE" | "ADVANCED";
 
-export type ChatOrderByInput =
+export type CourseOrderByInput =
   | "id_ASC"
   | "id_DESC"
-  | "slackId_ASC"
-  | "slackId_DESC"
+  | "title_ASC"
+  | "title_DESC"
+  | "summary_ASC"
+  | "summary_DESC"
+  | "description_ASC"
+  | "description_DESC"
+  | "image_ASC"
+  | "image_DESC"
+  | "difficulty_ASC"
+  | "difficulty_DESC"
+  | "price_ASC"
+  | "price_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
   | "updatedAt_DESC";
-
-export type Difficulty = "BEGINNER" | "INTERMEDIATE" | "ADVANCED";
 
 export type VideoOrderByInput =
   | "id_ASC"
@@ -315,21 +380,15 @@ export type VideoOrderByInput =
   | "updatedAt_ASC"
   | "updatedAt_DESC";
 
+export type MutationType = "CREATED" | "UPDATED" | "DELETED";
+
 export type Style = "TEXT" | "CODE" | "IMAGE";
 
-export type CourseOrderByInput =
+export type ChatOrderByInput =
   | "id_ASC"
   | "id_DESC"
-  | "title_ASC"
-  | "title_DESC"
-  | "summary_ASC"
-  | "summary_DESC"
-  | "description_ASC"
-  | "description_DESC"
-  | "image_ASC"
-  | "image_DESC"
-  | "difficulty_ASC"
-  | "difficulty_DESC"
+  | "slackId_ASC"
+  | "slackId_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
@@ -346,39 +405,14 @@ export type UserOrderByInput =
   | "password_DESC"
   | "image_ASC"
   | "image_DESC"
-  | "stripeId_ASC"
-  | "stripeId_DESC"
   | "githubId_ASC"
   | "githubId_DESC"
-  | "isSubscribed_ASC"
-  | "isSubscribed_DESC"
   | "role_ASC"
   | "role_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
   | "updatedAt_DESC";
-
-export type MutationType = "CREATED" | "UPDATED" | "DELETED";
-
-export interface ChatUpdateOneWithoutUserInput {
-  create?: ChatCreateWithoutUserInput;
-  update?: ChatUpdateWithoutUserDataInput;
-  upsert?: ChatUpsertWithoutUserInput;
-  delete?: Boolean;
-  disconnect?: Boolean;
-  connect?: ChatWhereUniqueInput;
-}
-
-export type ChatWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-  slackId?: String;
-}>;
-
-export interface UserCreateOneWithoutChatInput {
-  create?: UserCreateWithoutChatInput;
-  connect?: UserWhereUniqueInput;
-}
 
 export interface VideoUpdateManyWithoutCourseInput {
   create?: VideoCreateWithoutCourseInput[] | VideoCreateWithoutCourseInput;
@@ -397,21 +431,32 @@ export interface VideoUpdateManyWithoutCourseInput {
     | VideoUpdateManyWithWhereNestedInput;
 }
 
+export type ChatWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+  slackId?: String;
+}>;
+
 export interface UserCreateWithoutChatInput {
   name: String;
   email: String;
   password?: String;
   image?: String;
-  stripeId?: String;
   githubId?: String;
-  isSubscribed?: Boolean;
   messages?: MessageCreateManyWithoutUserInput;
+  courses?: CourseCreateManyInput;
+  purchases?: PurchaseCreateManyWithoutUserInput;
   role?: Role;
 }
 
-export interface MessageUpdateManyWithWhereNestedInput {
-  where: MessageScalarWhereInput;
-  data: MessageUpdateManyDataInput;
+export interface CourseUpdateInput {
+  title?: String;
+  summary?: String;
+  description?: String;
+  image?: String;
+  tags?: CourseUpdatetagsInput;
+  difficulty?: Difficulty;
+  price?: Int;
+  videos?: VideoUpdateManyWithoutCourseInput;
 }
 
 export interface MessageCreateManyWithoutUserInput {
@@ -419,21 +464,67 @@ export interface MessageCreateManyWithoutUserInput {
   connect?: MessageWhereUniqueInput[] | MessageWhereUniqueInput;
 }
 
-export interface UserSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: UserWhereInput;
-  AND?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
-  OR?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
-  NOT?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+export interface VideoUpdateManyDataInput {
+  title?: String;
+  description?: String;
+  url?: String;
+  number?: Int;
+  time?: Int;
 }
 
 export interface MessageCreateWithoutUserInput {
   style?: Style;
   text: String;
   chat: ChatCreateOneWithoutMessagesInput;
+}
+
+export interface VideoSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: VideoWhereInput;
+  AND?: VideoSubscriptionWhereInput[] | VideoSubscriptionWhereInput;
+  OR?: VideoSubscriptionWhereInput[] | VideoSubscriptionWhereInput;
+  NOT?: VideoSubscriptionWhereInput[] | VideoSubscriptionWhereInput;
+}
+
+export interface ChatCreateOneWithoutMessagesInput {
+  create?: ChatCreateWithoutMessagesInput;
+  connect?: ChatWhereUniqueInput;
+}
+
+export interface PurchaseSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: PurchaseWhereInput;
+  AND?: PurchaseSubscriptionWhereInput[] | PurchaseSubscriptionWhereInput;
+  OR?: PurchaseSubscriptionWhereInput[] | PurchaseSubscriptionWhereInput;
+  NOT?: PurchaseSubscriptionWhereInput[] | PurchaseSubscriptionWhereInput;
+}
+
+export interface ChatCreateWithoutMessagesInput {
+  slackId?: String;
+  user: UserCreateOneWithoutChatInput;
+}
+
+export interface MessageSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: MessageWhereInput;
+  AND?: MessageSubscriptionWhereInput[] | MessageSubscriptionWhereInput;
+  OR?: MessageSubscriptionWhereInput[] | MessageSubscriptionWhereInput;
+  NOT?: MessageSubscriptionWhereInput[] | MessageSubscriptionWhereInput;
+}
+
+export interface ChatUpdateInput {
+  slackId?: String;
+  messages?: MessageUpdateManyWithoutChatInput;
+  user?: UserUpdateOneRequiredWithoutChatInput;
 }
 
 export interface CourseSubscriptionWhereInput {
@@ -445,156 +536,6 @@ export interface CourseSubscriptionWhereInput {
   AND?: CourseSubscriptionWhereInput[] | CourseSubscriptionWhereInput;
   OR?: CourseSubscriptionWhereInput[] | CourseSubscriptionWhereInput;
   NOT?: CourseSubscriptionWhereInput[] | CourseSubscriptionWhereInput;
-}
-
-export interface ChatCreateOneWithoutMessagesInput {
-  create?: ChatCreateWithoutMessagesInput;
-  connect?: ChatWhereUniqueInput;
-}
-
-export interface VideoUpdateManyMutationInput {
-  title?: String;
-  description?: String;
-  url?: String;
-  number?: Int;
-  time?: Int;
-}
-
-export interface ChatCreateWithoutMessagesInput {
-  slackId?: String;
-  user: UserCreateOneWithoutChatInput;
-}
-
-export type CourseWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
-
-export interface ChatUpdateInput {
-  slackId?: String;
-  messages?: MessageUpdateManyWithoutChatInput;
-  user?: UserUpdateOneRequiredWithoutChatInput;
-}
-
-export interface UserWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  name?: String;
-  name_not?: String;
-  name_in?: String[] | String;
-  name_not_in?: String[] | String;
-  name_lt?: String;
-  name_lte?: String;
-  name_gt?: String;
-  name_gte?: String;
-  name_contains?: String;
-  name_not_contains?: String;
-  name_starts_with?: String;
-  name_not_starts_with?: String;
-  name_ends_with?: String;
-  name_not_ends_with?: String;
-  email?: String;
-  email_not?: String;
-  email_in?: String[] | String;
-  email_not_in?: String[] | String;
-  email_lt?: String;
-  email_lte?: String;
-  email_gt?: String;
-  email_gte?: String;
-  email_contains?: String;
-  email_not_contains?: String;
-  email_starts_with?: String;
-  email_not_starts_with?: String;
-  email_ends_with?: String;
-  email_not_ends_with?: String;
-  password?: String;
-  password_not?: String;
-  password_in?: String[] | String;
-  password_not_in?: String[] | String;
-  password_lt?: String;
-  password_lte?: String;
-  password_gt?: String;
-  password_gte?: String;
-  password_contains?: String;
-  password_not_contains?: String;
-  password_starts_with?: String;
-  password_not_starts_with?: String;
-  password_ends_with?: String;
-  password_not_ends_with?: String;
-  image?: String;
-  image_not?: String;
-  image_in?: String[] | String;
-  image_not_in?: String[] | String;
-  image_lt?: String;
-  image_lte?: String;
-  image_gt?: String;
-  image_gte?: String;
-  image_contains?: String;
-  image_not_contains?: String;
-  image_starts_with?: String;
-  image_not_starts_with?: String;
-  image_ends_with?: String;
-  image_not_ends_with?: String;
-  stripeId?: String;
-  stripeId_not?: String;
-  stripeId_in?: String[] | String;
-  stripeId_not_in?: String[] | String;
-  stripeId_lt?: String;
-  stripeId_lte?: String;
-  stripeId_gt?: String;
-  stripeId_gte?: String;
-  stripeId_contains?: String;
-  stripeId_not_contains?: String;
-  stripeId_starts_with?: String;
-  stripeId_not_starts_with?: String;
-  stripeId_ends_with?: String;
-  stripeId_not_ends_with?: String;
-  githubId?: String;
-  githubId_not?: String;
-  githubId_in?: String[] | String;
-  githubId_not_in?: String[] | String;
-  githubId_lt?: String;
-  githubId_lte?: String;
-  githubId_gt?: String;
-  githubId_gte?: String;
-  githubId_contains?: String;
-  githubId_not_contains?: String;
-  githubId_starts_with?: String;
-  githubId_not_starts_with?: String;
-  githubId_ends_with?: String;
-  githubId_not_ends_with?: String;
-  isSubscribed?: Boolean;
-  isSubscribed_not?: Boolean;
-  messages_every?: MessageWhereInput;
-  messages_some?: MessageWhereInput;
-  messages_none?: MessageWhereInput;
-  chat?: ChatWhereInput;
-  role?: Role;
-  role_not?: Role;
-  role_in?: Role[] | Role;
-  role_not_in?: Role[] | Role;
-  createdAt?: DateTimeInput;
-  createdAt_not?: DateTimeInput;
-  createdAt_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_lt?: DateTimeInput;
-  createdAt_lte?: DateTimeInput;
-  createdAt_gt?: DateTimeInput;
-  createdAt_gte?: DateTimeInput;
-  AND?: UserWhereInput[] | UserWhereInput;
-  OR?: UserWhereInput[] | UserWhereInput;
-  NOT?: UserWhereInput[] | UserWhereInput;
 }
 
 export interface MessageUpdateManyWithoutChatInput {
@@ -614,95 +555,15 @@ export interface MessageUpdateManyWithoutChatInput {
     | MessageUpdateManyWithWhereNestedInput;
 }
 
-export interface CourseWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  title?: String;
-  title_not?: String;
-  title_in?: String[] | String;
-  title_not_in?: String[] | String;
-  title_lt?: String;
-  title_lte?: String;
-  title_gt?: String;
-  title_gte?: String;
-  title_contains?: String;
-  title_not_contains?: String;
-  title_starts_with?: String;
-  title_not_starts_with?: String;
-  title_ends_with?: String;
-  title_not_ends_with?: String;
-  summary?: String;
-  summary_not?: String;
-  summary_in?: String[] | String;
-  summary_not_in?: String[] | String;
-  summary_lt?: String;
-  summary_lte?: String;
-  summary_gt?: String;
-  summary_gte?: String;
-  summary_contains?: String;
-  summary_not_contains?: String;
-  summary_starts_with?: String;
-  summary_not_starts_with?: String;
-  summary_ends_with?: String;
-  summary_not_ends_with?: String;
-  description?: String;
-  description_not?: String;
-  description_in?: String[] | String;
-  description_not_in?: String[] | String;
-  description_lt?: String;
-  description_lte?: String;
-  description_gt?: String;
-  description_gte?: String;
-  description_contains?: String;
-  description_not_contains?: String;
-  description_starts_with?: String;
-  description_not_starts_with?: String;
-  description_ends_with?: String;
-  description_not_ends_with?: String;
-  image?: String;
-  image_not?: String;
-  image_in?: String[] | String;
-  image_not_in?: String[] | String;
-  image_lt?: String;
-  image_lte?: String;
-  image_gt?: String;
-  image_gte?: String;
-  image_contains?: String;
-  image_not_contains?: String;
-  image_starts_with?: String;
-  image_not_starts_with?: String;
-  image_ends_with?: String;
-  image_not_ends_with?: String;
-  difficulty?: Difficulty;
-  difficulty_not?: Difficulty;
-  difficulty_in?: Difficulty[] | Difficulty;
-  difficulty_not_in?: Difficulty[] | Difficulty;
-  videos_every?: VideoWhereInput;
-  videos_some?: VideoWhereInput;
-  videos_none?: VideoWhereInput;
-  createdAt?: DateTimeInput;
-  createdAt_not?: DateTimeInput;
-  createdAt_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_lt?: DateTimeInput;
-  createdAt_lte?: DateTimeInput;
-  createdAt_gt?: DateTimeInput;
-  createdAt_gte?: DateTimeInput;
-  AND?: CourseWhereInput[] | CourseWhereInput;
-  OR?: CourseWhereInput[] | CourseWhereInput;
-  NOT?: CourseWhereInput[] | CourseWhereInput;
+export interface ChatSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: ChatWhereInput;
+  AND?: ChatSubscriptionWhereInput[] | ChatSubscriptionWhereInput;
+  OR?: ChatSubscriptionWhereInput[] | ChatSubscriptionWhereInput;
+  NOT?: ChatSubscriptionWhereInput[] | ChatSubscriptionWhereInput;
 }
 
 export interface MessageUpdateWithWhereUniqueWithoutChatInput {
@@ -710,17 +571,35 @@ export interface MessageUpdateWithWhereUniqueWithoutChatInput {
   data: MessageUpdateWithoutChatDataInput;
 }
 
-export interface CourseUpdateOneRequiredWithoutVideosInput {
-  create?: CourseCreateWithoutVideosInput;
-  update?: CourseUpdateWithoutVideosDataInput;
-  upsert?: CourseUpsertWithoutVideosInput;
-  connect?: CourseWhereUniqueInput;
+export interface VideoUpdateManyMutationInput {
+  title?: String;
+  description?: String;
+  url?: String;
+  number?: Int;
+  time?: Int;
 }
 
 export interface MessageUpdateWithoutChatDataInput {
   style?: Style;
   text?: String;
   user?: UserUpdateOneRequiredWithoutMessagesInput;
+}
+
+export interface CourseUpdateWithoutVideosDataInput {
+  title?: String;
+  summary?: String;
+  description?: String;
+  image?: String;
+  tags?: CourseUpdatetagsInput;
+  difficulty?: Difficulty;
+  price?: Int;
+}
+
+export interface UserUpdateOneRequiredWithoutMessagesInput {
+  create?: UserCreateWithoutMessagesInput;
+  update?: UserUpdateWithoutMessagesDataInput;
+  upsert?: UserUpsertWithoutMessagesInput;
+  connect?: UserWhereUniqueInput;
 }
 
 export interface VideoUpdateInput {
@@ -732,28 +611,43 @@ export interface VideoUpdateInput {
   course?: CourseUpdateOneRequiredWithoutVideosInput;
 }
 
-export interface UserUpdateOneRequiredWithoutMessagesInput {
-  create?: UserCreateWithoutMessagesInput;
-  update?: UserUpdateWithoutMessagesDataInput;
-  upsert?: UserUpsertWithoutMessagesInput;
-  connect?: UserWhereUniqueInput;
-}
-
-export interface CourseCreateOneWithoutVideosInput {
-  create?: CourseCreateWithoutVideosInput;
-  connect?: CourseWhereUniqueInput;
-}
-
 export interface UserUpdateWithoutMessagesDataInput {
   name?: String;
   email?: String;
   password?: String;
   image?: String;
-  stripeId?: String;
   githubId?: String;
-  isSubscribed?: Boolean;
+  courses?: CourseUpdateManyInput;
+  purchases?: PurchaseUpdateManyWithoutUserInput;
   chat?: ChatUpdateOneWithoutUserInput;
   role?: Role;
+}
+
+export interface CourseCreateWithoutVideosInput {
+  title: String;
+  summary: String;
+  description: String;
+  image?: String;
+  tags?: CourseCreatetagsInput;
+  difficulty: Difficulty;
+  price: Int;
+}
+
+export interface CourseUpdateManyInput {
+  create?: CourseCreateInput[] | CourseCreateInput;
+  update?:
+    | CourseUpdateWithWhereUniqueNestedInput[]
+    | CourseUpdateWithWhereUniqueNestedInput;
+  upsert?:
+    | CourseUpsertWithWhereUniqueNestedInput[]
+    | CourseUpsertWithWhereUniqueNestedInput;
+  delete?: CourseWhereUniqueInput[] | CourseWhereUniqueInput;
+  connect?: CourseWhereUniqueInput[] | CourseWhereUniqueInput;
+  disconnect?: CourseWhereUniqueInput[] | CourseWhereUniqueInput;
+  deleteMany?: CourseScalarWhereInput[] | CourseScalarWhereInput;
+  updateMany?:
+    | CourseUpdateManyWithWhereNestedInput[]
+    | CourseUpdateManyWithWhereNestedInput;
 }
 
 export interface VideoCreateInput {
@@ -764,6 +658,114 @@ export interface VideoCreateInput {
   time: Int;
   course: CourseCreateOneWithoutVideosInput;
 }
+
+export interface CourseUpdateWithWhereUniqueNestedInput {
+  where: CourseWhereUniqueInput;
+  data: CourseUpdateDataInput;
+}
+
+export interface UserUpdateManyMutationInput {
+  name?: String;
+  email?: String;
+  password?: String;
+  image?: String;
+  githubId?: String;
+  role?: Role;
+}
+
+export interface CourseUpdateDataInput {
+  title?: String;
+  summary?: String;
+  description?: String;
+  image?: String;
+  tags?: CourseUpdatetagsInput;
+  difficulty?: Difficulty;
+  price?: Int;
+  videos?: VideoUpdateManyWithoutCourseInput;
+}
+
+export interface UserCreateInput {
+  name: String;
+  email: String;
+  password?: String;
+  image?: String;
+  githubId?: String;
+  messages?: MessageCreateManyWithoutUserInput;
+  courses?: CourseCreateManyInput;
+  purchases?: PurchaseCreateManyWithoutUserInput;
+  chat?: ChatCreateOneWithoutUserInput;
+  role?: Role;
+}
+
+export interface CourseUpdatetagsInput {
+  set?: String[] | String;
+}
+
+export interface PurchaseUpdateManyMutationInput {
+  charge?: String;
+  total?: Int;
+}
+
+export interface MessageCreateInput {
+  style?: Style;
+  text: String;
+  chat: ChatCreateOneWithoutMessagesInput;
+  user: UserCreateOneWithoutMessagesInput;
+}
+
+export interface UserUpdateWithoutPurchasesDataInput {
+  name?: String;
+  email?: String;
+  password?: String;
+  image?: String;
+  githubId?: String;
+  messages?: MessageUpdateManyWithoutUserInput;
+  courses?: CourseUpdateManyInput;
+  chat?: ChatUpdateOneWithoutUserInput;
+  role?: Role;
+}
+
+export interface VideoUpdateWithWhereUniqueWithoutCourseInput {
+  where: VideoWhereUniqueInput;
+  data: VideoUpdateWithoutCourseDataInput;
+}
+
+export interface UserUpdateOneRequiredWithoutPurchasesInput {
+  create?: UserCreateWithoutPurchasesInput;
+  update?: UserUpdateWithoutPurchasesDataInput;
+  upsert?: UserUpsertWithoutPurchasesInput;
+  connect?: UserWhereUniqueInput;
+}
+
+export interface VideoUpdateWithoutCourseDataInput {
+  title?: String;
+  description?: String;
+  url?: String;
+  number?: Int;
+  time?: Int;
+}
+
+export interface UserCreateWithoutPurchasesInput {
+  name: String;
+  email: String;
+  password?: String;
+  image?: String;
+  githubId?: String;
+  messages?: MessageCreateManyWithoutUserInput;
+  courses?: CourseCreateManyInput;
+  chat?: ChatCreateOneWithoutUserInput;
+  role?: Role;
+}
+
+export interface VideoUpsertWithWhereUniqueWithoutCourseInput {
+  where: VideoWhereUniqueInput;
+  update: VideoUpdateWithoutCourseDataInput;
+  create: VideoCreateWithoutCourseInput;
+}
+
+export type VideoWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
 
 export interface VideoScalarWhereInput {
   id?: ID_Input;
@@ -851,17 +853,549 @@ export interface VideoScalarWhereInput {
   NOT?: VideoScalarWhereInput[] | VideoScalarWhereInput;
 }
 
+export interface MessageUpdateManyMutationInput {
+  style?: Style;
+  text?: String;
+}
+
+export interface VideoUpdateManyWithWhereNestedInput {
+  where: VideoScalarWhereInput;
+  data: VideoUpdateManyDataInput;
+}
+
+export interface MessageCreateManyWithoutChatInput {
+  create?: MessageCreateWithoutChatInput[] | MessageCreateWithoutChatInput;
+  connect?: MessageWhereUniqueInput[] | MessageWhereUniqueInput;
+}
+
+export interface PurchaseWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  charge?: String;
+  charge_not?: String;
+  charge_in?: String[] | String;
+  charge_not_in?: String[] | String;
+  charge_lt?: String;
+  charge_lte?: String;
+  charge_gt?: String;
+  charge_gte?: String;
+  charge_contains?: String;
+  charge_not_contains?: String;
+  charge_starts_with?: String;
+  charge_not_starts_with?: String;
+  charge_ends_with?: String;
+  charge_not_ends_with?: String;
+  total?: Int;
+  total_not?: Int;
+  total_in?: Int[] | Int;
+  total_not_in?: Int[] | Int;
+  total_lt?: Int;
+  total_lte?: Int;
+  total_gt?: Int;
+  total_gte?: Int;
+  course?: CourseWhereInput;
+  user?: UserWhereInput;
+  createdAt?: DateTimeInput;
+  createdAt_not?: DateTimeInput;
+  createdAt_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_lt?: DateTimeInput;
+  createdAt_lte?: DateTimeInput;
+  createdAt_gt?: DateTimeInput;
+  createdAt_gte?: DateTimeInput;
+  AND?: PurchaseWhereInput[] | PurchaseWhereInput;
+  OR?: PurchaseWhereInput[] | PurchaseWhereInput;
+  NOT?: PurchaseWhereInput[] | PurchaseWhereInput;
+}
+
+export interface UserCreateOneWithoutMessagesInput {
+  create?: UserCreateWithoutMessagesInput;
+  connect?: UserWhereUniqueInput;
+}
+
+export interface CourseUpsertWithWhereUniqueNestedInput {
+  where: CourseWhereUniqueInput;
+  update: CourseUpdateDataInput;
+  create: CourseCreateInput;
+}
+
+export interface CourseCreateManyInput {
+  create?: CourseCreateInput[] | CourseCreateInput;
+  connect?: CourseWhereUniqueInput[] | CourseWhereUniqueInput;
+}
+
+export interface CourseScalarWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  title?: String;
+  title_not?: String;
+  title_in?: String[] | String;
+  title_not_in?: String[] | String;
+  title_lt?: String;
+  title_lte?: String;
+  title_gt?: String;
+  title_gte?: String;
+  title_contains?: String;
+  title_not_contains?: String;
+  title_starts_with?: String;
+  title_not_starts_with?: String;
+  title_ends_with?: String;
+  title_not_ends_with?: String;
+  summary?: String;
+  summary_not?: String;
+  summary_in?: String[] | String;
+  summary_not_in?: String[] | String;
+  summary_lt?: String;
+  summary_lte?: String;
+  summary_gt?: String;
+  summary_gte?: String;
+  summary_contains?: String;
+  summary_not_contains?: String;
+  summary_starts_with?: String;
+  summary_not_starts_with?: String;
+  summary_ends_with?: String;
+  summary_not_ends_with?: String;
+  description?: String;
+  description_not?: String;
+  description_in?: String[] | String;
+  description_not_in?: String[] | String;
+  description_lt?: String;
+  description_lte?: String;
+  description_gt?: String;
+  description_gte?: String;
+  description_contains?: String;
+  description_not_contains?: String;
+  description_starts_with?: String;
+  description_not_starts_with?: String;
+  description_ends_with?: String;
+  description_not_ends_with?: String;
+  image?: String;
+  image_not?: String;
+  image_in?: String[] | String;
+  image_not_in?: String[] | String;
+  image_lt?: String;
+  image_lte?: String;
+  image_gt?: String;
+  image_gte?: String;
+  image_contains?: String;
+  image_not_contains?: String;
+  image_starts_with?: String;
+  image_not_starts_with?: String;
+  image_ends_with?: String;
+  image_not_ends_with?: String;
+  difficulty?: Difficulty;
+  difficulty_not?: Difficulty;
+  difficulty_in?: Difficulty[] | Difficulty;
+  difficulty_not_in?: Difficulty[] | Difficulty;
+  price?: Int;
+  price_not?: Int;
+  price_in?: Int[] | Int;
+  price_not_in?: Int[] | Int;
+  price_lt?: Int;
+  price_lte?: Int;
+  price_gt?: Int;
+  price_gte?: Int;
+  createdAt?: DateTimeInput;
+  createdAt_not?: DateTimeInput;
+  createdAt_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_lt?: DateTimeInput;
+  createdAt_lte?: DateTimeInput;
+  createdAt_gt?: DateTimeInput;
+  createdAt_gte?: DateTimeInput;
+  AND?: CourseScalarWhereInput[] | CourseScalarWhereInput;
+  OR?: CourseScalarWhereInput[] | CourseScalarWhereInput;
+  NOT?: CourseScalarWhereInput[] | CourseScalarWhereInput;
+}
+
+export interface CourseCreatetagsInput {
+  set?: String[] | String;
+}
+
+export interface CourseUpdateManyWithWhereNestedInput {
+  where: CourseScalarWhereInput;
+  data: CourseUpdateManyDataInput;
+}
+
+export interface VideoCreateWithoutCourseInput {
+  title: String;
+  description: String;
+  url: String;
+  number: Int;
+  time: Int;
+}
+
+export interface CourseUpdateManyDataInput {
+  title?: String;
+  summary?: String;
+  description?: String;
+  image?: String;
+  tags?: CourseUpdatetagsInput;
+  difficulty?: Difficulty;
+  price?: Int;
+}
+
+export interface PurchaseCreateWithoutUserInput {
+  charge: String;
+  total: Int;
+  course: CourseCreateOneInput;
+}
+
+export interface PurchaseUpdateManyWithoutUserInput {
+  create?: PurchaseCreateWithoutUserInput[] | PurchaseCreateWithoutUserInput;
+  delete?: PurchaseWhereUniqueInput[] | PurchaseWhereUniqueInput;
+  connect?: PurchaseWhereUniqueInput[] | PurchaseWhereUniqueInput;
+  disconnect?: PurchaseWhereUniqueInput[] | PurchaseWhereUniqueInput;
+  update?:
+    | PurchaseUpdateWithWhereUniqueWithoutUserInput[]
+    | PurchaseUpdateWithWhereUniqueWithoutUserInput;
+  upsert?:
+    | PurchaseUpsertWithWhereUniqueWithoutUserInput[]
+    | PurchaseUpsertWithWhereUniqueWithoutUserInput;
+  deleteMany?: PurchaseScalarWhereInput[] | PurchaseScalarWhereInput;
+  updateMany?:
+    | PurchaseUpdateManyWithWhereNestedInput[]
+    | PurchaseUpdateManyWithWhereNestedInput;
+}
+
+export interface ChatCreateOneWithoutUserInput {
+  create?: ChatCreateWithoutUserInput;
+  connect?: ChatWhereUniqueInput;
+}
+
+export interface PurchaseUpdateWithWhereUniqueWithoutUserInput {
+  where: PurchaseWhereUniqueInput;
+  data: PurchaseUpdateWithoutUserDataInput;
+}
+
+export interface UserCreateOneWithoutChatInput {
+  create?: UserCreateWithoutChatInput;
+  connect?: UserWhereUniqueInput;
+}
+
+export interface PurchaseUpdateWithoutUserDataInput {
+  charge?: String;
+  total?: Int;
+  course?: CourseUpdateOneRequiredInput;
+}
+
+export interface UserSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: UserWhereInput;
+  AND?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+  OR?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+  NOT?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+}
+
+export interface CourseUpdateOneRequiredInput {
+  create?: CourseCreateInput;
+  update?: CourseUpdateDataInput;
+  upsert?: CourseUpsertNestedInput;
+  connect?: CourseWhereUniqueInput;
+}
+
+export interface UserWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  name?: String;
+  name_not?: String;
+  name_in?: String[] | String;
+  name_not_in?: String[] | String;
+  name_lt?: String;
+  name_lte?: String;
+  name_gt?: String;
+  name_gte?: String;
+  name_contains?: String;
+  name_not_contains?: String;
+  name_starts_with?: String;
+  name_not_starts_with?: String;
+  name_ends_with?: String;
+  name_not_ends_with?: String;
+  email?: String;
+  email_not?: String;
+  email_in?: String[] | String;
+  email_not_in?: String[] | String;
+  email_lt?: String;
+  email_lte?: String;
+  email_gt?: String;
+  email_gte?: String;
+  email_contains?: String;
+  email_not_contains?: String;
+  email_starts_with?: String;
+  email_not_starts_with?: String;
+  email_ends_with?: String;
+  email_not_ends_with?: String;
+  password?: String;
+  password_not?: String;
+  password_in?: String[] | String;
+  password_not_in?: String[] | String;
+  password_lt?: String;
+  password_lte?: String;
+  password_gt?: String;
+  password_gte?: String;
+  password_contains?: String;
+  password_not_contains?: String;
+  password_starts_with?: String;
+  password_not_starts_with?: String;
+  password_ends_with?: String;
+  password_not_ends_with?: String;
+  image?: String;
+  image_not?: String;
+  image_in?: String[] | String;
+  image_not_in?: String[] | String;
+  image_lt?: String;
+  image_lte?: String;
+  image_gt?: String;
+  image_gte?: String;
+  image_contains?: String;
+  image_not_contains?: String;
+  image_starts_with?: String;
+  image_not_starts_with?: String;
+  image_ends_with?: String;
+  image_not_ends_with?: String;
+  githubId?: String;
+  githubId_not?: String;
+  githubId_in?: String[] | String;
+  githubId_not_in?: String[] | String;
+  githubId_lt?: String;
+  githubId_lte?: String;
+  githubId_gt?: String;
+  githubId_gte?: String;
+  githubId_contains?: String;
+  githubId_not_contains?: String;
+  githubId_starts_with?: String;
+  githubId_not_starts_with?: String;
+  githubId_ends_with?: String;
+  githubId_not_ends_with?: String;
+  messages_every?: MessageWhereInput;
+  messages_some?: MessageWhereInput;
+  messages_none?: MessageWhereInput;
+  courses_every?: CourseWhereInput;
+  courses_some?: CourseWhereInput;
+  courses_none?: CourseWhereInput;
+  purchases_every?: PurchaseWhereInput;
+  purchases_some?: PurchaseWhereInput;
+  purchases_none?: PurchaseWhereInput;
+  chat?: ChatWhereInput;
+  role?: Role;
+  role_not?: Role;
+  role_in?: Role[] | Role;
+  role_not_in?: Role[] | Role;
+  createdAt?: DateTimeInput;
+  createdAt_not?: DateTimeInput;
+  createdAt_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_lt?: DateTimeInput;
+  createdAt_lte?: DateTimeInput;
+  createdAt_gt?: DateTimeInput;
+  createdAt_gte?: DateTimeInput;
+  AND?: UserWhereInput[] | UserWhereInput;
+  OR?: UserWhereInput[] | UserWhereInput;
+  NOT?: UserWhereInput[] | UserWhereInput;
+}
+
+export interface CourseUpsertNestedInput {
+  update: CourseUpdateDataInput;
+  create: CourseCreateInput;
+}
+
+export interface MessageWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  style?: Style;
+  style_not?: Style;
+  style_in?: Style[] | Style;
+  style_not_in?: Style[] | Style;
+  text?: String;
+  text_not?: String;
+  text_in?: String[] | String;
+  text_not_in?: String[] | String;
+  text_lt?: String;
+  text_lte?: String;
+  text_gt?: String;
+  text_gte?: String;
+  text_contains?: String;
+  text_not_contains?: String;
+  text_starts_with?: String;
+  text_not_starts_with?: String;
+  text_ends_with?: String;
+  text_not_ends_with?: String;
+  chat?: ChatWhereInput;
+  user?: UserWhereInput;
+  createdAt?: DateTimeInput;
+  createdAt_not?: DateTimeInput;
+  createdAt_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_lt?: DateTimeInput;
+  createdAt_lte?: DateTimeInput;
+  createdAt_gt?: DateTimeInput;
+  createdAt_gte?: DateTimeInput;
+  AND?: MessageWhereInput[] | MessageWhereInput;
+  OR?: MessageWhereInput[] | MessageWhereInput;
+  NOT?: MessageWhereInput[] | MessageWhereInput;
+}
+
+export interface PurchaseUpsertWithWhereUniqueWithoutUserInput {
+  where: PurchaseWhereUniqueInput;
+  update: PurchaseUpdateWithoutUserDataInput;
+  create: PurchaseCreateWithoutUserInput;
+}
+
+export interface CourseUpdateOneRequiredWithoutVideosInput {
+  create?: CourseCreateWithoutVideosInput;
+  update?: CourseUpdateWithoutVideosDataInput;
+  upsert?: CourseUpsertWithoutVideosInput;
+  connect?: CourseWhereUniqueInput;
+}
+
+export interface PurchaseScalarWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  charge?: String;
+  charge_not?: String;
+  charge_in?: String[] | String;
+  charge_not_in?: String[] | String;
+  charge_lt?: String;
+  charge_lte?: String;
+  charge_gt?: String;
+  charge_gte?: String;
+  charge_contains?: String;
+  charge_not_contains?: String;
+  charge_starts_with?: String;
+  charge_not_starts_with?: String;
+  charge_ends_with?: String;
+  charge_not_ends_with?: String;
+  total?: Int;
+  total_not?: Int;
+  total_in?: Int[] | Int;
+  total_not_in?: Int[] | Int;
+  total_lt?: Int;
+  total_lte?: Int;
+  total_gt?: Int;
+  total_gte?: Int;
+  createdAt?: DateTimeInput;
+  createdAt_not?: DateTimeInput;
+  createdAt_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_lt?: DateTimeInput;
+  createdAt_lte?: DateTimeInput;
+  createdAt_gt?: DateTimeInput;
+  createdAt_gte?: DateTimeInput;
+  AND?: PurchaseScalarWhereInput[] | PurchaseScalarWhereInput;
+  OR?: PurchaseScalarWhereInput[] | PurchaseScalarWhereInput;
+  NOT?: PurchaseScalarWhereInput[] | PurchaseScalarWhereInput;
+}
+
+export interface CourseCreateOneWithoutVideosInput {
+  create?: CourseCreateWithoutVideosInput;
+  connect?: CourseWhereUniqueInput;
+}
+
+export interface PurchaseUpdateManyWithWhereNestedInput {
+  where: PurchaseScalarWhereInput;
+  data: PurchaseUpdateManyDataInput;
+}
+
 export interface UserUpdateInput {
   name?: String;
   email?: String;
   password?: String;
   image?: String;
-  stripeId?: String;
   githubId?: String;
-  isSubscribed?: Boolean;
   messages?: MessageUpdateManyWithoutUserInput;
+  courses?: CourseUpdateManyInput;
+  purchases?: PurchaseUpdateManyWithoutUserInput;
   chat?: ChatUpdateOneWithoutUserInput;
   role?: Role;
+}
+
+export interface PurchaseUpdateManyDataInput {
+  charge?: String;
+  total?: Int;
+}
+
+export interface UserUpsertWithoutPurchasesInput {
+  update: UserUpdateWithoutPurchasesDataInput;
+  create: UserCreateWithoutPurchasesInput;
+}
+
+export interface ChatUpdateOneWithoutUserInput {
+  create?: ChatCreateWithoutUserInput;
+  update?: ChatUpdateWithoutUserDataInput;
+  upsert?: ChatUpsertWithoutUserInput;
+  delete?: Boolean;
+  disconnect?: Boolean;
+  connect?: ChatWhereUniqueInput;
+}
+
+export interface PurchaseUpdateInput {
+  charge?: String;
+  total?: Int;
+  course?: CourseUpdateOneRequiredInput;
+  user?: UserUpdateOneRequiredWithoutPurchasesInput;
 }
 
 export interface ChatUpdateWithoutUserDataInput {
@@ -869,17 +1403,11 @@ export interface ChatUpdateWithoutUserDataInput {
   messages?: MessageUpdateManyWithoutChatInput;
 }
 
-export interface UserCreateInput {
-  name: String;
-  email: String;
-  password?: String;
-  image?: String;
-  stripeId?: String;
-  githubId?: String;
-  isSubscribed?: Boolean;
-  messages?: MessageCreateManyWithoutUserInput;
-  chat?: ChatCreateOneWithoutUserInput;
-  role?: Role;
+export interface PurchaseCreateInput {
+  charge: String;
+  total: Int;
+  course: CourseCreateOneInput;
+  user: UserCreateOneWithoutPurchasesInput;
 }
 
 export interface ChatUpsertWithoutUserInput {
@@ -887,11 +1415,10 @@ export interface ChatUpsertWithoutUserInput {
   create: ChatCreateWithoutUserInput;
 }
 
-export interface MessageUpdateInput {
-  style?: Style;
-  text?: String;
-  chat?: ChatUpdateOneRequiredWithoutMessagesInput;
-  user?: UserUpdateOneRequiredWithoutMessagesInput;
+export interface ChatCreateInput {
+  slackId?: String;
+  messages?: MessageCreateManyWithoutChatInput;
+  user: UserCreateOneWithoutChatInput;
 }
 
 export interface UserUpsertWithoutMessagesInput {
@@ -899,9 +1426,17 @@ export interface UserUpsertWithoutMessagesInput {
   create: UserCreateWithoutMessagesInput;
 }
 
-export type VideoWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
+export interface UserCreateWithoutMessagesInput {
+  name: String;
+  email: String;
+  password?: String;
+  image?: String;
+  githubId?: String;
+  courses?: CourseCreateManyInput;
+  purchases?: PurchaseCreateManyWithoutUserInput;
+  chat?: ChatCreateOneWithoutUserInput;
+  role?: Role;
+}
 
 export interface MessageUpsertWithWhereUniqueWithoutChatInput {
   where: MessageWhereUniqueInput;
@@ -909,12 +1444,9 @@ export interface MessageUpsertWithWhereUniqueWithoutChatInput {
   create: MessageCreateWithoutChatInput;
 }
 
-export interface VideoUpdateManyDataInput {
-  title?: String;
-  description?: String;
-  url?: String;
-  number?: Int;
-  time?: Int;
+export interface VideoCreateManyWithoutCourseInput {
+  create?: VideoCreateWithoutCourseInput[] | VideoCreateWithoutCourseInput;
+  connect?: VideoWhereUniqueInput[] | VideoWhereUniqueInput;
 }
 
 export interface MessageScalarWhereInput {
@@ -963,257 +1495,14 @@ export interface MessageScalarWhereInput {
   NOT?: MessageScalarWhereInput[] | MessageScalarWhereInput;
 }
 
-export interface MessageCreateManyWithoutChatInput {
-  create?: MessageCreateWithoutChatInput[] | MessageCreateWithoutChatInput;
-  connect?: MessageWhereUniqueInput[] | MessageWhereUniqueInput;
+export interface CourseCreateOneInput {
+  create?: CourseCreateInput;
+  connect?: CourseWhereUniqueInput;
 }
 
-export interface VideoUpsertWithWhereUniqueWithoutCourseInput {
-  where: VideoWhereUniqueInput;
-  update: VideoUpdateWithoutCourseDataInput;
-  create: VideoCreateWithoutCourseInput;
-}
-
-export interface UserCreateOneWithoutMessagesInput {
-  create?: UserCreateWithoutMessagesInput;
-  connect?: UserWhereUniqueInput;
-}
-
-export interface MessageUpdateManyDataInput {
-  style?: Style;
-  text?: String;
-}
-
-export interface ChatCreateOneWithoutUserInput {
-  create?: ChatCreateWithoutUserInput;
-  connect?: ChatWhereUniqueInput;
-}
-
-export interface UserUpdateOneRequiredWithoutChatInput {
-  create?: UserCreateWithoutChatInput;
-  update?: UserUpdateWithoutChatDataInput;
-  upsert?: UserUpsertWithoutChatInput;
-  connect?: UserWhereUniqueInput;
-}
-
-export interface VideoSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: VideoWhereInput;
-  AND?: VideoSubscriptionWhereInput[] | VideoSubscriptionWhereInput;
-  OR?: VideoSubscriptionWhereInput[] | VideoSubscriptionWhereInput;
-  NOT?: VideoSubscriptionWhereInput[] | VideoSubscriptionWhereInput;
-}
-
-export interface UserUpdateWithoutChatDataInput {
-  name?: String;
-  email?: String;
-  password?: String;
-  image?: String;
-  stripeId?: String;
-  githubId?: String;
-  isSubscribed?: Boolean;
-  messages?: MessageUpdateManyWithoutUserInput;
-  role?: Role;
-}
-
-export interface ChatSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: ChatWhereInput;
-  AND?: ChatSubscriptionWhereInput[] | ChatSubscriptionWhereInput;
-  OR?: ChatSubscriptionWhereInput[] | ChatSubscriptionWhereInput;
-  NOT?: ChatSubscriptionWhereInput[] | ChatSubscriptionWhereInput;
-}
-
-export interface MessageUpdateManyWithoutUserInput {
-  create?: MessageCreateWithoutUserInput[] | MessageCreateWithoutUserInput;
-  delete?: MessageWhereUniqueInput[] | MessageWhereUniqueInput;
-  connect?: MessageWhereUniqueInput[] | MessageWhereUniqueInput;
-  disconnect?: MessageWhereUniqueInput[] | MessageWhereUniqueInput;
-  update?:
-    | MessageUpdateWithWhereUniqueWithoutUserInput[]
-    | MessageUpdateWithWhereUniqueWithoutUserInput;
-  upsert?:
-    | MessageUpsertWithWhereUniqueWithoutUserInput[]
-    | MessageUpsertWithWhereUniqueWithoutUserInput;
-  deleteMany?: MessageScalarWhereInput[] | MessageScalarWhereInput;
-  updateMany?:
-    | MessageUpdateManyWithWhereNestedInput[]
-    | MessageUpdateManyWithWhereNestedInput;
-}
-
-export interface CourseUpdateWithoutVideosDataInput {
-  title?: String;
-  summary?: String;
-  description?: String;
-  image?: String;
-  tags?: CourseUpdatetagsInput;
-  difficulty?: Difficulty;
-}
-
-export interface MessageUpdateWithWhereUniqueWithoutUserInput {
-  where: MessageWhereUniqueInput;
-  data: MessageUpdateWithoutUserDataInput;
-}
-
-export interface ChatWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  slackId?: String;
-  slackId_not?: String;
-  slackId_in?: String[] | String;
-  slackId_not_in?: String[] | String;
-  slackId_lt?: String;
-  slackId_lte?: String;
-  slackId_gt?: String;
-  slackId_gte?: String;
-  slackId_contains?: String;
-  slackId_not_contains?: String;
-  slackId_starts_with?: String;
-  slackId_not_starts_with?: String;
-  slackId_ends_with?: String;
-  slackId_not_ends_with?: String;
-  messages_every?: MessageWhereInput;
-  messages_some?: MessageWhereInput;
-  messages_none?: MessageWhereInput;
-  user?: UserWhereInput;
-  createdAt?: DateTimeInput;
-  createdAt_not?: DateTimeInput;
-  createdAt_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_lt?: DateTimeInput;
-  createdAt_lte?: DateTimeInput;
-  createdAt_gt?: DateTimeInput;
-  createdAt_gte?: DateTimeInput;
-  AND?: ChatWhereInput[] | ChatWhereInput;
-  OR?: ChatWhereInput[] | ChatWhereInput;
-  NOT?: ChatWhereInput[] | ChatWhereInput;
-}
-
-export interface MessageUpdateWithoutUserDataInput {
-  style?: Style;
-  text?: String;
-  chat?: ChatUpdateOneRequiredWithoutMessagesInput;
-}
-
-export interface CourseCreateWithoutVideosInput {
-  title: String;
-  summary: String;
-  description: String;
-  image?: String;
-  tags?: CourseCreatetagsInput;
-  difficulty: Difficulty;
-}
-
-export interface ChatUpdateOneRequiredWithoutMessagesInput {
-  create?: ChatCreateWithoutMessagesInput;
-  update?: ChatUpdateWithoutMessagesDataInput;
-  upsert?: ChatUpsertWithoutMessagesInput;
-  connect?: ChatWhereUniqueInput;
-}
-
-export interface UserUpdateManyMutationInput {
-  name?: String;
-  email?: String;
-  password?: String;
-  image?: String;
-  stripeId?: String;
-  githubId?: String;
-  isSubscribed?: Boolean;
-  role?: Role;
-}
-
-export interface ChatUpdateWithoutMessagesDataInput {
-  slackId?: String;
-  user?: UserUpdateOneRequiredWithoutChatInput;
-}
-
-export interface MessageUpdateManyMutationInput {
-  style?: Style;
-  text?: String;
-}
-
-export interface ChatUpsertWithoutMessagesInput {
-  update: ChatUpdateWithoutMessagesDataInput;
-  create: ChatCreateWithoutMessagesInput;
-}
-
-export interface CourseUpdateManyMutationInput {
-  title?: String;
-  summary?: String;
-  description?: String;
-  image?: String;
-  tags?: CourseUpdatetagsInput;
-  difficulty?: Difficulty;
-}
-
-export interface MessageUpsertWithWhereUniqueWithoutUserInput {
-  where: MessageWhereUniqueInput;
-  update: MessageUpdateWithoutUserDataInput;
-  create: MessageCreateWithoutUserInput;
-}
-
-export interface ChatCreateInput {
-  slackId?: String;
-  messages?: MessageCreateManyWithoutChatInput;
-  user: UserCreateOneWithoutChatInput;
-}
-
-export interface UserUpsertWithoutChatInput {
-  update: UserUpdateWithoutChatDataInput;
-  create: UserCreateWithoutChatInput;
-}
-
-export interface UserCreateWithoutMessagesInput {
-  name: String;
-  email: String;
-  password?: String;
-  image?: String;
-  stripeId?: String;
-  githubId?: String;
-  isSubscribed?: Boolean;
-  chat?: ChatCreateOneWithoutUserInput;
-  role?: Role;
-}
-
-export interface ChatUpdateManyMutationInput {
-  slackId?: String;
-}
-
-export interface MessageSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: MessageWhereInput;
-  AND?: MessageSubscriptionWhereInput[] | MessageSubscriptionWhereInput;
-  OR?: MessageSubscriptionWhereInput[] | MessageSubscriptionWhereInput;
-  NOT?: MessageSubscriptionWhereInput[] | MessageSubscriptionWhereInput;
-}
-
-export interface VideoUpdateWithoutCourseDataInput {
-  title?: String;
-  description?: String;
-  url?: String;
-  number?: Int;
-  time?: Int;
+export interface MessageUpdateManyWithWhereNestedInput {
+  where: MessageScalarWhereInput;
+  data: MessageUpdateManyDataInput;
 }
 
 export interface VideoWhereInput {
@@ -1303,87 +1592,12 @@ export interface VideoWhereInput {
   NOT?: VideoWhereInput[] | VideoWhereInput;
 }
 
-export interface VideoUpdateWithWhereUniqueWithoutCourseInput {
-  where: VideoWhereUniqueInput;
-  data: VideoUpdateWithoutCourseDataInput;
-}
-
-export type MessageWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
-
-export interface CourseCreateInput {
-  title: String;
-  summary: String;
-  description: String;
-  image?: String;
-  tags?: CourseCreatetagsInput;
-  difficulty: Difficulty;
-  videos?: VideoCreateManyWithoutCourseInput;
-}
-
-export interface MessageCreateInput {
+export interface MessageUpdateManyDataInput {
   style?: Style;
-  text: String;
-  chat: ChatCreateOneWithoutMessagesInput;
-  user: UserCreateOneWithoutMessagesInput;
+  text?: String;
 }
 
-export interface CourseCreatetagsInput {
-  set?: String[] | String;
-}
-
-export interface MessageCreateWithoutChatInput {
-  style?: Style;
-  text: String;
-  user: UserCreateOneWithoutMessagesInput;
-}
-
-export interface CourseUpdatetagsInput {
-  set?: String[] | String;
-}
-
-export interface CourseUpdateInput {
-  title?: String;
-  summary?: String;
-  description?: String;
-  image?: String;
-  tags?: CourseUpdatetagsInput;
-  difficulty?: Difficulty;
-  videos?: VideoUpdateManyWithoutCourseInput;
-}
-
-export interface VideoCreateWithoutCourseInput {
-  title: String;
-  description: String;
-  url: String;
-  number: Int;
-  time: Int;
-}
-
-export interface VideoCreateManyWithoutCourseInput {
-  create?: VideoCreateWithoutCourseInput[] | VideoCreateWithoutCourseInput;
-  connect?: VideoWhereUniqueInput[] | VideoWhereUniqueInput;
-}
-
-export interface ChatCreateWithoutUserInput {
-  slackId?: String;
-  messages?: MessageCreateManyWithoutChatInput;
-}
-
-export interface VideoUpdateManyWithWhereNestedInput {
-  where: VideoScalarWhereInput;
-  data: VideoUpdateManyDataInput;
-}
-
-export type UserWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-  email?: String;
-  stripeId?: String;
-  githubId?: String;
-}>;
-
-export interface MessageWhereInput {
+export interface ChatWhereInput {
   id?: ID_Input;
   id_not?: ID_Input;
   id_in?: ID_Input[] | ID_Input;
@@ -1398,25 +1612,23 @@ export interface MessageWhereInput {
   id_not_starts_with?: ID_Input;
   id_ends_with?: ID_Input;
   id_not_ends_with?: ID_Input;
-  style?: Style;
-  style_not?: Style;
-  style_in?: Style[] | Style;
-  style_not_in?: Style[] | Style;
-  text?: String;
-  text_not?: String;
-  text_in?: String[] | String;
-  text_not_in?: String[] | String;
-  text_lt?: String;
-  text_lte?: String;
-  text_gt?: String;
-  text_gte?: String;
-  text_contains?: String;
-  text_not_contains?: String;
-  text_starts_with?: String;
-  text_not_starts_with?: String;
-  text_ends_with?: String;
-  text_not_ends_with?: String;
-  chat?: ChatWhereInput;
+  slackId?: String;
+  slackId_not?: String;
+  slackId_in?: String[] | String;
+  slackId_not_in?: String[] | String;
+  slackId_lt?: String;
+  slackId_lte?: String;
+  slackId_gt?: String;
+  slackId_gte?: String;
+  slackId_contains?: String;
+  slackId_not_contains?: String;
+  slackId_starts_with?: String;
+  slackId_not_starts_with?: String;
+  slackId_ends_with?: String;
+  slackId_not_ends_with?: String;
+  messages_every?: MessageWhereInput;
+  messages_some?: MessageWhereInput;
+  messages_none?: MessageWhereInput;
   user?: UserWhereInput;
   createdAt?: DateTimeInput;
   createdAt_not?: DateTimeInput;
@@ -1426,14 +1638,259 @@ export interface MessageWhereInput {
   createdAt_lte?: DateTimeInput;
   createdAt_gt?: DateTimeInput;
   createdAt_gte?: DateTimeInput;
-  AND?: MessageWhereInput[] | MessageWhereInput;
-  OR?: MessageWhereInput[] | MessageWhereInput;
-  NOT?: MessageWhereInput[] | MessageWhereInput;
+  AND?: ChatWhereInput[] | ChatWhereInput;
+  OR?: ChatWhereInput[] | ChatWhereInput;
+  NOT?: ChatWhereInput[] | ChatWhereInput;
 }
+
+export interface UserUpdateOneRequiredWithoutChatInput {
+  create?: UserCreateWithoutChatInput;
+  update?: UserUpdateWithoutChatDataInput;
+  upsert?: UserUpsertWithoutChatInput;
+  connect?: UserWhereUniqueInput;
+}
+
+export type CourseWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface UserUpdateWithoutChatDataInput {
+  name?: String;
+  email?: String;
+  password?: String;
+  image?: String;
+  githubId?: String;
+  messages?: MessageUpdateManyWithoutUserInput;
+  courses?: CourseUpdateManyInput;
+  purchases?: PurchaseUpdateManyWithoutUserInput;
+  role?: Role;
+}
+
+export type PurchaseWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface MessageUpdateManyWithoutUserInput {
+  create?: MessageCreateWithoutUserInput[] | MessageCreateWithoutUserInput;
+  delete?: MessageWhereUniqueInput[] | MessageWhereUniqueInput;
+  connect?: MessageWhereUniqueInput[] | MessageWhereUniqueInput;
+  disconnect?: MessageWhereUniqueInput[] | MessageWhereUniqueInput;
+  update?:
+    | MessageUpdateWithWhereUniqueWithoutUserInput[]
+    | MessageUpdateWithWhereUniqueWithoutUserInput;
+  upsert?:
+    | MessageUpsertWithWhereUniqueWithoutUserInput[]
+    | MessageUpsertWithWhereUniqueWithoutUserInput;
+  deleteMany?: MessageScalarWhereInput[] | MessageScalarWhereInput;
+  updateMany?:
+    | MessageUpdateManyWithWhereNestedInput[]
+    | MessageUpdateManyWithWhereNestedInput;
+}
+
+export interface UserCreateOneWithoutPurchasesInput {
+  create?: UserCreateWithoutPurchasesInput;
+  connect?: UserWhereUniqueInput;
+}
+
+export interface MessageUpdateWithWhereUniqueWithoutUserInput {
+  where: MessageWhereUniqueInput;
+  data: MessageUpdateWithoutUserDataInput;
+}
+
+export interface MessageCreateWithoutChatInput {
+  style?: Style;
+  text: String;
+  user: UserCreateOneWithoutMessagesInput;
+}
+
+export interface MessageUpdateWithoutUserDataInput {
+  style?: Style;
+  text?: String;
+  chat?: ChatUpdateOneRequiredWithoutMessagesInput;
+}
+
+export interface PurchaseCreateManyWithoutUserInput {
+  create?: PurchaseCreateWithoutUserInput[] | PurchaseCreateWithoutUserInput;
+  connect?: PurchaseWhereUniqueInput[] | PurchaseWhereUniqueInput;
+}
+
+export interface ChatUpdateOneRequiredWithoutMessagesInput {
+  create?: ChatCreateWithoutMessagesInput;
+  update?: ChatUpdateWithoutMessagesDataInput;
+  upsert?: ChatUpsertWithoutMessagesInput;
+  connect?: ChatWhereUniqueInput;
+}
+
+export interface CourseWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  title?: String;
+  title_not?: String;
+  title_in?: String[] | String;
+  title_not_in?: String[] | String;
+  title_lt?: String;
+  title_lte?: String;
+  title_gt?: String;
+  title_gte?: String;
+  title_contains?: String;
+  title_not_contains?: String;
+  title_starts_with?: String;
+  title_not_starts_with?: String;
+  title_ends_with?: String;
+  title_not_ends_with?: String;
+  summary?: String;
+  summary_not?: String;
+  summary_in?: String[] | String;
+  summary_not_in?: String[] | String;
+  summary_lt?: String;
+  summary_lte?: String;
+  summary_gt?: String;
+  summary_gte?: String;
+  summary_contains?: String;
+  summary_not_contains?: String;
+  summary_starts_with?: String;
+  summary_not_starts_with?: String;
+  summary_ends_with?: String;
+  summary_not_ends_with?: String;
+  description?: String;
+  description_not?: String;
+  description_in?: String[] | String;
+  description_not_in?: String[] | String;
+  description_lt?: String;
+  description_lte?: String;
+  description_gt?: String;
+  description_gte?: String;
+  description_contains?: String;
+  description_not_contains?: String;
+  description_starts_with?: String;
+  description_not_starts_with?: String;
+  description_ends_with?: String;
+  description_not_ends_with?: String;
+  image?: String;
+  image_not?: String;
+  image_in?: String[] | String;
+  image_not_in?: String[] | String;
+  image_lt?: String;
+  image_lte?: String;
+  image_gt?: String;
+  image_gte?: String;
+  image_contains?: String;
+  image_not_contains?: String;
+  image_starts_with?: String;
+  image_not_starts_with?: String;
+  image_ends_with?: String;
+  image_not_ends_with?: String;
+  difficulty?: Difficulty;
+  difficulty_not?: Difficulty;
+  difficulty_in?: Difficulty[] | Difficulty;
+  difficulty_not_in?: Difficulty[] | Difficulty;
+  price?: Int;
+  price_not?: Int;
+  price_in?: Int[] | Int;
+  price_not_in?: Int[] | Int;
+  price_lt?: Int;
+  price_lte?: Int;
+  price_gt?: Int;
+  price_gte?: Int;
+  videos_every?: VideoWhereInput;
+  videos_some?: VideoWhereInput;
+  videos_none?: VideoWhereInput;
+  createdAt?: DateTimeInput;
+  createdAt_not?: DateTimeInput;
+  createdAt_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_lt?: DateTimeInput;
+  createdAt_lte?: DateTimeInput;
+  createdAt_gt?: DateTimeInput;
+  createdAt_gte?: DateTimeInput;
+  AND?: CourseWhereInput[] | CourseWhereInput;
+  OR?: CourseWhereInput[] | CourseWhereInput;
+  NOT?: CourseWhereInput[] | CourseWhereInput;
+}
+
+export interface ChatUpdateWithoutMessagesDataInput {
+  slackId?: String;
+  user?: UserUpdateOneRequiredWithoutChatInput;
+}
+
+export type MessageWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface ChatUpsertWithoutMessagesInput {
+  update: ChatUpdateWithoutMessagesDataInput;
+  create: ChatCreateWithoutMessagesInput;
+}
+
+export interface MessageUpdateInput {
+  style?: Style;
+  text?: String;
+  chat?: ChatUpdateOneRequiredWithoutMessagesInput;
+  user?: UserUpdateOneRequiredWithoutMessagesInput;
+}
+
+export interface CourseUpdateManyMutationInput {
+  title?: String;
+  summary?: String;
+  description?: String;
+  image?: String;
+  tags?: CourseUpdatetagsInput;
+  difficulty?: Difficulty;
+  price?: Int;
+}
+
+export interface ChatUpdateManyMutationInput {
+  slackId?: String;
+}
+
+export interface UserUpsertWithoutChatInput {
+  update: UserUpdateWithoutChatDataInput;
+  create: UserCreateWithoutChatInput;
+}
+
+export interface MessageUpsertWithWhereUniqueWithoutUserInput {
+  where: MessageWhereUniqueInput;
+  update: MessageUpdateWithoutUserDataInput;
+  create: MessageCreateWithoutUserInput;
+}
+
+export interface CourseCreateInput {
+  title: String;
+  summary: String;
+  description: String;
+  image?: String;
+  tags?: CourseCreatetagsInput;
+  difficulty: Difficulty;
+  price: Int;
+  videos?: VideoCreateManyWithoutCourseInput;
+}
+
+export type UserWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+  email?: String;
+  githubId?: String;
+}>;
 
 export interface CourseUpsertWithoutVideosInput {
   update: CourseUpdateWithoutVideosDataInput;
   create: CourseCreateWithoutVideosInput;
+}
+
+export interface ChatCreateWithoutUserInput {
+  slackId?: String;
+  messages?: MessageCreateManyWithoutChatInput;
 }
 
 export interface NodeNode {
@@ -1474,178 +1931,43 @@ export interface VideoPreviousValuesSubscription
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
-export interface CourseConnection {}
+export interface ChatEdge {
+  cursor: String;
+}
 
-export interface CourseConnectionPromise
-  extends Promise<CourseConnection>,
+export interface ChatEdgePromise extends Promise<ChatEdge>, Fragmentable {
+  node: <T = ChatPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface ChatEdgeSubscription
+  extends Promise<AsyncIterator<ChatEdge>>,
     Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<CourseEdge>>() => T;
-  aggregate: <T = AggregateCoursePromise>() => T;
+  node: <T = ChatSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface CourseConnectionSubscription
-  extends Promise<AsyncIterator<CourseConnection>>,
+export interface UserSubscriptionPayload {
+  mutation: MutationType;
+  updatedFields?: String[];
+}
+
+export interface UserSubscriptionPayloadPromise
+  extends Promise<UserSubscriptionPayload>,
     Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<CourseEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateCourseSubscription>() => T;
+  mutation: () => Promise<MutationType>;
+  node: <T = UserPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = UserPreviousValuesPromise>() => T;
 }
 
-export interface User {
-  id: ID_Output;
-  name: String;
-  email: String;
-  password?: String;
-  image?: String;
-  stripeId?: String;
-  githubId?: String;
-  isSubscribed: Boolean;
-  role: Role;
-  createdAt: DateTimeOutput;
-}
-
-export interface UserPromise extends Promise<User>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  email: () => Promise<String>;
-  password: () => Promise<String>;
-  image: () => Promise<String>;
-  stripeId: () => Promise<String>;
-  githubId: () => Promise<String>;
-  isSubscribed: () => Promise<Boolean>;
-  messages: <T = FragmentableArray<Message>>(
-    args?: {
-      where?: MessageWhereInput;
-      orderBy?: MessageOrderByInput;
-      skip?: Int;
-      after?: String;
-      before?: String;
-      first?: Int;
-      last?: Int;
-    }
-  ) => T;
-  chat: <T = ChatPromise>() => T;
-  role: () => Promise<Role>;
-  createdAt: () => Promise<DateTimeOutput>;
-}
-
-export interface UserSubscription
-  extends Promise<AsyncIterator<User>>,
+export interface UserSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<UserSubscriptionPayload>>,
     Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-  email: () => Promise<AsyncIterator<String>>;
-  password: () => Promise<AsyncIterator<String>>;
-  image: () => Promise<AsyncIterator<String>>;
-  stripeId: () => Promise<AsyncIterator<String>>;
-  githubId: () => Promise<AsyncIterator<String>>;
-  isSubscribed: () => Promise<AsyncIterator<Boolean>>;
-  messages: <T = Promise<AsyncIterator<MessageSubscription>>>(
-    args?: {
-      where?: MessageWhereInput;
-      orderBy?: MessageOrderByInput;
-      skip?: Int;
-      after?: String;
-      before?: String;
-      first?: Int;
-      last?: Int;
-    }
-  ) => T;
-  chat: <T = ChatSubscription>() => T;
-  role: () => Promise<AsyncIterator<Role>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-}
-
-export interface Video {
-  id: ID_Output;
-  title: String;
-  description: String;
-  url: String;
-  number: Int;
-  time: Int;
-  createdAt: DateTimeOutput;
-}
-
-export interface VideoPromise extends Promise<Video>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  title: () => Promise<String>;
-  description: () => Promise<String>;
-  url: () => Promise<String>;
-  number: () => Promise<Int>;
-  time: () => Promise<Int>;
-  course: <T = CoursePromise>() => T;
-  createdAt: () => Promise<DateTimeOutput>;
-}
-
-export interface VideoSubscription
-  extends Promise<AsyncIterator<Video>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  title: () => Promise<AsyncIterator<String>>;
-  description: () => Promise<AsyncIterator<String>>;
-  url: () => Promise<AsyncIterator<String>>;
-  number: () => Promise<AsyncIterator<Int>>;
-  time: () => Promise<AsyncIterator<Int>>;
-  course: <T = CourseSubscription>() => T;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-}
-
-export interface Course {
-  id: ID_Output;
-  title: String;
-  summary: String;
-  description: String;
-  image?: String;
-  tags: String[];
-  difficulty: Difficulty;
-  createdAt: DateTimeOutput;
-}
-
-export interface CoursePromise extends Promise<Course>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  title: () => Promise<String>;
-  summary: () => Promise<String>;
-  description: () => Promise<String>;
-  image: () => Promise<String>;
-  tags: () => Promise<String[]>;
-  difficulty: () => Promise<Difficulty>;
-  videos: <T = FragmentableArray<Video>>(
-    args?: {
-      where?: VideoWhereInput;
-      orderBy?: VideoOrderByInput;
-      skip?: Int;
-      after?: String;
-      before?: String;
-      first?: Int;
-      last?: Int;
-    }
-  ) => T;
-  createdAt: () => Promise<DateTimeOutput>;
-}
-
-export interface CourseSubscription
-  extends Promise<AsyncIterator<Course>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  title: () => Promise<AsyncIterator<String>>;
-  summary: () => Promise<AsyncIterator<String>>;
-  description: () => Promise<AsyncIterator<String>>;
-  image: () => Promise<AsyncIterator<String>>;
-  tags: () => Promise<AsyncIterator<String[]>>;
-  difficulty: () => Promise<AsyncIterator<Difficulty>>;
-  videos: <T = Promise<AsyncIterator<VideoSubscription>>>(
-    args?: {
-      where?: VideoWhereInput;
-      orderBy?: VideoOrderByInput;
-      skip?: Int;
-      after?: String;
-      before?: String;
-      first?: Int;
-      last?: Int;
-    }
-  ) => T;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = UserSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = UserPreviousValuesSubscription>() => T;
 }
 
 export interface BatchPayload {
@@ -1664,93 +1986,18 @@ export interface BatchPayloadSubscription
   count: () => Promise<AsyncIterator<Long>>;
 }
 
-export interface Message {
-  id: ID_Output;
-  style: Style;
-  text: String;
-  createdAt: DateTimeOutput;
-}
-
-export interface MessagePromise extends Promise<Message>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  style: () => Promise<Style>;
-  text: () => Promise<String>;
-  chat: <T = ChatPromise>() => T;
-  user: <T = UserPromise>() => T;
-  createdAt: () => Promise<DateTimeOutput>;
-}
-
-export interface MessageSubscription
-  extends Promise<AsyncIterator<Message>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  style: () => Promise<AsyncIterator<Style>>;
-  text: () => Promise<AsyncIterator<String>>;
-  chat: <T = ChatSubscription>() => T;
-  user: <T = UserSubscription>() => T;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-}
-
-export interface AggregateChat {
+export interface AggregateVideo {
   count: Int;
 }
 
-export interface AggregateChatPromise
-  extends Promise<AggregateChat>,
+export interface AggregateVideoPromise
+  extends Promise<AggregateVideo>,
     Fragmentable {
   count: () => Promise<Int>;
 }
 
-export interface AggregateChatSubscription
-  extends Promise<AsyncIterator<AggregateChat>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface VideoEdge {
-  cursor: String;
-}
-
-export interface VideoEdgePromise extends Promise<VideoEdge>, Fragmentable {
-  node: <T = VideoPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface VideoEdgeSubscription
-  extends Promise<AsyncIterator<VideoEdge>>,
-    Fragmentable {
-  node: <T = VideoSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface ChatEdge {
-  cursor: String;
-}
-
-export interface ChatEdgePromise extends Promise<ChatEdge>, Fragmentable {
-  node: <T = ChatPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface ChatEdgeSubscription
-  extends Promise<AsyncIterator<ChatEdge>>,
-    Fragmentable {
-  node: <T = ChatSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface AggregateUser {
-  count: Int;
-}
-
-export interface AggregateUserPromise
-  extends Promise<AggregateUser>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateUserSubscription
-  extends Promise<AsyncIterator<AggregateUser>>,
+export interface AggregateVideoSubscription
+  extends Promise<AsyncIterator<AggregateVideo>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
 }
@@ -1778,160 +2025,22 @@ export interface PageInfoSubscription
   endCursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface UserConnection {}
+export interface VideoConnection {}
 
-export interface UserConnectionPromise
-  extends Promise<UserConnection>,
+export interface VideoConnectionPromise
+  extends Promise<VideoConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<UserEdge>>() => T;
-  aggregate: <T = AggregateUserPromise>() => T;
+  edges: <T = FragmentableArray<VideoEdge>>() => T;
+  aggregate: <T = AggregateVideoPromise>() => T;
 }
 
-export interface UserConnectionSubscription
-  extends Promise<AsyncIterator<UserConnection>>,
+export interface VideoConnectionSubscription
+  extends Promise<AsyncIterator<VideoConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateUserSubscription>() => T;
-}
-
-export interface UserPreviousValues {
-  id: ID_Output;
-  name: String;
-  email: String;
-  password?: String;
-  image?: String;
-  stripeId?: String;
-  githubId?: String;
-  isSubscribed: Boolean;
-  role: Role;
-  createdAt: DateTimeOutput;
-}
-
-export interface UserPreviousValuesPromise
-  extends Promise<UserPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  email: () => Promise<String>;
-  password: () => Promise<String>;
-  image: () => Promise<String>;
-  stripeId: () => Promise<String>;
-  githubId: () => Promise<String>;
-  isSubscribed: () => Promise<Boolean>;
-  role: () => Promise<Role>;
-  createdAt: () => Promise<DateTimeOutput>;
-}
-
-export interface UserPreviousValuesSubscription
-  extends Promise<AsyncIterator<UserPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-  email: () => Promise<AsyncIterator<String>>;
-  password: () => Promise<AsyncIterator<String>>;
-  image: () => Promise<AsyncIterator<String>>;
-  stripeId: () => Promise<AsyncIterator<String>>;
-  githubId: () => Promise<AsyncIterator<String>>;
-  isSubscribed: () => Promise<AsyncIterator<Boolean>>;
-  role: () => Promise<AsyncIterator<Role>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-}
-
-export interface AggregateMessage {
-  count: Int;
-}
-
-export interface AggregateMessagePromise
-  extends Promise<AggregateMessage>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateMessageSubscription
-  extends Promise<AsyncIterator<AggregateMessage>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface ChatSubscriptionPayload {
-  mutation: MutationType;
-  updatedFields?: String[];
-}
-
-export interface ChatSubscriptionPayloadPromise
-  extends Promise<ChatSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = ChatPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = ChatPreviousValuesPromise>() => T;
-}
-
-export interface ChatSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<ChatSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = ChatSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = ChatPreviousValuesSubscription>() => T;
-}
-
-export interface MessageConnection {}
-
-export interface MessageConnectionPromise
-  extends Promise<MessageConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<MessageEdge>>() => T;
-  aggregate: <T = AggregateMessagePromise>() => T;
-}
-
-export interface MessageConnectionSubscription
-  extends Promise<AsyncIterator<MessageConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<MessageEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateMessageSubscription>() => T;
-}
-
-export interface ChatPreviousValues {
-  id: ID_Output;
-  slackId?: String;
-  createdAt: DateTimeOutput;
-}
-
-export interface ChatPreviousValuesPromise
-  extends Promise<ChatPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  slackId: () => Promise<String>;
-  createdAt: () => Promise<DateTimeOutput>;
-}
-
-export interface ChatPreviousValuesSubscription
-  extends Promise<AsyncIterator<ChatPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  slackId: () => Promise<AsyncIterator<String>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-}
-
-export interface CourseEdge {
-  cursor: String;
-}
-
-export interface CourseEdgePromise extends Promise<CourseEdge>, Fragmentable {
-  node: <T = CoursePromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface CourseEdgeSubscription
-  extends Promise<AsyncIterator<CourseEdge>>,
-    Fragmentable {
-  node: <T = CourseSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
+  edges: <T = Promise<AsyncIterator<VideoEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateVideoSubscription>() => T;
 }
 
 export interface ChatConnection {}
@@ -1952,45 +2061,6 @@ export interface ChatConnectionSubscription
   aggregate: <T = AggregateChatSubscription>() => T;
 }
 
-export interface AggregateVideo {
-  count: Int;
-}
-
-export interface AggregateVideoPromise
-  extends Promise<AggregateVideo>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateVideoSubscription
-  extends Promise<AsyncIterator<AggregateVideo>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface CourseSubscriptionPayload {
-  mutation: MutationType;
-  updatedFields?: String[];
-}
-
-export interface CourseSubscriptionPayloadPromise
-  extends Promise<CourseSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = CoursePromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = CoursePreviousValuesPromise>() => T;
-}
-
-export interface CourseSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<CourseSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = CourseSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = CoursePreviousValuesSubscription>() => T;
-}
-
 export interface UserEdge {
   cursor: String;
 }
@@ -2007,144 +2077,31 @@ export interface UserEdgeSubscription
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface MessageEdge {
-  cursor: String;
-}
-
-export interface MessageEdgePromise extends Promise<MessageEdge>, Fragmentable {
-  node: <T = MessagePromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface MessageEdgeSubscription
-  extends Promise<AsyncIterator<MessageEdge>>,
-    Fragmentable {
-  node: <T = MessageSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface MessagePreviousValues {
+export interface Purchase {
   id: ID_Output;
-  style: Style;
-  text: String;
+  charge: String;
+  total: Int;
   createdAt: DateTimeOutput;
 }
 
-export interface MessagePreviousValuesPromise
-  extends Promise<MessagePreviousValues>,
-    Fragmentable {
+export interface PurchasePromise extends Promise<Purchase>, Fragmentable {
   id: () => Promise<ID_Output>;
-  style: () => Promise<Style>;
-  text: () => Promise<String>;
+  charge: () => Promise<String>;
+  total: () => Promise<Int>;
+  course: <T = CoursePromise>() => T;
+  user: <T = UserPromise>() => T;
   createdAt: () => Promise<DateTimeOutput>;
 }
 
-export interface MessagePreviousValuesSubscription
-  extends Promise<AsyncIterator<MessagePreviousValues>>,
+export interface PurchaseSubscription
+  extends Promise<AsyncIterator<Purchase>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  style: () => Promise<AsyncIterator<Style>>;
-  text: () => Promise<AsyncIterator<String>>;
+  charge: () => Promise<AsyncIterator<String>>;
+  total: () => Promise<AsyncIterator<Int>>;
+  course: <T = CourseSubscription>() => T;
+  user: <T = UserSubscription>() => T;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-}
-
-export interface MessageSubscriptionPayload {
-  mutation: MutationType;
-  updatedFields?: String[];
-}
-
-export interface MessageSubscriptionPayloadPromise
-  extends Promise<MessageSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = MessagePromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = MessagePreviousValuesPromise>() => T;
-}
-
-export interface MessageSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<MessageSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = MessageSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = MessagePreviousValuesSubscription>() => T;
-}
-
-export interface UserSubscriptionPayload {
-  mutation: MutationType;
-  updatedFields?: String[];
-}
-
-export interface UserSubscriptionPayloadPromise
-  extends Promise<UserSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = UserPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = UserPreviousValuesPromise>() => T;
-}
-
-export interface UserSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<UserSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = UserSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = UserPreviousValuesSubscription>() => T;
-}
-
-export interface CoursePreviousValues {
-  id: ID_Output;
-  title: String;
-  summary: String;
-  description: String;
-  image?: String;
-  tags: String[];
-  difficulty: Difficulty;
-  createdAt: DateTimeOutput;
-}
-
-export interface CoursePreviousValuesPromise
-  extends Promise<CoursePreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  title: () => Promise<String>;
-  summary: () => Promise<String>;
-  description: () => Promise<String>;
-  image: () => Promise<String>;
-  tags: () => Promise<String[]>;
-  difficulty: () => Promise<Difficulty>;
-  createdAt: () => Promise<DateTimeOutput>;
-}
-
-export interface CoursePreviousValuesSubscription
-  extends Promise<AsyncIterator<CoursePreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  title: () => Promise<AsyncIterator<String>>;
-  summary: () => Promise<AsyncIterator<String>>;
-  description: () => Promise<AsyncIterator<String>>;
-  image: () => Promise<AsyncIterator<String>>;
-  tags: () => Promise<AsyncIterator<String[]>>;
-  difficulty: () => Promise<AsyncIterator<Difficulty>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-}
-
-export interface AggregateCourse {
-  count: Int;
-}
-
-export interface AggregateCoursePromise
-  extends Promise<AggregateCourse>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateCourseSubscription
-  extends Promise<AsyncIterator<AggregateCourse>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface Chat {
@@ -2191,22 +2148,687 @@ export interface ChatSubscription
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
-export interface VideoConnection {}
-
-export interface VideoConnectionPromise
-  extends Promise<VideoConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<VideoEdge>>() => T;
-  aggregate: <T = AggregateVideoPromise>() => T;
+export interface UserPreviousValues {
+  id: ID_Output;
+  name: String;
+  email: String;
+  password?: String;
+  image?: String;
+  githubId?: String;
+  role: Role;
+  createdAt: DateTimeOutput;
 }
 
-export interface VideoConnectionSubscription
-  extends Promise<AsyncIterator<VideoConnection>>,
+export interface UserPreviousValuesPromise
+  extends Promise<UserPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  email: () => Promise<String>;
+  password: () => Promise<String>;
+  image: () => Promise<String>;
+  githubId: () => Promise<String>;
+  role: () => Promise<Role>;
+  createdAt: () => Promise<DateTimeOutput>;
+}
+
+export interface UserPreviousValuesSubscription
+  extends Promise<AsyncIterator<UserPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  email: () => Promise<AsyncIterator<String>>;
+  password: () => Promise<AsyncIterator<String>>;
+  image: () => Promise<AsyncIterator<String>>;
+  githubId: () => Promise<AsyncIterator<String>>;
+  role: () => Promise<AsyncIterator<Role>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface PurchaseEdge {
+  cursor: String;
+}
+
+export interface PurchaseEdgePromise
+  extends Promise<PurchaseEdge>,
+    Fragmentable {
+  node: <T = PurchasePromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface PurchaseEdgeSubscription
+  extends Promise<AsyncIterator<PurchaseEdge>>,
+    Fragmentable {
+  node: <T = PurchaseSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface ChatSubscriptionPayload {
+  mutation: MutationType;
+  updatedFields?: String[];
+}
+
+export interface ChatSubscriptionPayloadPromise
+  extends Promise<ChatSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = ChatPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = ChatPreviousValuesPromise>() => T;
+}
+
+export interface ChatSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<ChatSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = ChatSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = ChatPreviousValuesSubscription>() => T;
+}
+
+export interface AggregateMessage {
+  count: Int;
+}
+
+export interface AggregateMessagePromise
+  extends Promise<AggregateMessage>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateMessageSubscription
+  extends Promise<AsyncIterator<AggregateMessage>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface ChatPreviousValues {
+  id: ID_Output;
+  slackId?: String;
+  createdAt: DateTimeOutput;
+}
+
+export interface ChatPreviousValuesPromise
+  extends Promise<ChatPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  slackId: () => Promise<String>;
+  createdAt: () => Promise<DateTimeOutput>;
+}
+
+export interface ChatPreviousValuesSubscription
+  extends Promise<AsyncIterator<ChatPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  slackId: () => Promise<AsyncIterator<String>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface MessageConnection {}
+
+export interface MessageConnectionPromise
+  extends Promise<MessageConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<MessageEdge>>() => T;
+  aggregate: <T = AggregateMessagePromise>() => T;
+}
+
+export interface MessageConnectionSubscription
+  extends Promise<AsyncIterator<MessageConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<VideoEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateVideoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<MessageEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateMessageSubscription>() => T;
+}
+
+export interface Video {
+  id: ID_Output;
+  title: String;
+  description: String;
+  url: String;
+  number: Int;
+  time: Int;
+  createdAt: DateTimeOutput;
+}
+
+export interface VideoPromise extends Promise<Video>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  title: () => Promise<String>;
+  description: () => Promise<String>;
+  url: () => Promise<String>;
+  number: () => Promise<Int>;
+  time: () => Promise<Int>;
+  course: <T = CoursePromise>() => T;
+  createdAt: () => Promise<DateTimeOutput>;
+}
+
+export interface VideoSubscription
+  extends Promise<AsyncIterator<Video>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  title: () => Promise<AsyncIterator<String>>;
+  description: () => Promise<AsyncIterator<String>>;
+  url: () => Promise<AsyncIterator<String>>;
+  number: () => Promise<AsyncIterator<Int>>;
+  time: () => Promise<AsyncIterator<Int>>;
+  course: <T = CourseSubscription>() => T;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface CourseEdge {
+  cursor: String;
+}
+
+export interface CourseEdgePromise extends Promise<CourseEdge>, Fragmentable {
+  node: <T = CoursePromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface CourseEdgeSubscription
+  extends Promise<AsyncIterator<CourseEdge>>,
+    Fragmentable {
+  node: <T = CourseSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface CourseSubscriptionPayload {
+  mutation: MutationType;
+  updatedFields?: String[];
+}
+
+export interface CourseSubscriptionPayloadPromise
+  extends Promise<CourseSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = CoursePromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = CoursePreviousValuesPromise>() => T;
+}
+
+export interface CourseSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<CourseSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = CourseSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = CoursePreviousValuesSubscription>() => T;
+}
+
+export interface AggregateChat {
+  count: Int;
+}
+
+export interface AggregateChatPromise
+  extends Promise<AggregateChat>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateChatSubscription
+  extends Promise<AsyncIterator<AggregateChat>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface CoursePreviousValues {
+  id: ID_Output;
+  title: String;
+  summary: String;
+  description: String;
+  image?: String;
+  tags: String[];
+  difficulty: Difficulty;
+  price: Int;
+  createdAt: DateTimeOutput;
+}
+
+export interface CoursePreviousValuesPromise
+  extends Promise<CoursePreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  title: () => Promise<String>;
+  summary: () => Promise<String>;
+  description: () => Promise<String>;
+  image: () => Promise<String>;
+  tags: () => Promise<String[]>;
+  difficulty: () => Promise<Difficulty>;
+  price: () => Promise<Int>;
+  createdAt: () => Promise<DateTimeOutput>;
+}
+
+export interface CoursePreviousValuesSubscription
+  extends Promise<AsyncIterator<CoursePreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  title: () => Promise<AsyncIterator<String>>;
+  summary: () => Promise<AsyncIterator<String>>;
+  description: () => Promise<AsyncIterator<String>>;
+  image: () => Promise<AsyncIterator<String>>;
+  tags: () => Promise<AsyncIterator<String[]>>;
+  difficulty: () => Promise<AsyncIterator<Difficulty>>;
+  price: () => Promise<AsyncIterator<Int>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface VideoEdge {
+  cursor: String;
+}
+
+export interface VideoEdgePromise extends Promise<VideoEdge>, Fragmentable {
+  node: <T = VideoPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface VideoEdgeSubscription
+  extends Promise<AsyncIterator<VideoEdge>>,
+    Fragmentable {
+  node: <T = VideoSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface Course {
+  id: ID_Output;
+  title: String;
+  summary: String;
+  description: String;
+  image?: String;
+  tags: String[];
+  difficulty: Difficulty;
+  price: Int;
+  createdAt: DateTimeOutput;
+}
+
+export interface CoursePromise extends Promise<Course>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  title: () => Promise<String>;
+  summary: () => Promise<String>;
+  description: () => Promise<String>;
+  image: () => Promise<String>;
+  tags: () => Promise<String[]>;
+  difficulty: () => Promise<Difficulty>;
+  price: () => Promise<Int>;
+  videos: <T = FragmentableArray<Video>>(
+    args?: {
+      where?: VideoWhereInput;
+      orderBy?: VideoOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+  createdAt: () => Promise<DateTimeOutput>;
+}
+
+export interface CourseSubscription
+  extends Promise<AsyncIterator<Course>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  title: () => Promise<AsyncIterator<String>>;
+  summary: () => Promise<AsyncIterator<String>>;
+  description: () => Promise<AsyncIterator<String>>;
+  image: () => Promise<AsyncIterator<String>>;
+  tags: () => Promise<AsyncIterator<String[]>>;
+  difficulty: () => Promise<AsyncIterator<Difficulty>>;
+  price: () => Promise<AsyncIterator<Int>>;
+  videos: <T = Promise<AsyncIterator<VideoSubscription>>>(
+    args?: {
+      where?: VideoWhereInput;
+      orderBy?: VideoOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface UserConnection {}
+
+export interface UserConnectionPromise
+  extends Promise<UserConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<UserEdge>>() => T;
+  aggregate: <T = AggregateUserPromise>() => T;
+}
+
+export interface UserConnectionSubscription
+  extends Promise<AsyncIterator<UserConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateUserSubscription>() => T;
+}
+
+export interface MessageSubscriptionPayload {
+  mutation: MutationType;
+  updatedFields?: String[];
+}
+
+export interface MessageSubscriptionPayloadPromise
+  extends Promise<MessageSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = MessagePromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = MessagePreviousValuesPromise>() => T;
+}
+
+export interface MessageSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<MessageSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = MessageSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = MessagePreviousValuesSubscription>() => T;
+}
+
+export interface PurchaseConnection {}
+
+export interface PurchaseConnectionPromise
+  extends Promise<PurchaseConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<PurchaseEdge>>() => T;
+  aggregate: <T = AggregatePurchasePromise>() => T;
+}
+
+export interface PurchaseConnectionSubscription
+  extends Promise<AsyncIterator<PurchaseConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<PurchaseEdgeSubscription>>>() => T;
+  aggregate: <T = AggregatePurchaseSubscription>() => T;
+}
+
+export interface MessagePreviousValues {
+  id: ID_Output;
+  style: Style;
+  text: String;
+  createdAt: DateTimeOutput;
+}
+
+export interface MessagePreviousValuesPromise
+  extends Promise<MessagePreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  style: () => Promise<Style>;
+  text: () => Promise<String>;
+  createdAt: () => Promise<DateTimeOutput>;
+}
+
+export interface MessagePreviousValuesSubscription
+  extends Promise<AsyncIterator<MessagePreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  style: () => Promise<AsyncIterator<Style>>;
+  text: () => Promise<AsyncIterator<String>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface AggregateCourse {
+  count: Int;
+}
+
+export interface AggregateCoursePromise
+  extends Promise<AggregateCourse>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateCourseSubscription
+  extends Promise<AsyncIterator<AggregateCourse>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface Message {
+  id: ID_Output;
+  style: Style;
+  text: String;
+  createdAt: DateTimeOutput;
+}
+
+export interface MessagePromise extends Promise<Message>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  style: () => Promise<Style>;
+  text: () => Promise<String>;
+  chat: <T = ChatPromise>() => T;
+  user: <T = UserPromise>() => T;
+  createdAt: () => Promise<DateTimeOutput>;
+}
+
+export interface MessageSubscription
+  extends Promise<AsyncIterator<Message>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  style: () => Promise<AsyncIterator<Style>>;
+  text: () => Promise<AsyncIterator<String>>;
+  chat: <T = ChatSubscription>() => T;
+  user: <T = UserSubscription>() => T;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface PurchasePreviousValues {
+  id: ID_Output;
+  charge: String;
+  total: Int;
+  createdAt: DateTimeOutput;
+}
+
+export interface PurchasePreviousValuesPromise
+  extends Promise<PurchasePreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  charge: () => Promise<String>;
+  total: () => Promise<Int>;
+  createdAt: () => Promise<DateTimeOutput>;
+}
+
+export interface PurchasePreviousValuesSubscription
+  extends Promise<AsyncIterator<PurchasePreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  charge: () => Promise<AsyncIterator<String>>;
+  total: () => Promise<AsyncIterator<Int>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface PurchaseSubscriptionPayload {
+  mutation: MutationType;
+  updatedFields?: String[];
+}
+
+export interface PurchaseSubscriptionPayloadPromise
+  extends Promise<PurchaseSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = PurchasePromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = PurchasePreviousValuesPromise>() => T;
+}
+
+export interface PurchaseSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<PurchaseSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = PurchaseSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = PurchasePreviousValuesSubscription>() => T;
+}
+
+export interface User {
+  id: ID_Output;
+  name: String;
+  email: String;
+  password?: String;
+  image?: String;
+  githubId?: String;
+  role: Role;
+  createdAt: DateTimeOutput;
+}
+
+export interface UserPromise extends Promise<User>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  email: () => Promise<String>;
+  password: () => Promise<String>;
+  image: () => Promise<String>;
+  githubId: () => Promise<String>;
+  messages: <T = FragmentableArray<Message>>(
+    args?: {
+      where?: MessageWhereInput;
+      orderBy?: MessageOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+  courses: <T = FragmentableArray<Course>>(
+    args?: {
+      where?: CourseWhereInput;
+      orderBy?: CourseOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+  purchases: <T = FragmentableArray<Purchase>>(
+    args?: {
+      where?: PurchaseWhereInput;
+      orderBy?: PurchaseOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+  chat: <T = ChatPromise>() => T;
+  role: () => Promise<Role>;
+  createdAt: () => Promise<DateTimeOutput>;
+}
+
+export interface UserSubscription
+  extends Promise<AsyncIterator<User>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  email: () => Promise<AsyncIterator<String>>;
+  password: () => Promise<AsyncIterator<String>>;
+  image: () => Promise<AsyncIterator<String>>;
+  githubId: () => Promise<AsyncIterator<String>>;
+  messages: <T = Promise<AsyncIterator<MessageSubscription>>>(
+    args?: {
+      where?: MessageWhereInput;
+      orderBy?: MessageOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+  courses: <T = Promise<AsyncIterator<CourseSubscription>>>(
+    args?: {
+      where?: CourseWhereInput;
+      orderBy?: CourseOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+  purchases: <T = Promise<AsyncIterator<PurchaseSubscription>>>(
+    args?: {
+      where?: PurchaseWhereInput;
+      orderBy?: PurchaseOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+  chat: <T = ChatSubscription>() => T;
+  role: () => Promise<AsyncIterator<Role>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface CourseConnection {}
+
+export interface CourseConnectionPromise
+  extends Promise<CourseConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<CourseEdge>>() => T;
+  aggregate: <T = AggregateCoursePromise>() => T;
+}
+
+export interface CourseConnectionSubscription
+  extends Promise<AsyncIterator<CourseConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<CourseEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateCourseSubscription>() => T;
+}
+
+export interface MessageEdge {
+  cursor: String;
+}
+
+export interface MessageEdgePromise extends Promise<MessageEdge>, Fragmentable {
+  node: <T = MessagePromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface MessageEdgeSubscription
+  extends Promise<AsyncIterator<MessageEdge>>,
+    Fragmentable {
+  node: <T = MessageSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregatePurchase {
+  count: Int;
+}
+
+export interface AggregatePurchasePromise
+  extends Promise<AggregatePurchase>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregatePurchaseSubscription
+  extends Promise<AsyncIterator<AggregatePurchase>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface AggregateUser {
+  count: Int;
+}
+
+export interface AggregateUserPromise
+  extends Promise<AggregateUser>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateUserSubscription
+  extends Promise<AsyncIterator<AggregateUser>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface VideoSubscriptionPayload {
@@ -2233,6 +2855,11 @@ export interface VideoSubscriptionPayloadSubscription
 }
 
 /*
+The `Boolean` scalar type represents `true` or `false`.
+*/
+export type Boolean = boolean;
+
+/*
 DateTime scalar input type, allowing Date
 */
 export type DateTimeInput = Date | string;
@@ -2245,25 +2872,20 @@ export type DateTimeOutput = string;
 export type Long = string;
 
 /*
-The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1. 
-*/
-export type Int = number;
-
-/*
 The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
 */
 export type ID_Input = string | number;
 export type ID_Output = string;
 
 /*
+The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1. 
+*/
+export type Int = number;
+
+/*
 The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
 */
 export type String = string;
-
-/*
-The `Boolean` scalar type represents `true` or `false`.
-*/
-export type Boolean = boolean;
 
 /**
  * Model Metadata
@@ -2284,6 +2906,10 @@ export const models = [
   },
   {
     name: "Message",
+    embedded: false
+  },
+  {
+    name: "Purchase",
     embedded: false
   },
   {

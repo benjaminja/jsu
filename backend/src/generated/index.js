@@ -21,6 +21,10 @@ var models = [
     embedded: false
   },
   {
+    name: "Purchase",
+    embedded: false
+  },
+  {
     name: "Role",
     embedded: false
   },
@@ -59,6 +63,10 @@ var models = [
   },
   {
     name: "Message",
+    embedded: false
+  },
+  {
+    name: "Purchase",
     embedded: false
   },
   {

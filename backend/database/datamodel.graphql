@@ -4,10 +4,10 @@ type User {
   email: String! @unique
   password: String
   image: String
-  stripeId: String @unique
   githubId: String @unique
-  isSubscribed: Boolean! @default(value: "false")
   messages: [Message] @relation(name: "MessageOwner")
+  courses: [Course]
+  purchases: [Purchase] @relation(name: "UserPurchases")
   chat: Chat @relation(name: "ChatOwner")
   role: Role! @default(value: "USER")
   createdAt: DateTime!
@@ -21,7 +21,17 @@ type Course {
   image: String
   tags: [String]!
   difficulty: Difficulty!
+  price: Int!
   videos: [Video!]!
+  createdAt: DateTime!
+}
+
+type Purchase {
+  id: ID! @unique
+  charge: String!
+  total: Int!
+  course: Course!
+  user: User! @relation(name: "UserPurchases")
   createdAt: DateTime!
 }
 
