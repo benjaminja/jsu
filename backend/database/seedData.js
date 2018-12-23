@@ -1,7 +1,7 @@
 require('dotenv').config()
 const axios = require('axios')
 const bcrypt = require('bcryptjs')
-const uuid = require('uuid/v4')
+const uuid = require('uuid/v1')
 const logger = require('../src/utils/logger')
 
 module.exports = async (videos, courses) => {
