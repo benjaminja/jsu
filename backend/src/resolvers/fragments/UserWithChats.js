@@ -8,6 +8,13 @@ module.exports = `
       createdAt
       courses {
         id
+        title
+        summary
+        description
+        image
+        difficulty
+        price
+        createdAt
       }
       purchases {
         id

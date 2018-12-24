@@ -5,7 +5,7 @@ const createCookie = require('../utils/createCookie')
 const validateSignup = require('../utils/validateSignup')
 const lastDayOfMonth = require('../utils/lastDayOfMonth')
 const stripe = require('../services/stripe')
-const { isAuthenticated, isAdmin, isSubscribed } = require('../middleware/permissions')
+const { isAuthenticated, isAdmin } = require('../middleware/permissions')
 const { createChannel, postMessage } = require('../services/slack')
 const ChatWithUsers = require('./fragments/ChatWithUsers')
 const { getSignedUrl } = require('../services/aws')
@@ -84,6 +84,10 @@ module.exports = {
         total: charge.amount,
         course: { connect: { id: args.id } },
         user: { connect: { id: ctx.userId } }
+      })
+      await ctx.prisma.updateUser({
+        where: { id: ctx.userId },
+        data: { courses: { connect: { id: args.id } } }
       })
       return {
         success: true,
