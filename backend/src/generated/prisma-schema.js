@@ -1586,7 +1586,9 @@ type Video {
   description: String!
   url: String!
   number: Int!
+  section: String!
   time: Int!
+  isWatched: Boolean
   course: Course!
   createdAt: DateTime!
 }
@@ -1602,7 +1604,9 @@ input VideoCreateInput {
   description: String!
   url: String!
   number: Int!
+  section: String!
   time: Int!
+  isWatched: Boolean
   course: CourseCreateOneWithoutVideosInput!
 }
 
@@ -1616,7 +1620,9 @@ input VideoCreateWithoutCourseInput {
   description: String!
   url: String!
   number: Int!
+  section: String!
   time: Int!
+  isWatched: Boolean
 }
 
 type VideoEdge {
@@ -1635,8 +1641,12 @@ enum VideoOrderByInput {
   url_DESC
   number_ASC
   number_DESC
+  section_ASC
+  section_DESC
   time_ASC
   time_DESC
+  isWatched_ASC
+  isWatched_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -1649,7 +1659,9 @@ type VideoPreviousValues {
   description: String!
   url: String!
   number: Int!
+  section: String!
   time: Int!
+  isWatched: Boolean
   createdAt: DateTime!
 }
 
@@ -1718,6 +1730,20 @@ input VideoScalarWhereInput {
   number_lte: Int
   number_gt: Int
   number_gte: Int
+  section: String
+  section_not: String
+  section_in: [String!]
+  section_not_in: [String!]
+  section_lt: String
+  section_lte: String
+  section_gt: String
+  section_gte: String
+  section_contains: String
+  section_not_contains: String
+  section_starts_with: String
+  section_not_starts_with: String
+  section_ends_with: String
+  section_not_ends_with: String
   time: Int
   time_not: Int
   time_in: [Int!]
@@ -1726,6 +1752,8 @@ input VideoScalarWhereInput {
   time_lte: Int
   time_gt: Int
   time_gte: Int
+  isWatched: Boolean
+  isWatched_not: Boolean
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -1762,7 +1790,9 @@ input VideoUpdateInput {
   description: String
   url: String
   number: Int
+  section: String
   time: Int
+  isWatched: Boolean
   course: CourseUpdateOneRequiredWithoutVideosInput
 }
 
@@ -1771,7 +1801,9 @@ input VideoUpdateManyDataInput {
   description: String
   url: String
   number: Int
+  section: String
   time: Int
+  isWatched: Boolean
 }
 
 input VideoUpdateManyMutationInput {
@@ -1779,7 +1811,9 @@ input VideoUpdateManyMutationInput {
   description: String
   url: String
   number: Int
+  section: String
   time: Int
+  isWatched: Boolean
 }
 
 input VideoUpdateManyWithoutCourseInput {
@@ -1803,7 +1837,9 @@ input VideoUpdateWithoutCourseDataInput {
   description: String
   url: String
   number: Int
+  section: String
   time: Int
+  isWatched: Boolean
 }
 
 input VideoUpdateWithWhereUniqueWithoutCourseInput {
@@ -1882,6 +1918,20 @@ input VideoWhereInput {
   number_lte: Int
   number_gt: Int
   number_gte: Int
+  section: String
+  section_not: String
+  section_in: [String!]
+  section_not_in: [String!]
+  section_lt: String
+  section_lte: String
+  section_gt: String
+  section_gte: String
+  section_contains: String
+  section_not_contains: String
+  section_starts_with: String
+  section_not_starts_with: String
+  section_ends_with: String
+  section_not_ends_with: String
   time: Int
   time_not: Int
   time_in: [Int!]
@@ -1890,6 +1940,8 @@ input VideoWhereInput {
   time_lte: Int
   time_gt: Int
   time_gte: Int
+  isWatched: Boolean
+  isWatched_not: Boolean
   course: CourseWhereInput
   createdAt: DateTime
   createdAt_not: DateTime

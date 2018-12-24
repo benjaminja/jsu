@@ -15,6 +15,7 @@ module.exports = `
       description
       url
       number
+      section
       time
       createdAt
     }

@@ -50,7 +50,7 @@ export default class Checkout extends React.Component {
               name="JavaScript Universe"
               description={this.props.description}
               panelLabel="Invest"
-              image="https://s3-us-west-1.amazonaws.com/js-universe/assets/logo.png"
+              image="https://s3-us-west-1.amazonaws.com/jsu-resources/assets/logo.png"
               stripeKey="pk_test_P7PboXILJ38t21Eq4S9rw0Uq"
               email={me ? me.email : 'guest@jsu.com'}
               token={res => this.handleToken(res, createPurchase, me)}

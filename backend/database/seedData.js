@@ -32,7 +32,8 @@ module.exports = async (videos, courses) => {
       description: r[1],
       url: r[2],
       number: Number(r[3]),
-      time: Number(r[4]),
+      section: r[4],
+      time: Number(r[5]),
       createdAt: date
     }
     return node
@@ -64,7 +65,7 @@ module.exports = async (videos, courses) => {
   })
 
   videoNodes.forEach((v, i) => {
-    const courseId = courseNodes[Number(videos[i][5])].id
+    const courseId = courseNodes[Number(videos[i][6])].id
     const r1 = { _typeName: 'Course', id: courseId, fieldName: 'videos' }
     const r2 = { _typeName: 'Video', id: v.id, fieldName: 'course' }
     const rel = [r1, r2]

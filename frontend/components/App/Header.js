@@ -15,6 +15,7 @@ const Container = styled.div`
     padding: 1rem;
     margin: 0;
     line-height: 1;
+    justify-self: start;
   }
   a {
     font-size: 2rem;
@@ -25,9 +26,11 @@ const Container = styled.div`
 
 export default props => (
   <Container>
-    <p className="title">🌌 JavaScript Universe</p>
+    <Link href="/">
+      <a className="title">🌌 JavaScript Universe</a>
+    </Link>
     <Link href="/catalog">
-      <a>Catalog</a>
+      <a>Catalog 🐱‍🚀</a>
     </Link>
   </Container>
 )

@@ -65,7 +65,9 @@ type Video {
   description: String!
   url: String!
   number: Int!
+  section: String!
   time: Int!
+  isWatched: Boolean!
   course: Course!
   createdAt: DateTime!
 }
