@@ -15,14 +15,21 @@ const SIGNOUT_MUTATION = gql`
 `
 
 const SignoutButton = styled.button`
-  width: 100px;
-  font-size: 2rem;
+  position: absolute;
+  bottom: 2rem;
+  left: 2rem;
+  font-size: 3rem;
   font-family: 'Regular', Arial, Helvetica, sans-serif;
   background: ${props => props.theme.secondary.main};
-  border: 0;
+  border: 1px solid ${props => props.theme.secondary.dark};
   padding: 1rem;
-  box-shadow: 3px 3px 0 ${props => props.theme.black};
   cursor: pointer;
+  &:focus {
+    box-shadow: ${props => props.theme.shadows[4]};
+  }
+  span {
+    font-size: 1.5rem;
+  }
 `
 
 export default class Signout extends React.Component {
@@ -38,9 +45,9 @@ export default class Signout extends React.Component {
         refetchQueries={[{ query: ME_QUERY }, { query: CHAT_QUERY }]}
       >
         {(signout, { loading, error }) => (
-          <div>
-            <SignoutButton onClick={() => this.handleSignout(signout)}>Sign Out</SignoutButton>
-          </div>
+          <SignoutButton onClick={() => this.handleSignout(signout)}>
+            Sign Out <span>(clears your 🍪)</span>
+          </SignoutButton>
         )}
       </Mutation>
     )

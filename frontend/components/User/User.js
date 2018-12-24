@@ -12,6 +12,13 @@ export const ME_QUERY = gql`
       createdAt
       courses {
         id
+        title
+        summary
+        description
+        image
+        difficulty
+        price
+        createdAt
       }
     }
   }

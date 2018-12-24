@@ -13,9 +13,13 @@ const Avatar = styled.div`
   border-radius: 50%;
   overflow: hidden;
   cursor: pointer;
+  box-shadow: ${props => props.theme.shadows[2]};
   img {
     width: 6.5rem;
     height: 6.5rem;
+  }
+  &:active {
+    box-shadow: ${props => props.theme.shadows[4]};
   }
 `
 
@@ -34,6 +38,10 @@ const UserButton = styled.div`
   box-shadow: ${props => props.theme.shadows[2]};
   &:hover {
     background: ${props => darken(0.05, props.theme.primary.main)};
+  }
+  &:focus {
+    outline: none;
+    box-shadow: ${props => props.theme.shadows[4]};
   }
   a {
     color: ${p => p.theme.offWhite};

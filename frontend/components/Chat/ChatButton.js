@@ -22,6 +22,9 @@ const ChatButton = styled.div`
   &:hover {
     background: ${props => darken(0.05, props.theme.secondary.dark)};
   }
+  &:active {
+    box-shadow: ${props => props.theme.shadows[4]};
+  }
 `
 
 export default props => (
