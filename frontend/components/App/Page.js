@@ -110,8 +110,8 @@ export default class Page extends React.Component {
           <GlobalStyle />
           <Header />
           <Inner>{this.props.children}</Inner>
-          <UserButton />
-          {/* <ChatContainer /> */}
+          {/* <UserButton /> */}
+          <ChatContainer />
         </StyledPage>
       </ThemeProvider>
     )

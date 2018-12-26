@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import Link from 'next/link'
+import UserButton from '../User/UserButton'
 
 const Container = styled.div`
   height: 45px;
@@ -23,6 +24,11 @@ const Container = styled.div`
     justify-self: end;
     margin-right: 2rem;
   }
+  .right {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
 `
 
 export default props => (
@@ -30,8 +36,11 @@ export default props => (
     <Link href="/">
       <a className="title">🌌 JavaScript Universe</a>
     </Link>
-    <Link href="/catalog">
-      <a>Catalog 🐱‍🚀</a>
-    </Link>
+    <div className="right">
+      <Link href="/catalog">
+        <a>Catalog 🐱‍🚀</a>
+      </Link>
+      <UserButton />
+    </div>
   </Container>
 )

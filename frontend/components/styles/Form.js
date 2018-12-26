@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 
 const Form = styled.form`
-  max-width: ${props => props.theme.maxWidth};
   height: 80vh;
   display: grid;
   justify-items: center;

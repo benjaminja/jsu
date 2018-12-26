@@ -3,6 +3,7 @@ import { Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
 import Link from 'next/link'
 import Router from 'next/router'
+import { MarkGithub } from 'styled-icons/octicons'
 import DisplayError from './App/Error'
 import { ME_QUERY } from './User/User'
 import { CHAT_QUERY } from './Chat/ChatContainer'
@@ -71,6 +72,17 @@ export default class Signin extends React.Component {
 
               <DisplayError error={error} />
               <button type="submit">Submit Form</button>
+              <a className="github" href="http://localhost:5001/github/auth">
+                <span>signupWith(</span>
+                <span>
+                  <MarkGithub
+                    style={{ display: 'inline', margin: '0 .5rem' }}
+                    size={30}
+                    color="inherit"
+                  />
+                </span>
+                <span>)</span>
+              </a>
             </fieldset>
           </Form>
         )}

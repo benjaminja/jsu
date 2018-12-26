@@ -22,7 +22,7 @@ const VolumeBar = styled.div`
         : `4px solid ${props.theme.grey[5]}`};
     transition: all 0.2s;
     &:hover {
-      height: 0.6rem;
+      height: 1.5rem;
     }
   }
   &:nth-child(2) {
@@ -33,7 +33,7 @@ const VolumeBar = styled.div`
         : `4px solid ${props.theme.grey[5]}`};
     transition: all 0.2s;
     &:hover {
-      height: 0.9rem;
+      height: 1.5rem;
     }
   }
   &:nth-child(3) {
@@ -44,7 +44,7 @@ const VolumeBar = styled.div`
         : `4px solid ${props.theme.grey[5]}`};
     transition: all 0.2s;
     &:hover {
-      height: 1.1rem;
+      height: 1.5rem;
     }
   }
   &:nth-child(4) {
