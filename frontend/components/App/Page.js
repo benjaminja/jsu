@@ -22,8 +22,9 @@ const theme = {
     main: '#19E65E',
     dark: '#12A141'
   },
-  grey: ['#F0F0F0', '#D9D9D9', '#BFBFBF', '#A6A6A6', '#8C8C8C'],
+  grey: ['#F0F0F0', '#D9D9D9', '#BFBFBF', '#A6A6A6', '#8C8C8C', '#666666'],
   black: '#333333',
+  oBlack: '#33333380',
   white: '#FFFFFF',
   offWhite: '#FAFAFA',
   maxWidth: '1000px',
@@ -38,7 +39,7 @@ const StyledPage = styled.div`
 const Inner = styled.div`
   /* max-width: ${props => props.theme.maxWidth}; */
   margin: 0 auto;
-  height: 90vh;
+  height: calc(100vh - 45px);
   overflow: auto;
   background: ${props => props.theme.white};
 `
@@ -110,7 +111,7 @@ export default class Page extends React.Component {
           <Header />
           <Inner>{this.props.children}</Inner>
           <UserButton />
-          <ChatContainer />
+          {/* <ChatContainer /> */}
         </StyledPage>
       </ThemeProvider>
     )

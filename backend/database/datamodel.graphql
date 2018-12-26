@@ -43,7 +43,6 @@ type Video {
   number: Int!
   section: String!
   time: Int!
-  isWatched: Boolean @default(value: "false")
   course: Course!
   createdAt: DateTime!
 }

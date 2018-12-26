@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import Link from 'next/link'
 
 const Container = styled.div`
+  height: 45px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   justify-items: space-between;
