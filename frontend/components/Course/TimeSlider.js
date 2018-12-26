@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Slider, Rail, Handles, Tracks } from 'react-compound-slider'
+import formatTime from '../../lib/formatTime'
 
 const rootStyle = {
   position: 'relative',
@@ -21,18 +22,51 @@ const TimeRail = styled.div`
   margin: 0 1rem;
 `
 
-const TimeTrack = styled.div`
+const TimeTrack = styled.div.attrs(({ target, source }) => ({
+  style: { width: target.percent - source.percent + '%' }
+}))`
   position: absolute;
   z-index: 1;
   height: 1rem;
   background: ${props => props.theme.secondary.main};
   cursor: pointer;
   left: 1rem;
-  width: ${props => props.target.percent - props.source.percent}%;
+`
+const Label = styled.div.attrs(({ target, source }) => ({
+  style: { left: target.percent + source.percent - 0.25 + '%' }
+}))`
+  position: absolute;
+  bottom: 2.5rem;
+  font-size: 1rem;
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0.2rem 0.35rem 0;
+  line-height: 1;
+  background: white;
+  box-shadow: 1.5px 1.5px 0 black;
+  &:after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -4px;
+    width: 0;
+    height: 0;
+    border-top: solid 4px white;
+    border-left: solid 4px transparent;
+    border-right: solid 4px transparent;
+  }
 `
 
-function Track({ source, target, getTrackProps }) {
-  return <TimeTrack source={source} target={target} {...getTrackProps()} />
+function Track({ time, source, target, getTrackProps }) {
+  return (
+    <>
+      <TimeTrack source={source} target={target} {...getTrackProps()} />
+      <Label source={source} target={target}>
+        {formatTime(time)}
+      </Label>
+    </>
+  )
 }
 
 export default class TimeSlider extends React.Component {
@@ -56,7 +90,13 @@ export default class TimeSlider extends React.Component {
           {({ tracks, getTrackProps }) => (
             <div className="slider-tracks">
               {tracks.map(({ id, source, target }) => (
-                <Track key={id} source={source} target={target} getTrackProps={getTrackProps} />
+                <Track
+                  key={id}
+                  time={time}
+                  source={source}
+                  target={target}
+                  getTrackProps={getTrackProps}
+                />
               ))}
             </div>
           )}

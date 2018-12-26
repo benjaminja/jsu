@@ -13,15 +13,6 @@ const CREATE_CODE_MESSAGE = gql`
   }
 `
 
-const iconStyles = () => `
-  color: inherit;
-  width: 20px;
-  height: 20px;
-`
-
-const SendIcon = styled(Send)(iconStyles)
-const CancelIcon = styled(Close)(iconStyles)
-
 const CodeModalStyle = styled.div`
   .title-bar {
     background: ${props => props.theme.secondary.dark};
@@ -113,10 +104,10 @@ export default props => (
             </div>
             <div className="right">
               <button onClick={props.onClose}>
-                <CancelIcon />
+                <Close size={20} color="inherit" />
               </button>
               <button onClick={() => props.handleCreateCodeMessage(createMessage)}>
-                <SendIcon />
+                <Send size={20} color="inherit" />
               </button>
             </div>
           </div>

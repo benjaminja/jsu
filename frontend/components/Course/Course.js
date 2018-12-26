@@ -3,8 +3,6 @@ import styled from 'styled-components'
 import VideoPlayer from './VideoPlayer'
 import VideoList from './VideoList'
 import Media from '../styles/Media'
-import formatTime from '../../lib/formatTime'
-import formatTime2 from '../../lib/formatTime2'
 
 const Container = styled.div`
   display: grid;
@@ -80,8 +78,8 @@ export default class Course extends React.Component {
 
   onVolumeChange = volume => {
     if (volume === 0.0 && this.video.current.volume === 0.0) {
-      this.video.current.volume = 0.25
-      this.setState({ volume: 0.25 })
+      this.video.current.volume = 0.2
+      this.setState({ volume: 0.2 })
     } else {
       this.video.current.volume = volume
       this.setState({ volume })
@@ -162,7 +160,7 @@ export default class Course extends React.Component {
     }
 
     if (document.fullscreenEnabled) {
-      requestFullscreen(this.video.current).catch(error => alert('Full Screen not supported 😢'))
+      requestFullscreen(this.video.current)
     }
   }
 

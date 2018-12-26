@@ -31,9 +31,11 @@ export default class Signin extends React.Component {
   handleSubmit = async (e, signin) => {
     e.preventDefault()
     const { email, password } = this.state
-    await signin({ variables: { email, password } })
+    const res = await signin({ variables: { email, password } })
     this.setState({ email: '', password: '' })
-    Router.push('/')
+    if (res.data.signin.user) {
+      Router.push('/profile')
+    }
   }
 
   render() {

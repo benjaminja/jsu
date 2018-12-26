@@ -24,7 +24,8 @@ const SignoutButton = styled.button`
   border: 1px solid ${props => props.theme.secondary.dark};
   padding: 1rem;
   cursor: pointer;
-  &:focus {
+  outline: 0;
+  &:hover {
     box-shadow: ${props => props.theme.shadows[4]};
   }
   span {

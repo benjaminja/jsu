@@ -20,12 +20,15 @@ const PurchaseButton = styled.div`
   }
 `
 
-export default ({ course, moneyFace, onMouseOver, onMouseOut }) => (
-  <Checkout courseId={course.id} amount={course.price} description={course.title}>
-    <PurchaseButton onMouseOver={onMouseOver} onMouseOut={onMouseOut}>
-      <button>
-        Purchase {moneyFace ? '🤑' : '😐'} {formatMoney(course.price)}
-      </button>
-    </PurchaseButton>
-  </Checkout>
-)
+export default ({ isOwned, course, moneyFace, onMouseOver, onMouseOut }) => {
+  let content = isOwned
+    ? `😎 You own it`
+    : `Purchase ${moneyFace ? '🤑' : '😐'} ${formatMoney(course.price)}`
+  return (
+    <Checkout courseId={course.id} amount={course.price} description={course.title}>
+      <PurchaseButton onMouseOver={onMouseOver} onMouseOut={onMouseOut}>
+        <button>{content}</button>
+      </PurchaseButton>
+    </Checkout>
+  )
+}

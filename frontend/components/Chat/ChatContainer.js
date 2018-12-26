@@ -1,6 +1,7 @@
 import React from 'react'
 import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
+import { withRouter } from 'next/router'
 import Chat from './Chat'
 
 export const CHAT_QUERY = gql`
@@ -61,8 +62,9 @@ const CHAT_SUBSCRIPTION = gql`
   }
 `
 
-export default class ChatContainer extends React.Component {
+class ChatContainer extends React.Component {
   render() {
+    if (this.props.router.pathname === '/course') return null
     return (
       <Query query={CHAT_QUERY}>
         {({ subscribeToMore, data, loading, ...rest }) => {
@@ -89,3 +91,5 @@ export default class ChatContainer extends React.Component {
     )
   }
 }
+
+export default withRouter(ChatContainer)

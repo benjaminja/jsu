@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import groupBy from 'lodash.groupby'
-import { CloudDownload, VolumeUp, NavigateBefore, NavigateNext } from 'styled-icons/material'
+import { Check, VolumeUp, NavigateBefore, NavigateNext } from 'styled-icons/material'
 import formatTime from '../../lib/formatTime'
 
 const List = styled.div`
@@ -62,7 +62,7 @@ const SectionHeader = styled.div`
       background: ${props => props.theme.tertiary.dark};
       color: white;
       .emoji {
-        font-size: 1.5rem;
+        font-size: 1.25rem;
       }
       .label {
         font-size: 1.25rem;
@@ -89,12 +89,12 @@ const Header = styled.div`
     align-items: center;
     border-right: 1px solid ${props => props.theme.grey[5]};
     transition: all 0.25s;
-    &:hover {
-      color: ${props => props.theme.primary.main};
-    }
     & > :first-child {
       justify-self: flex-start;
     }
+  }
+  & > :first-child:hover > :first-child {
+    color: ${props => props.theme.primary.main};
   }
   & > :last-child {
     width: 100%;
@@ -103,12 +103,12 @@ const Header = styled.div`
     align-items: center;
     grid-template-columns: 1fr auto;
     transition: all 0.25s;
-    &:hover {
-      color: ${props => props.theme.primary.main};
-    }
     & > :last-child {
       justify-self: flex-end;
     }
+  }
+  & > :last-child:hover > :last-child {
+    color: ${props => props.theme.primary.main};
   }
 `
 
@@ -117,6 +117,10 @@ const ListItem = styled.div`
   grid-template-columns: 1fr 4fr 1fr 1fr;
   border: 1px solid ${props => props.theme.grey[0]};
   border-bottom: 0;
+  transition: all 0.25s;
+  &:hover {
+    background: ${props => props.theme.offWhite};
+  }
   & > :first-child {
     color: ${props => props.theme.black};
     border-right: 3px solid
@@ -137,6 +141,8 @@ const ListItem = styled.div`
     align-items: center;
     border-right: 1px solid ${props => props.theme.grey[0]};
     span {
+      width: 80%;
+      text-align: center;
       background: ${props => props.theme.grey[0]};
       padding: 0 0.5rem;
       border-radius: 5px;
@@ -235,7 +241,7 @@ export default class VideoList extends React.Component {
                   <span>{formatTime(v.time)}</span>
                 </div>
                 <div>
-                  <CloudDownload size={20} color="inherit" />
+                  <Check size={20} color={watched.includes(v.id) ? '#12A141' : '#333333'} />
                 </div>
               </ListItem>
             ))}

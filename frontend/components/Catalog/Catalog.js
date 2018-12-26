@@ -35,6 +35,11 @@ export default class Catalog extends React.Component {
 
   onMouseOut = () => this.setState({ moneyFace: false })
 
+  isOwned = id => {
+    const ids = this.props.user.courses.map(c => c.id)
+    return ids.includes(id)
+  }
+
   render() {
     const { index, courses, showDetail } = this.props
     return (
@@ -49,6 +54,7 @@ export default class Catalog extends React.Component {
                   <Time course={course} />
                 </div>
                 <Purchase
+                  isOwned={this.isOwned(course.id)}
                   course={course}
                   moneyFace={this.state.moneyFace}
                   onMouseOver={this.onMouseOver}

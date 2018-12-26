@@ -19,7 +19,7 @@ const Container = styled.div`
     line-height: 1;
     justify-self: start;
   }
-  a {
+  .catalog {
     font-size: 2rem;
     justify-self: end;
     margin-right: 2rem;
@@ -38,7 +38,7 @@ export default props => (
     </Link>
     <div className="right">
       <Link href="/catalog">
-        <a>Catalog 🐱‍🚀</a>
+        <a className="catalog">Catalog 🐱‍🚀</a>
       </Link>
       <UserButton />
     </div>

@@ -14,15 +14,12 @@ const ChatWindow = styled.div`
   position: absolute;
   bottom: 10rem;
   right: 10rem;
-  /* z-index: 50; */
   width: 400px;
   height: 525px;
   display: ${props => (props.open ? 'grid' : 'none')};
   grid-template-rows: 2fr 7fr 1fr;
   border-radius: 5px;
-  /* opacity: ${props => (props.open ? 1 : 0)}; */
   box-shadow: ${props => props.theme.shadows[15]};
-  /* transition: opacity 1s; */
 `
 
 export default class Chat extends React.Component {

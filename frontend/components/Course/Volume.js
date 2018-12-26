@@ -28,7 +28,7 @@ const VolumeBar = styled.div`
   &:nth-child(2) {
     height: 0.6rem;
     border-right: ${props =>
-      props.volume > 0.25
+      props.volume >= 0.25
         ? `4px solid ${props.theme.secondary.dark}`
         : `4px solid ${props.theme.grey[5]}`};
     transition: all 0.2s;

@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs')
 const { combineResolvers } = require('graphql-resolvers')
+const md5 = require('md5')
 const signToken = require('../utils/signToken')
 const createCookie = require('../utils/createCookie')
 const validateSignup = require('../utils/validateSignup')
@@ -19,19 +20,29 @@ module.exports = {
     const hashedPassword = await bcrypt.hash(args.password, 10)
     // 3. Create channel in Slack for user convo
     const slackId = await createChannel(args.name)
-    // 4. Create user and with chat
+    // 4. Check if user has registered Gravatar
+    // Gravatar offers various placeholders using d=? or insert custom url
+    const email = args.email.trim().toLowerCase()
+    const hashedEmail = md5(email)
+    const placeholder = bool =>
+      bool
+        ? encodeURIComponent(`https://api.adorable.io/avatars/64/${args.name}@adorable.png'`)
+        : 'mp'
+    const image = `https://www.gravatar.com/avatar/${hashedEmail}?d=${placeholder(false)}`
+
+    // 5. Create user and with chat
     const user = await ctx.prisma.createUser({
       name: args.name,
-      email: args.email.toLowerCase(),
+      email,
       password: hashedPassword,
-      image: `https://api.adorable.io/avatars/64/${args.name}@adorable.png'`,
+      image,
       chat: { create: { slackId } }
     })
-    // 5. Create jwt token
+    // 6. Create jwt token
     const token = signToken(user.id)
-    // 6. Put token into a cookie
+    // 7. Put token into a cookie
     createCookie(ctx.res, token)
-    // 7. Return User
+    // 8. Return User
     return user
   },
 

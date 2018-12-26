@@ -28,6 +28,7 @@
     "graphql-import": "^0.7.1",
     "graphql-resolvers": "^0.2.2",
     "jsonwebtoken": "^8.4.0",
+    "md5": "^2.2.1",
     "nodemon": "^1.18.7",
     "passport": "^0.4.0",
     "passport-github": "^1.1.0",

@@ -13,9 +13,9 @@ module.exports = async (videos, courses) => {
   const admin = {
     _typeName: 'User',
     id: adminId,
-    name: 'Benjaminadk',
+    name: 'Admin',
     password: await bcrypt.hash('password', 10),
-    email: 'benjaminadk@gmail.com',
+    email: 'admin@gmail.com',
     image:
       'https://lh4.googleusercontent.com/-9Q_OGPy0Reg/AAAAAAAAAAI/AAAAAAAAADw/_7zKKUkqOlQ/photo.jpg?sz=50',
     githubId: '',
@@ -89,7 +89,7 @@ module.exports = async (videos, courses) => {
 }
 
 async function sendData(data) {
-  await axios({
+  const res = await axios({
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -98,6 +98,7 @@ async function sendData(data) {
     url: `${process.env.PRISMA_ENDPOINT}/import`,
     data
   })
+  console.log(res.data)
 }
 
 function createRandomId() {

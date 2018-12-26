@@ -28,6 +28,7 @@ const ChatBottom = styled.div`
   border-top: 1px solid ${props => props.theme.grey[2]};
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
+  background: ${props => props.theme.white};
   textarea {
     min-height: 45px;
     max-height: 180px;

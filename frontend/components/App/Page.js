@@ -3,7 +3,6 @@ import styled, { ThemeProvider, createGlobalStyle } from 'styled-components'
 import Meta from './Meta'
 import Header from './Header'
 import ChatContainer from '../Chat/ChatContainer'
-import UserButton from '../User/UserButton'
 import shadows from '../styles/shadows'
 
 const theme = {
@@ -110,7 +109,6 @@ export default class Page extends React.Component {
           <GlobalStyle />
           <Header />
           <Inner>{this.props.children}</Inner>
-          {/* <UserButton /> */}
           <ChatContainer />
         </StyledPage>
       </ThemeProvider>

@@ -1,9 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Query } from 'react-apollo'
+import { adopt } from 'react-adopt'
 import gql from 'graphql-tag'
 import { ChevronLeft, ChevronRight } from 'styled-icons/material'
 import Catalog from './Catalog'
+import User from '../User/User'
 
 const COURSES_QUERY = gql`
   query COURSES_QUERY {
@@ -60,6 +62,11 @@ const Container = styled.div`
   }
 `
 
+const Combined = adopt({
+  userQuery: ({ render }) => <User>{render}</User>,
+  coursesQuery: ({ render }) => <Query query={COURSES_QUERY}>{render}</Query>
+})
+
 export default class CourseContainer extends React.Component {
   state = {
     index: 0,
@@ -91,13 +98,15 @@ export default class CourseContainer extends React.Component {
 
   render() {
     return (
-      <Query query={COURSES_QUERY}>
-        {({ data, loading, error }) => {
-          if (loading) return <p>Loading</p>
-          const courses = data.courses
+      <Combined>
+        {({ userQuery, coursesQuery }) => {
+          if (userQuery.loading || coursesQuery.loading) return <p>Loading...</p>
+          const user = userQuery.data.me
+          const courses = coursesQuery.data.courses
           return (
             <Container showDetail={this.state.showDetail}>
               <Catalog
+                user={user}
                 courses={courses}
                 index={this.state.index}
                 showDetail={this.state.showDetail}
@@ -114,7 +123,7 @@ export default class CourseContainer extends React.Component {
             </Container>
           )
         }}
-      </Query>
+      </Combined>
     )
   }
 }

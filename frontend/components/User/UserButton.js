@@ -13,6 +13,7 @@ const Avatar = styled.div`
   border-radius: 50%;
   overflow: hidden;
   cursor: pointer;
+  background: ${props => props.theme.black};
   img {
     width: 4rem;
     height: 4rem;
@@ -25,11 +26,11 @@ const UserButton = styled.div`
   display: grid;
   justify-items: center;
   align-items: center;
-  background: ${props => props.theme.primary.main};
+  background: ${props => (props.user ? 'transparent' : props.theme.primary.main)};
   border-radius: ${props => (props.user ? '50%' : '5px')};
   margin-right: 2rem;
   &:hover {
-    background: ${props => darken(0.05, props.theme.primary.main)};
+    background: ${props => (props.user ? 'transparent' : darken(0.05, props.theme.primary.main))};
   }
   &:focus {
     outline: none;

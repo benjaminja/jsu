@@ -1,6 +1,7 @@
 import React from 'react'
 import Router from 'next/router'
 import Link from 'next/link'
+import Error from 'next/error'
 import styled from 'styled-components'
 import Signout from './Signout'
 import User from './User/User'
@@ -74,7 +75,7 @@ export default class Profile extends React.Component {
         {({ data, loading, error }) => {
           if (loading) return <p>Loading...</p>
           const user = data.me
-          if (!user) return null
+          if (!user) return <Error />
           return (
             <Container>
               <Signout />
