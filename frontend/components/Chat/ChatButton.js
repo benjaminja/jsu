@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import { Chat, Add } from 'styled-icons/material'
 import { darken } from 'polished'
 
 const ChatButton = styled.div`
@@ -15,20 +14,26 @@ const ChatButton = styled.div`
   background: ${props => props.theme.secondary.dark};
   color: ${props => props.theme.black};
   border-radius: 50%;
-  box-shadow: ${props => props.theme.shadows[2]};
+  box-shadow: ${props => props.theme.shadows[10]};
   cursor: pointer;
   transition: all 0.25s, transform 0.5s;
   transform: rotate(${props => (props.open ? '45deg' : '0')});
   &:hover {
     background: ${props => darken(0.05, props.theme.secondary.dark)};
   }
-  &:active {
-    box-shadow: ${props => props.theme.shadows[4]};
+  & > * {
+    height: 100%;
+    width: 100%;
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    font-size: ${props => (props.open ? '2rem' : '2.5rem')};
+    margin-top: 0.5rem;
   }
 `
 
 export default props => (
   <ChatButton open={props.open} onClick={props.onClick}>
-    {props.open ? <Add size={30} color="inherit" /> : <Chat size={30} color="inherit" />}
+    {props.open ? <span>➕</span> : <span>🦜</span>}
   </ChatButton>
 )

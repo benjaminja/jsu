@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import PREREQUISITES from './data'
+import PREREQUISITES from '../../lib/catalogDocs'
 
 const Tabs = styled.div`
   display: grid;

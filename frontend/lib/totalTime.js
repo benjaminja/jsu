@@ -4,8 +4,8 @@ export default videos => {
   const hrs = Math.floor(secs / 60 / 60)
   const mins = secs % 60
   if (hrs) {
-    return `${hrs} hrs / ${total} vids`
+    return `${hrs} hrs - ${total} vids`
   } else {
-    return `${mins} min / ${total} vids`
+    return `${mins} min - ${total} vids`
   }
 }

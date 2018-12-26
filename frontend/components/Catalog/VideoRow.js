@@ -15,6 +15,7 @@ const Row = styled.div`
     outline: 0;
     background: ${props => (props.open ? props.theme.black : props.theme.white)};
     color: ${props => (props.open ? props.theme.offWhite : props.theme.black)};
+    cursor: pointer;
     transition: all 0.5s;
     & > :last-child {
       margin-right: 0.25rem;
@@ -31,6 +32,7 @@ const Row = styled.div`
     p {
       margin: 0;
       padding: 0.5rem;
+      user-select: none;
     }
   }
 `

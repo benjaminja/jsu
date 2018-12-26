@@ -7,6 +7,7 @@ const DocsButton = styled.div`
   button {
     padding: 0.25rem 0.5rem;
     font-family: 'Regular', Arial, Helvetica, sans-serif;
+    font-size: 1.75rem;
     color: ${props => props.theme.black};
     background: ${props => props.theme.offWhite};
     border: 1px solid ${props => props.theme.grey[1]};

@@ -20,6 +20,7 @@ const ChatWindow = styled.div`
   grid-template-rows: 2fr 7fr 1fr;
   border-radius: 5px;
   box-shadow: ${props => props.theme.shadows[15]};
+  transition: all 1s;
 `
 
 export default class Chat extends React.Component {

@@ -1,4 +1,4 @@
-import styled, { keyframes, css } from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import totalTime from '../../lib/totalTime'
 
 const spin = keyframes`
@@ -12,18 +12,22 @@ const spin = keyframes`
 
 const Time = styled.div`
   display: grid;
-  grid-auto-rows: 1fr 1fr;
+  grid-template-rows: 2fr 1fr;
   justify-items: center;
+  background: ${props => props.theme.offWhite};
+  color: ${props => props.theme.black};
+  border: 1px solid ${props => props.theme.grey[1]};
+  padding: 0.5rem;
+  margin: 0.5rem;
   & > :first-child {
-    align-self: flex-end;
+    align-self: center;
     font-size: 3rem;
     line-height: 1;
     margin: 0;
     animation: ${spin} 60s linear infinite;
   }
   & > :last-child {
-    align-self: center;
-    font-size: 1.5rem;
+    font-size: 1.75rem;
     line-height: 1;
     margin: 0;
   }

@@ -63,7 +63,7 @@ export default class VideoList extends React.Component {
     return (
       <List>
         <p className="title">
-          Videos 📼<span>(👆 to expand)</span>
+          Video Content 📼<span>(👆 to expand)</span>
         </p>
         <div className="videos">
           {this.props.videos.map((v, j) => (

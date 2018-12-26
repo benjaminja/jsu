@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { Close, Videocam } from 'styled-icons/material'
 import iconButton from '../styles/iconButton'
 import Prereqs from './Prereqs'
-import PREREQUISITES from './data'
+import PREREQUISITES from '../../lib/catalogDocs'
 
 export const Detail = styled.div`
   position: relative;
