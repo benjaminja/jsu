@@ -5,7 +5,7 @@ import { Check, VolumeUp, NavigateBefore, NavigateNext } from 'styled-icons/mate
 import formatTime from '../../lib/formatTime'
 
 const List = styled.div`
-  max-height: calc(100vh - 45px);
+  max-height: calc(100vh);
   overflow: auto;
   background: ${props => props.theme.white};
   user-select: none;
@@ -164,13 +164,11 @@ const ListItem = styled.div`
 
 export default class VideoList extends React.Component {
   state = {
-    sections: [],
-    watched: []
+    sections: []
   }
 
   componentDidMount() {
     this.initSections()
-    this.initWatched()
   }
 
   initSections = () => {
@@ -179,15 +177,10 @@ export default class VideoList extends React.Component {
     this.setState({ sections })
   }
 
-  initWatched = () => {
-    const watched = JSON.parse(localStorage.getItem('watched')) || []
-    this.setState({ watched })
-  }
-
   render() {
     const {
-      props: { course, videoIndex, setVideoIndex },
-      state: { sections, watched }
+      props: { watched, course, videoIndex, setVideoIndex },
+      state: { sections }
     } = this
     const video = course.videos[videoIndex]
     const prevVideo = videoIndex > 0 ? course.videos[videoIndex - 1] : null

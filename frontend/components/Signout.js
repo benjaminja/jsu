@@ -21,10 +21,12 @@ const SignoutButton = styled.button`
   font-size: 3rem;
   font-family: 'Regular', Arial, Helvetica, sans-serif;
   background: ${props => props.theme.secondary.main};
+  color: ${props => props.theme.black};
   border: 1px solid ${props => props.theme.secondary.dark};
   padding: 1rem;
   cursor: pointer;
   outline: 0;
+  transition: all 0.25s;
   &:hover {
     box-shadow: ${props => props.theme.shadows[4]};
   }

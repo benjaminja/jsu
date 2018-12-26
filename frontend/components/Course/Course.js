@@ -19,6 +19,7 @@ const Container = styled.div`
 
 export default class Course extends React.Component {
   state = {
+    watched: [],
     loading: true,
     videoIndex: 0,
     showControls: false,
@@ -32,21 +33,18 @@ export default class Course extends React.Component {
   video = React.createRef()
 
   componentDidMount() {
+    this.initWatched()
     const { videoIndex, volume, speed } = this.state
     const { course } = this.props
     const video = course.videos[videoIndex]
     this.video.current.volume = volume
     this.video.current.playbackRate = speed
-    // this.video.current.addEventListener('loadedmetadata', this.onLoadedMetadata)
-    // this.video.current.addEventListener('timeupdate', this.onTimeUpdate)
-    // this.video.current.addEventListener('ended', this.onEnded)
     this.video.current.src = video.url
   }
 
-  componentWillUnmount() {
-    // this.video.current.removeEventListener('loadedmetadata', this.onLoadedMetadata)
-    // this.video.current.removeEventListener('timeupdate', this.onTimeUpdate)
-    // this.video.current.removeEventListener('ended', this.onEnded)
+  initWatched = () => {
+    const watched = JSON.parse(localStorage.getItem('watched')) || []
+    this.setState({ watched })
   }
 
   setVideoIndex = async videoIndex => {
@@ -169,12 +167,13 @@ export default class Course extends React.Component {
     if (!watched.includes(id)) {
       watched.push(id)
       localStorage.setItem('watched', JSON.stringify(watched))
+      this.setState({ watched })
     }
   }
 
   render() {
     const {
-      state: { videoIndex, showControls, isPlaying, duration, time, volume, speed },
+      state: { watched, videoIndex, showControls, isPlaying, duration, time, volume, speed },
       props: { course, user }
     } = this
     const poster =
@@ -203,7 +202,12 @@ export default class Course extends React.Component {
           onRequestPIP={this.onRequestPIP}
           onRequestFullscreen={this.onRequestFullscreen}
         />
-        <VideoList videoIndex={videoIndex} course={course} setVideoIndex={this.setVideoIndex} />
+        <VideoList
+          videoIndex={videoIndex}
+          course={course}
+          watched={watched}
+          setVideoIndex={this.setVideoIndex}
+        />
       </Container>
     )
   }

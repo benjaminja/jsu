@@ -1,7 +1,7 @@
-import Profile from '../components/Profile'
+import ProfileContainer from '../components/Profile/ProfileContainer'
 
 export default props => (
   <div>
-    <Profile />
+    <ProfileContainer />
   </div>
 )

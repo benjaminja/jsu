@@ -13,7 +13,7 @@ const ChatButton = styled.div`
   justify-items: center;
   align-items: center;
   background: ${props => props.theme.secondary.dark};
-  color: ${props => props.theme.white};
+  color: ${props => props.theme.black};
   border-radius: 50%;
   box-shadow: ${props => props.theme.shadows[2]};
   cursor: pointer;
@@ -29,6 +29,6 @@ const ChatButton = styled.div`
 
 export default props => (
   <ChatButton open={props.open} onClick={props.onClick}>
-    {props.open ? <Add size={20} color="inherit" /> : <Chat size={20} color="inherit" />}
+    {props.open ? <Add size={30} color="inherit" /> : <Chat size={30} color="inherit" />}
   </ChatButton>
 )
