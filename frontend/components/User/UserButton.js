@@ -17,6 +17,7 @@ const Avatar = styled.div`
   img {
     width: 4rem;
     height: 4rem;
+    background: ${props => props.theme.black};
   }
 `
 

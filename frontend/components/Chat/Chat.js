@@ -87,9 +87,9 @@ export default class Chat extends React.Component {
 
   handleFile = async (e, signS3, createMessage) => {
     const id = this.props.data.chat.id
-    const name = this.props.data.chat.user.name
+    const userId = this.props.data.chat.user.id
     const file = e.target.files[0]
-    const filename = formatFilename('chat', name, file.name)
+    const filename = formatFilename('chat', userId, file.name)
     const res = await signS3({
       variables: { filename, filetype: file.type }
     })

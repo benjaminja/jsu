@@ -20,9 +20,9 @@ const Container = styled.div`
     margin: 0;
     line-height: 1;
     justify-self: start;
-    ${Media.desktop`font-size: 2rem`}
-    ${Media.tablet`font-size: 1.5rem`}
-    ${Media.phone`font-size: 1.25rem`}
+    ${Media.desktop`font-size: 2rem;`}
+    ${Media.tablet`font-size: 1.5rem;`}
+    ${Media.phone`font-size: 1.25rem;`}
   }
   .catalog {
     font-size: 2rem;

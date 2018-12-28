@@ -8,16 +8,16 @@ const Card = styled.div`
   width: 15rem;
   display: grid;
   grid-template-rows: 7.5rem 1fr;
-  ${Media.phone`
-    width: 340px;
-    grid-template-rows: 170px 1fr;
+  ${Media.tablet`
+    width: 34rem;
+    grid-template-rows: 17rem 1fr;
   `}
   img {
     width: 15rem;
     height: 7.5rem;
-    ${Media.phone`
-      width: 340px
-      height: 170px;
+    ${Media.tablet`
+      width: 34rem
+      height: 17rem;
     `}
   }
   .actions {
@@ -68,12 +68,12 @@ const Card = styled.div`
     border: 1px solid ${props => props.theme.grey[1]};
     font-size: 1.75rem;
     padding: 0.5rem;
-    ${Media.phone`
+    ${Media.tablet`
       font-size: 2.5rem;
     `}
     & > :last-child {
       font-size: 1.5rem;
-      ${Media.phone`
+      ${Media.tablet`
       font-size: 1.75rem;
     `}
     }

@@ -35,7 +35,7 @@ const SignoutButton = styled.button`
   span {
     font-size: 1.5rem;
   }
-  ${Media.phone`
+  ${Media.tablet`
     position: static;
     width: 100%;
     margin-bottom: 2rem;

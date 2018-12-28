@@ -42,23 +42,70 @@ module.exports = {
     const token = signToken(user.id)
     // 7. Put token into a cookie
     createCookie(ctx.res, token)
-    // 8. Return User
-    return user
+    // 8. Return Payload
+    return { success: true, message: 'Welcome to JSU' }
   },
 
   signin: async (_, args, ctx, info) => {
     const user = await ctx.prisma.user({ email: args.email.toLowerCase() })
-    if (!user) throw new Error(`Error. No user for ${args.email}`)
+    if (!user) throw new Error(`No user for ${args.email}`)
     const isMatch = await bcrypt.compare(args.password, user.password)
-    if (!isMatch) throw new Error('Error. Password does not match.')
+    if (!isMatch) throw new Error('Password does not match.')
     const token = signToken(user.id)
     createCookie(ctx.res, token)
-    return user
+    return { success: true, message: 'Welcome back' }
   },
 
   signout: async (_, args, ctx, info) => {
     ctx.res.clearCookie(process.env.COOKIE)
-    return { success: true, message: 'User signed out.' }
+    return { success: true, message: 'Adios' }
+  },
+
+  updateUser: async (_, args, ctx, info) => {
+    try {
+      let data = {}
+      let message = 'Successful Profile Update:\n'
+      if (args.email) {
+        data.email = args.email
+        message += `Email: ${args.email}\n`
+      }
+      if (args.name) {
+        data.name = args.name
+        message += `Name: ${args.name}`
+      }
+      if (args.image) {
+        message += `New image set`
+        data.image = args.image
+      }
+      await ctx.prisma.updateUser({ where: { id: ctx.userId }, data })
+      return { success: true, message }
+    } catch (error) {
+      logger.error(`😈 Mutation.updateUser`, error)
+      throw new Error(`Error updating user: ${ctx.user.name}`)
+    }
+  },
+
+  updatePwd: async (_, args, ctx, info) => {
+    if (args.password === args.newPassword) {
+      throw new Error('Current password must be different than new password.')
+    }
+    if (args.newPassword.length < 8) {
+      throw new Error('New password must be 8 characters or more.')
+    }
+    const user = await ctx.prisma.user({ id: ctx.userId })
+    const isMatch = await bcrypt.compare(args.password, user.password)
+    if (!isMatch) {
+      throw new Error('Current password is invalid.')
+    }
+    try {
+      const hashedPassword = await bcrypt.hash(args.newPassword, 10)
+      await ctx.prisma.updateUser({ where: { id: ctx.userId }, data: { password: hashedPassword } })
+      return { success: true, message: `Password updated` }
+    } catch (error) {
+      console.log(error)
+      logger.error(`😈 Mutation.updatePwd`, error)
+      throw new Error(`Updating user: ${ctx.user.name}`)
+    }
   },
 
   createChat: async (_, args, ctx, info) => {
@@ -105,25 +152,25 @@ module.exports = {
         message: `${course.title} purchased successfully 👍`
       }
     } catch (error) {
-      logger.error(`😈 Error: Mutation.createPurchase`, error)
-      throw new Error('Error: Could not purchase Course')
+      logger.error(`😈 Mutation.createPurchase`, error)
+      throw new Error('Could not purchase Course')
     }
   },
 
   signS3: async (_, args, ctx, info) => {
+    const Bucket = process.env.AWS_BUCKET
     const params = {
-      Bucket: process.env.AWS_BUCKET,
+      Bucket,
       Key: args.filename,
       Expires: 60,
-      ContentType: args.filetype,
-      ACL: 'public-read'
+      ContentType: args.filetype
     }
     try {
       const requestUrl = await getSignedUrl('putObject', params)
-      const fileUrl = `https://js-universe.s3.amazonaws.com/${args.filename}`
+      const fileUrl = `https://${Bucket}.s3.amazonaws.com/${args.filename}`
       return { requestUrl, fileUrl }
     } catch (error) {
-      logger.error(error)
+      logger.error(`😈 Mutation.signS3`, error)
     }
   }
 }

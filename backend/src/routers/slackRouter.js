@@ -9,5 +9,7 @@ module.exports = async (req, res) => {
       user: { connect: { id: process.env.ADMIN_ID } }
     })
     res.sendStatus(200)
-  } catch (error) {}
+  } catch (error) {
+    console.log(error)
+  }
 }

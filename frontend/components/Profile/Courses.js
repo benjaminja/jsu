@@ -4,12 +4,12 @@ import CourseCard from './CourseCard'
 import Media from '../styles/Media'
 
 export const Row = styled.div`
-  height: 40%;
+  height: 45%;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   justify-items: center;
   align-items: center;
-  ${Media.phone`
+  ${Media.tablet`
     height: auto;
     grid-template-columns: 1fr;
     grid-template-rows: auto 1fr 1fr 1fr;
@@ -26,7 +26,7 @@ export const Header = styled.div`
   padding: 1rem 2rem;
   color: ${props => props.theme.white};
   background: ${props => props.theme.black};
-  ${Media.phone`
+  ${Media.tablet`
     width: 100%;
     font-size: 4rem;
     padding: 0;
