@@ -4,7 +4,7 @@ import CourseCard from './CourseCard'
 import Media from '../styles/Media'
 
 export const Row = styled.div`
-  height: 50%;
+  height: 40%;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   justify-items: center;
@@ -37,10 +37,11 @@ const COURSES = [
   {
     id: '2162ccc209',
     image: 'https://s3-us-west-1.amazonaws.com/jsu-resources/courses/full-stack-react/course-1.svg',
-    title: 'Full Stack React'
+    title: 'Full Stack React',
+    message: '💰 Buy It Now'
   },
-  { id: '', title: '⚡ Electron' },
-  { id: '', title: '📱 React Native' }
+  { id: '', title: '⚡ Electron', message: '🚧 Coming Soon' },
+  { id: '', title: '📱 React Native', message: '🚧 Coming Soon' }
 ]
 
 export default class Courses extends React.Component {

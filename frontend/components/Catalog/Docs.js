@@ -1,8 +1,17 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import { Close, Videocam } from 'styled-icons/material'
 import iconButton from '../styles/iconButton'
 import Prereqs from './Prereqs'
 import PREREQUISITES from '../../lib/catalogDocs'
+
+export const grow = keyframes`
+  from {
+    height: 0rem;
+  }
+  to {
+    height: 55rem;
+  }
+`
 
 export const Detail = styled.div`
   position: relative;
@@ -13,7 +22,9 @@ export const Detail = styled.div`
   color: ${props => props.theme.black};
   font-family: 'Text', Arial, Helvetica, sans-serif;
   padding: 0.5rem;
+  margin-top: 3rem;
   overflow-y: auto;
+  animation: ${grow} 1s;
   .title {
     font-size: 2rem;
     text-align: center;

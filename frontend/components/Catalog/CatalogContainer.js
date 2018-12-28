@@ -38,6 +38,8 @@ const Container = styled.div`
   display: grid;
   grid-template-columns: ${props => (props.showDetail ? '1fr 1fr' : '1fr')};
   justify-items: center;
+  align-items: center;
+  overflow-x: hidden;
   overflow-y: auto;
   padding: 1rem;
   transition: all 1s;
@@ -83,8 +85,9 @@ const Combined = adopt({
 export default class CourseContainer extends React.Component {
   state = {
     index: 0,
-    showDetail: true,
-    showVideos: true
+    animate: 'left',
+    showDetail: false,
+    showVideos: false
   }
 
   toggleDetail = () => this.setState({ showDetail: !this.state.showDetail })
@@ -96,15 +99,15 @@ export default class CourseContainer extends React.Component {
     let index = this.state.index
     if (next) {
       if (index === total - 1) {
-        return this.setState({ index: 0, showDetail: false })
+        return this.setState({ index: 0, animate: 'left', showDetail: false })
       } else {
-        return this.setState({ index: index + 1, showDetail: false })
+        return this.setState({ index: index + 1, animate: 'left', showDetail: false })
       }
     } else {
       if (index === 0) {
-        return this.setState({ index: total - 1, showDetail: false })
+        return this.setState({ index: total - 1, animate: 'right', showDetail: false })
       } else {
-        return this.setState({ index: index - 1, showDetail: false })
+        return this.setState({ index: index - 1, animate: 'right', showDetail: false })
       }
     }
   }
@@ -122,6 +125,7 @@ export default class CourseContainer extends React.Component {
                 user={user}
                 courses={courses}
                 index={this.state.index}
+                animate={this.state.animate}
                 showDetail={this.state.showDetail}
                 showVideos={this.state.showVideos}
                 toggleDetail={this.toggleDetail}

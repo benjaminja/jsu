@@ -72,7 +72,7 @@ const Card = styled.div`
       font-size: 2.5rem;
     `}
     & > :last-child {
-      font-size: 1.25rem;
+      font-size: 1.5rem;
       ${Media.phone`
       font-size: 1.75rem;
     `}
@@ -105,7 +105,7 @@ export default class CourseCard extends React.Component {
               show={this.state.show0}
               icon="📼"
               label="Videos"
-              transform="translateX(7rem)"
+              transform="translateX(15rem)"
               onMouseOver={() => this.onMouseOver(0)}
               onMouseOut={() => this.onMouseOut(0)}
               onClick={() => Router.push({ pathname: '/course', query: { id: course.id } })}
@@ -114,7 +114,7 @@ export default class CourseCard extends React.Component {
               show={this.state.show1}
               icon="📂"
               label="Files"
-              transform="translateX(-7rem)"
+              transform="translateX(-15rem)"
               onMouseOver={() => this.onMouseOver(1)}
               onMouseOut={() => this.onMouseOut(1)}
               onClick={() => {}}
@@ -134,10 +134,10 @@ export default class CourseCard extends React.Component {
     } else {
       return (
         <React.Fragment>
-          <img style={{ background: '#FFDA1F' }} />
+          <img src={course.image} style={{ background: '#FFDA1F' }} />
           <div className="display">
             <span>{course.title}</span>
-            <span>🚧 Coming Soon</span>
+            <span>{course.message}</span>
           </div>
         </React.Fragment>
       )

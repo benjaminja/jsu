@@ -5,17 +5,18 @@ import Link from 'next/link'
 import debounce from 'lodash.debounce'
 import Router from 'next/router'
 import { MarkGithub } from 'styled-icons/octicons'
-import analyzePwd from '../lib/analyzePwd'
+import analyzePwd from '../../lib/analyzePwd'
 import PwdQuality from './PwdQuality'
-import DisplayError from './App/Error'
-import { ME_QUERY } from './User/User'
-import { CHAT_QUERY } from './Chat/ChatContainer'
-import Form from './styles/Form'
+import DisplayError from '../App/Error'
+import { ME_QUERY } from './User'
+import { CHAT_QUERY } from '../Chat/ChatContainer'
+import Form from '../styles/Form'
 
 const SIGNUP_MUTATION = gql`
   mutation SIGNUP_MUTATION($name: String!, $email: String!, $password: String!) {
     signup(name: $name, email: $email, password: $password) {
-      id
+      success
+      message
     }
   }
 `
@@ -45,9 +46,11 @@ export default class Signup extends React.Component {
   handleSubmit = async (e, signup) => {
     e.preventDefault()
     const { email, name, password } = this.state
-    await signup({ variables: { email, name, password } })
-    this.setState({ email: '', name: '', password: '', hide: true, pwd: 0 })
-    Router.push('/')
+    const res = await signup({ variables: { email, name, password } })
+    if (res.data.signup.success) {
+      this.setState({ email: '', name: '', password: '', hide: true, pwd: 0 })
+      Router.push('/catalog')
+    }
   }
 
   render() {

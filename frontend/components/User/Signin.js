@@ -4,15 +4,16 @@ import gql from 'graphql-tag'
 import Link from 'next/link'
 import Router from 'next/router'
 import { MarkGithub } from 'styled-icons/octicons'
-import DisplayError from './App/Error'
-import { ME_QUERY } from './User/User'
-import { CHAT_QUERY } from './Chat/ChatContainer'
-import Form from './styles/Form'
+import DisplayError from '../App/Error'
+import { ME_QUERY } from './User'
+import { CHAT_QUERY } from '../Chat/ChatContainer'
+import Form from '../styles/Form'
 
 const SIGNIN_MUTATION = gql`
   mutation SIGNIN_MUTATION($email: String!, $password: String!) {
     signin(email: $email, password: $password) {
-      id
+      success
+      message
     }
   }
 `
@@ -32,8 +33,8 @@ export default class Signin extends React.Component {
     e.preventDefault()
     const { email, password } = this.state
     const res = await signin({ variables: { email, password } })
-    this.setState({ email: '', password: '' })
-    if (res.data.signin.user) {
+    if (res.data.signin.success) {
+      this.setState({ email: '', password: '' })
       Router.push('/profile')
     }
   }

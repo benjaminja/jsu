@@ -1,4 +1,4 @@
-import Signin from '../components/Signin'
+import Signin from '../components/User/Signin'
 
 export default props => (
   <div>

@@ -1,5 +1,5 @@
 import React from 'react'
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import Title from './Title'
 import Time from './Time'
 import Purchase from './Purchase'
@@ -10,17 +10,27 @@ import DocsButton from './DocsButton'
 import VideoList from './VideoList'
 import Media from '../styles/Media'
 
+const slide = animate => {
+  if (animate === 'left') {
+    return keyframes`from {margin-left: -100vw} to{margin-left: 0vw}`
+  } else if (animate === 'right') {
+    return keyframes`from {margin-right: -100vw} to{margin-right: 0vw}`
+  }
+}
+
 const Card = styled.div`
   max-height: 60rem;
   background: ${props => props.theme.grey[0]};
   border: 1px solid ${props => props.theme.grey[1]};
   transition: all 1s;
+  margin-top: 3rem;
+  animation: ${props => slide(props.animate)} 1s;
   img {
     width: 35rem;
     height: 17.5rem;
   }
   ${Media.desktop`
-    margin-top: 5rem;
+    margin-top: 8rem;
   `}
   .detail {
     display: grid;
@@ -39,18 +49,19 @@ export default class Catalog extends React.Component {
   onMouseOut = () => this.setState({ moneyFace: false })
 
   isOwned = id => {
+    if (!this.props.user) return false
     const ids = this.props.user.courses.map(c => c.id)
     return ids.includes(id)
   }
 
   render() {
-    const { index, courses, showDetail } = this.props
+    const { index, animate, courses, showDetail } = this.props
     return (
       <React.Fragment>
         {courses.map((course, i) => {
           if (index === i) {
             return (
-              <Card key={course.id}>
+              <Card key={course.id} animate={animate}>
                 <img src={course.image} />
                 <div className="detail">
                   <Title course={course} />

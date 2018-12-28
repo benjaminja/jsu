@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import Media from './Media'
 
 const Form = styled.form`
   height: 80vh;
@@ -12,6 +13,9 @@ const Form = styled.form`
     grid-template-rows: 0.5fr auto 1fr 1fr 1fr 1fr 1fr 1fr;
     border: 1px solid ${props => props.theme.grey[2]};
     background: ${props => props.theme.grey[0]};
+    ${Media.phone`
+      width: 350px;
+    `}
   }
   p {
     font-size: 3rem;

@@ -10,6 +10,7 @@ import Media from '../styles/Media'
 const SIGNOUT_MUTATION = gql`
   mutation SIGNOUT_MUTATION {
     signout {
+      success
       message
     }
   }
@@ -43,8 +44,10 @@ const SignoutButton = styled.button`
 
 export default class Signout extends React.Component {
   handleSignout = async signout => {
-    await signout()
-    Router.push('/')
+    const res = await signout()
+    if (res.data.signout.success) {
+      Router.push('/signout')
+    }
   }
 
   render() {

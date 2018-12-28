@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { Close, Assignment } from 'styled-icons/material'
 import VideoRow from './VideoRow'
 import iconButton from '../styles/iconButton'
+import { grow } from './Docs'
 
 const List = styled.div`
   position: relative;
@@ -13,7 +14,9 @@ const List = styled.div`
   color: ${props => props.theme.black};
   font-family: 'Text', Arial, Helvetica, sans-serif;
   padding: 0.5rem;
+  margin-top: 3rem;
   overflow: hidden;
+  animation: ${grow} 1s;
   .title {
     font-size: 2rem;
     text-align: center;
