@@ -11,6 +11,7 @@ import {
 import { ExpandArrowsAlt } from 'styled-icons/fa-solid'
 import TimeSlider from './TimeSlider'
 import Volume from './Volume'
+import Media from '../styles/Media'
 
 const VideoWrapper = styled.div`
   width: 75vw;
@@ -28,6 +29,18 @@ const VideoWrapper = styled.div`
     opacity: ${props => (props.showControls ? 1 : 0)};
     transition: all 0.25s;
     padding: 1rem;
+    ${Media.wide`
+      width: 100vw;
+      height: 7.5vw;
+    `}
+    ${Media.tablet`
+      height: 10vw;
+      grid-template-columns: 1.5fr 10.5fr;
+    `}
+    ${Media.phone`
+      height: 12.5vw;
+      grid-template-columns: 2fr 10fr;
+    `}
     button {
       justify-self: center;
       align-self: flex-end;
@@ -43,6 +56,19 @@ const VideoWrapper = styled.div`
       &:hover {
         background: ${props => props.theme.secondary.dark};
       }
+      ${Media.phone`
+        height: 100%;
+      `}
+      .play,.pause {
+        width: 30px;
+        height: 30px;
+        color: 'inherit';
+        ${Media.phone`
+          width: 20px;
+          height: 20px;
+          color: 'inherit';
+        `}
+      }
     }
     .rest {
       align-self: flex-end;
@@ -51,6 +77,13 @@ const VideoWrapper = styled.div`
       grid-template-columns: 85% 1fr 1fr 1fr 1fr;
       border-radius: 3px;
       background: ${props => props.theme.oBlack};
+      ${Media.tablet`
+        grid-template-columns: 75% 2fr 1fr 1fr 1fr;
+      `}
+      ${Media.phone`
+        height: 75%;
+        grid-template-columns: 65% 2fr 1fr 1fr 1fr;
+      `}
       .settings,
       .fullscreen,
       .pip {
@@ -98,6 +131,9 @@ const BottomControl = styled.div`
     border-right: 1px solid ${props => props.theme.grey[5]};
     cursor: pointer;
     transition: all 0.25s;
+    ${Media.phone`
+      font-size: 1.25rem;
+    `}
     &:last-child {
       border-right: 0;
     }
@@ -143,11 +179,7 @@ export default ({
       />
       <div className="controls" onMouseOver={onMouseOver} onMouseOut={onMouseOut}>
         <button onClick={onPlayOrPause}>
-          {isPlaying ? (
-            <Pause size={30} color="inherit" />
-          ) : (
-            <PlayArrow size={30} color="inherit" />
-          )}
+          {isPlaying ? <Pause className="play" /> : <PlayArrow className="pause" />}
         </button>
         <div className="rest">
           <TimeSlider duration={duration} time={time} onChange={onTimeChange} />

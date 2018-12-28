@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import CourseCard from './CourseCard'
+import Media from '../styles/Media'
 
 export const Row = styled.div`
   height: 50%;
@@ -8,6 +9,13 @@ export const Row = styled.div`
   grid-template-columns: repeat(4, 1fr);
   justify-items: center;
   align-items: center;
+  ${Media.phone`
+    height: auto;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr 1fr 1fr;
+    grid-gap: 2rem;
+    margin-bottom: 2rem;
+  `}
 `
 
 export const Header = styled.div`
@@ -18,6 +26,11 @@ export const Header = styled.div`
   padding: 1rem 2rem;
   color: ${props => props.theme.white};
   background: ${props => props.theme.black};
+  ${Media.phone`
+    width: 100%;
+    font-size: 4rem;
+    padding: 0;
+  `}
 `
 
 const COURSES = [

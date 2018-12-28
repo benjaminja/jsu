@@ -9,11 +9,15 @@ const Container = styled.div`
   grid-template-columns: 3fr 1fr;
   background: ${props => props.theme.black};
   overflow: hidden;
-  ${Media.wide`grid-template-columns: 1fr;`}
+  ${Media.wide`
+    grid-template-columns: 1fr;
+  `}
   video {
     display: block;
     width: 75vw;
-    ${Media.wide`width: 100vw;`}
+    ${Media.wide`
+      width: 100vw;
+    `}
   }
 `
 

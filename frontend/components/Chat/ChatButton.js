@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { darken } from 'polished'
+import Media from '../styles/Media'
 
 const ChatButton = styled.div`
   position: absolute;
@@ -21,6 +22,9 @@ const ChatButton = styled.div`
   &:hover {
     background: ${props => darken(0.05, props.theme.secondary.dark)};
   }
+  ${Media.desktop`
+    display: none;
+  `}
   & > * {
     height: 100%;
     width: 100%;

@@ -119,7 +119,7 @@ export default props => (
           <div key={m.id} className="admin">
             <div className="meta">
               <img
-                src="https://s3-us-west-1.amazonaws.com/js-universe/assets/myAvatar.png"
+                src="https://s3-us-west-1.amazonaws.com/jsu-resources/assets/myAvatar.png"
                 width="25"
               />
               <div className="details">

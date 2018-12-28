@@ -29,7 +29,7 @@ const Time = styled.div`
   & > :last-child {
     font-size: 1.75rem;
     line-height: 1;
-    margin: 0;
+    margin-top: 0.25rem;
   }
 `
 

@@ -6,6 +6,7 @@ import gql from 'graphql-tag'
 import { ChevronLeft, ChevronRight } from 'styled-icons/material'
 import Catalog from './Catalog'
 import User from '../User/User'
+import Media from '../styles/Media'
 
 const COURSES_QUERY = gql`
   query COURSES_QUERY {
@@ -40,6 +41,12 @@ const Container = styled.div`
   overflow-y: auto;
   padding: 1rem;
   transition: all 1s;
+  ${Media.desktop`
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-gap: 5rem;
+    padding: 0;
+  `}
   .arrow-left {
     position: absolute;
     top: 50%;
@@ -49,6 +56,9 @@ const Container = styled.div`
     color: ${props => props.theme.black};
     outline: 0;
     cursor: pointer;
+    ${Media.desktop`
+      top: 0;
+    `}
   }
   .arrow-right {
     position: absolute;
@@ -59,6 +69,9 @@ const Container = styled.div`
     color: ${props => props.theme.black};
     outline: 0;
     cursor: pointer;
+    ${Media.desktop`
+      top: 0;
+    `}
   }
 `
 

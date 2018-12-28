@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import Media from '../styles/Media'
 
 const Container = styled.div`
   align-self: flex-end;
@@ -10,10 +11,16 @@ const Container = styled.div`
   padding: 0 0.25rem;
   margin-bottom: 0.6rem;
   cursor: pointer;
+  ${Media.phone`
+    margin-left: .5rem;
+  `}
 `
 
 const VolumeBar = styled.div`
   width: 8px;
+  ${Media.phone`
+    width: 6px;
+  `}
   &:nth-child(1) {
     height: 0.4rem;
     border-right: ${props =>

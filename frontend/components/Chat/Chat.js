@@ -9,6 +9,7 @@ import ChatTop from './ChatTop'
 import ChatMiddle from './ChatMiddle'
 import ChatBottom from './ChatBottom'
 import formatFilename from '../../lib/formatFilename'
+import Media from '../styles/Media'
 
 const ChatWindow = styled.div`
   position: absolute;
@@ -21,6 +22,9 @@ const ChatWindow = styled.div`
   border-radius: 5px;
   box-shadow: ${props => props.theme.shadows[15]};
   transition: all 1s;
+  ${Media.desktop`
+    display: none;
+  `}
 `
 
 export default class Chat extends React.Component {

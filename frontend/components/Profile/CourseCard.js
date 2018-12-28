@@ -2,14 +2,23 @@ import React from 'react'
 import styled from 'styled-components'
 import Router from 'next/router'
 import Action from './Action'
+import Media from '../styles/Media'
 
 const Card = styled.div`
   width: 15rem;
   display: grid;
   grid-template-rows: 7.5rem 1fr;
+  ${Media.phone`
+    width: 340px;
+    grid-template-rows: 170px 1fr;
+  `}
   img {
     width: 15rem;
     height: 7.5rem;
+    ${Media.phone`
+      width: 340px
+      height: 170px;
+    `}
   }
   .actions {
     display: grid;
@@ -59,8 +68,14 @@ const Card = styled.div`
     border: 1px solid ${props => props.theme.grey[1]};
     font-size: 1.75rem;
     padding: 0.5rem;
+    ${Media.phone`
+      font-size: 2.5rem;
+    `}
     & > :last-child {
       font-size: 1.25rem;
+      ${Media.phone`
+      font-size: 1.75rem;
+    `}
     }
   }
 `

@@ -1,6 +1,5 @@
 import React from 'react'
 import styled from 'styled-components'
-import Media from '../styles/Media'
 import Title from './Title'
 import Time from './Time'
 import Purchase from './Purchase'
@@ -9,6 +8,7 @@ import Tags from './Tags'
 import Docs from './Docs'
 import DocsButton from './DocsButton'
 import VideoList from './VideoList'
+import Media from '../styles/Media'
 
 const Card = styled.div`
   max-height: 60rem;
@@ -19,6 +19,9 @@ const Card = styled.div`
     width: 35rem;
     height: 17.5rem;
   }
+  ${Media.desktop`
+    margin-top: 5rem;
+  `}
   .detail {
     display: grid;
     grid-template-columns: 3fr 1.25fr;
